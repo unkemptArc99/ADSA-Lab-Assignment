@@ -43,14 +43,20 @@ LinearList<Item>::LinearList(const int& MaxListSize){
 	len=0;
 	element=(Item *)malloc(MaxListSize*sizeof(Item));
 	for(int i=0;i<MaxSize;++i)
-		element[i]=NULL;
+		element[i]=(Item)NULL;
 	cout<<"The list is being created"<<endl;
 	cout<<"The maximum size of the list is "<<MaxSize<<endl;
 }
 
 template<class Item>
+LinearList<Item>::~LinearList(void){
+	free(element);
+	cout<<"The list has been deleted"<<endl;
+}
+
+template<class Item>
 Item& LinearList<Item>::operator[](const int& i){
-	return element[i-1];
+	return element[i];
 }
 
 template<class Item>
@@ -113,6 +119,10 @@ template<class Item>
 void LinearList<Item>::insert(const int k,Item& x){
 	if(len==MaxSize)
 		cout<<"There is no space for extra input"<<endl;
+	else if(len==0){
+		len++;
+		element[k]=x;
+	}
 	else{
 		len++;
 		for(int i=len-1;i>k;i--){

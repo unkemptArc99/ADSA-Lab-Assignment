@@ -31,9 +31,12 @@ int main(int argc, char const *argv[])
 		cout<<"10. Bubble Sort"<<endl;
 		cout<<"11. Rank Sort"<<endl;
 		cout<<"12. Selection Sort"<<endl;
+		cout<<"13. Exit"<<endl;
+		cout<<"14. Display the list"<<endl;
 		int ch;
 		cout<<"Enter your choice : ";
 		cin>>ch;
+		Sort<int> sorter;
 		int num,pos;
 		switch(ch){
 			case 1:
@@ -41,6 +44,7 @@ int main(int argc, char const *argv[])
 				cin>>num;
 				cout<<"Enter the position after which the number is to be inserted : ";
 				cin>>pos;
+				cout<<pos<<" "<<num<<endl;
 				A.insert(pos,num);
 				break;
 			case 2:
@@ -67,7 +71,7 @@ int main(int argc, char const *argv[])
 				if(pos>A.length())
 					cout<<"Element not accessible"<<endl;
 				else
-					cout<<A.returnListElement(pos);
+					cout<<A.returnListElement(pos)<<endl;
 				break;
 			case 7:
 				cout<<"Enter the position number : "<<endl;
@@ -91,28 +95,37 @@ int main(int argc, char const *argv[])
 				cin>>num;
 				cout<<"enter the ending position : ";
 				cin>>pos;
-				Sort.insertionSort(A,num-1,pos-1);
+				sorter.insertionSort(A,num-1,pos-1);
 				break;
 			case 10:
 				cout<<"Enter the starting position : ";
 				cin>>num;
 				cout<<"enter the ending position : ";
 				cin>>pos;
-				Sort.bubbleSort(A,num-1,pos-1);
+				sorter.bubbleSort(A,num-1,pos-1);
 				break;
 			case 11:
 				cout<<"Enter the starting position : ";
 				cin>>num;
 				cout<<"enter the ending position : ";
 				cin>>pos;
-				Sort.rankSort(A,num-1,pos-1);
+				sorter.rankSort(A,num-1,pos-1);
 				break;
 			case 12:
 				cout<<"Enter the starting position : ";
 				cin>>num;
 				cout<<"enter the ending position : ";
 				cin>>pos;
-				Sort.selectionSort(A,num-1,pos-1);
+				sorter.selectionSort(A,num-1,pos-1);
+				break;
+			case 13:
+				cout<<"Exiting the program"<<endl;
+				stop=true;
+				break;
+			case 14:
+				for(int i=0;i<A.length();++i)
+					cout<<A[i]<<" ";
+				cout<<endl;
 				break;
 			default:
 				cout<<"Wrong choice! Please enter again"<<endl;

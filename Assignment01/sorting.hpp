@@ -38,6 +38,11 @@ void Sort<Item>::insertionSort(LinearList<Item>& A, int low, int high){
 			}
 		}
 	}
+	cout<<"The list has been sorted according to the parameters given."<<endl;
+	cout<<"The list in the given parameters is : ";
+	for(int i=low;i<=high;++i)
+		cout<<A[i]<<" ";
+	cout<<endl;
 }
 
 template<class Item>
@@ -59,6 +64,11 @@ void Sort<Item>::bubbleSort(LinearList<Item>& A, int low, int high){
 			}
 		}
 	}
+	cout<<"The list has been sorted according to the parameters given."<<endl;
+	cout<<"The list in the given parameters is : ";
+	for(int i=low;i<=high;++i)
+		cout<<A[i]<<" ";
+	cout<<endl;
 }
 
 template<class Item>
@@ -84,6 +94,11 @@ void Sort<Item>::rankSort(LinearList<Item>& A, int low, int high){
 		for(int i=0;i<n;++i)
 			A[i]=b[i];
 	}
+	cout<<"The list has been sorted according to the parameters given."<<endl;
+	cout<<"The list in the given parameters is : ";
+	for(int i=low;i<=high;++i)
+		cout<<A[i]<<" ";
+	cout<<endl;
 }
 
 template<class Item>
@@ -105,5 +120,10 @@ void Sort<Item>::selectionSort(LinearList<Item>& A,int low,int high){
 			}
 		}
 	}
+	cout<<"The list has been sorted according to the parameters given."<<endl;
+	cout<<"The list in the given parameters is : ";
+	for(int i=low;i<=high;++i)
+		cout<<A[i]<<" ";
+	cout<<endl;
 }
 #endif
