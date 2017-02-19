@@ -9,6 +9,7 @@ Date : 18/02/2017
 #include <cstdlib>
 #include "seqLinearList.hpp"
 #include "sorting.hpp"
+#include "timer.hpp"
 using namespace std;
 
 int main(int argc, char const *argv[])
@@ -16,6 +17,7 @@ int main(int argc, char const *argv[])
 	int n;
 	cout<<"Enter the Maximum Size of the list you want to create : ";
 	cin>>n;
+	timer T;
 	LinearList<int> A(n);
 	bool stop=false;
 	while(!stop){
@@ -95,28 +97,40 @@ int main(int argc, char const *argv[])
 				cin>>num;
 				cout<<"enter the ending position : ";
 				cin>>pos;
+				T.start();
 				sorter.insertionSort(A,num-1,pos-1);
+				T.stop();
+				T.print();
 				break;
 			case 10:
 				cout<<"Enter the starting position : ";
 				cin>>num;
 				cout<<"enter the ending position : ";
 				cin>>pos;
+				T.start();
 				sorter.bubbleSort(A,num-1,pos-1);
+				T.stop();
+				T.print();
 				break;
 			case 11:
 				cout<<"Enter the starting position : ";
 				cin>>num;
 				cout<<"enter the ending position : ";
 				cin>>pos;
+				T.start();
 				sorter.rankSort(A,num-1,pos-1);
+				T.stop();
+				T.print();
 				break;
 			case 12:
 				cout<<"Enter the starting position : ";
 				cin>>num;
 				cout<<"enter the ending position : ";
 				cin>>pos;
+				T.start();
 				sorter.selectionSort(A,num-1,pos-1);
+				T.stop();
+				T.print();
 				break;
 			case 13:
 				cout<<"Exiting the program"<<endl;
