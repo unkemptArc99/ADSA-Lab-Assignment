@@ -122,6 +122,7 @@ void LinearList<Item>::insert(const int k,Item& x){
 	else if(len==0){
 		len++;
 		element[k]=x;
+		cout<<"Insert successful"<<endl;
 	}
 	else{
 		len++;
