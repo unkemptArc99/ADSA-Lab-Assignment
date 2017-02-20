@@ -76,13 +76,13 @@ void Sort<Item>::rankSort(LinearList<Item>& A, int low, int high){
 	if(low>high || low>A.length()-1 || high>A.length()-1 || low<0 || high<0)
 		cout<<"You have given wrong parameters"<<endl;
 	else{
-		int n=A.length();
+		int n=high-low+1;
 		int rank[n];
 		for(int i=0;i<n;++i)
 			rank[i]=0;
 		for(int i=0;i<n;++i){
 			for(int j=0;j<i;++j){
-				if(A[j]>A[i])
+				if(A[j+low]>A[i+low])
 					rank[j]++;
 				else
 					rank[i]++;
@@ -90,9 +90,9 @@ void Sort<Item>::rankSort(LinearList<Item>& A, int low, int high){
 		}
 		int b[n];
 		for(int i=0;i<n;++i)
-			b[rank[i]]=A[i];
+			b[rank[i]]=A[i+low];
 		for(int i=0;i<n;++i)
-			A[i]=b[i];
+			A[i+low]=b[i];
 	}
 	cout<<"The list has been sorted according to the parameters given."<<endl;
 	cout<<"The list in the given parameters is : ";
@@ -107,9 +107,9 @@ void Sort<Item>::selectionSort(LinearList<Item>& A,int low,int high){
 		cout<<"You have given wrong parameters"<<endl;
 	else{
 		int n=high-low+1;
-		for(int j=0;j<n-1;++j){
+		for(int j=low;j<n-1+low;++j){
 			int iMin=j;
-			for(int i=j+1;i<n;++i){
+			for(int i=j+1;i<n+low;++i){
 				if(A[i]<A[iMin])
 					iMin=i;
 			}
