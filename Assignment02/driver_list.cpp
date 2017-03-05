@@ -27,6 +27,7 @@ int main(int argc, char const *argv[])
 		int ch;
 		cout<<"Enter your choice : ";
 		cin>>ch;
+		int num,pos;
 		switch(ch){
 			case 1:
 				cout<<"Enter your number : ";
