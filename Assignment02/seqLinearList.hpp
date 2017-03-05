@@ -151,7 +151,7 @@ namespace cs202 {
 			cout<<"-----------------------------------------------"<<endl;
 		}
 		else{
-			buffer_[size_]=iteml
+			buffer_[size_]=item;
 			size_++;
 		}
 	}
@@ -201,6 +201,22 @@ namespace cs202 {
 				buffer_[size_-1]=(T*)NULL;
 				size_--;
 			}
+		}
+	}
+
+	template<typename T>
+	void LinearList<T>::erase_pos(const int& pos){
+		if(pos>=size_){
+			cout<<"-----------------------------------------------"<<endl;
+			cout<<"The position does not exist"<<endl;
+			cout<<"-----------------------------------------------"<<endl;
+		}
+		else{
+			for(int i=pos;i<size_-1;++i){
+				buffer_[i]=buffer_[i+1];
+			}
+			buffer_[size_-1]=(T*)NULL:
+			size_--;
 		}
 	}
 
