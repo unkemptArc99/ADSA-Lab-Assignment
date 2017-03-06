@@ -14,38 +14,41 @@ namespace cs202 {
       void rankSort(LinearList<T>& A, int low, int high);
       void selectionSort(LinearList<T>& A, int low, int high);
       void mergeSort(LinearList<T>& A, int low, int high);
-      void merge(LinearList<T>& A,int low,int q,int high);
+      void merge(LinearList<T>& A,LinearList<T>& left,LinearList<T>& right,int l1,int r1);
       void quickSort(LinearList<T>& A, int low, int high);
       int partition(LinearList<T>& A,int low,int high);
   };
 
   template<class T>
   void Sort<T>::insertionSort(LinearList<T>& A,int low,int high){
-    if(low>high || low>A.length()-1 || high>A.length()-1 || low<0 || high<0)
-      cout<<"You have given wrong parameters"<<endl;
+    if(low>high || low>A.size()-1 || high>A.size()-1 || low<0 || high<0)
+      std::cout<<"You have given wrong parameters"<<std::endl;
     else{
-      for(int i=low+1;i<=high;++i){
-        int j=i;
-        while(j>0 && A[j-1]>A[i]){
-          int temp=A[j];
-          A[j]=A[j-1];
-          A[j-1]=temp;
+        T key;
+        key=A[0];
+        for(int j=1;j<=high;++j){
+          key=A[j];
+          int i=j-1;
+          while(i>=0 && A[i]>key){
+            A[i+1]=A[i];
+            i=i-1;
+          }
+          A[i+1]=key;
         }
       }
-    }
-    cout<<"-------------------------------------------------"<<endl;
-    cout<<"The list has been sorted according to the parameters given."<<endl;
-    cout<<"The list in the given parameters is : ";
+    std::cout<<"-------------------------------------------------"<<std::endl;
+    std::cout<<"The list has been sorted according to the parameters given."<<std::endl;
+    std::cout<<"The list in the given parameters is : ";
     for(int i=low;i<=high;++i)
-      cout<<A[i]<<" ";
-    cout<<endl;
-    cout<<"-------------------------------------------------"<<endl;
+      std::cout<<A[i]<<" ";
+    std::cout<<std::endl;
+    std::cout<<"-------------------------------------------------"<<std::endl;
   }
 
   template<class T>
   void Sort<T>::rankSort(LinearList<T>& A,int low,int high){
-    if(low>high || low>A.length()-1 || high>A.length()-1 || low<0 || high<0)
-      cout<<"You have given wrong parameters"<<endl;
+    if(low>high || low>A.size()-1 || high>A.size()-1 || low<0 || high<0)
+      std::cout<<"You have given wrong parameters"<<std::endl;
     else{
       int n=high-low+1;
       int rank[n];
@@ -65,43 +68,46 @@ namespace cs202 {
       for(int i=0;i<n;++i)
         A[i+low]=b[i];
     }
-    cout<<"The list has been sorted according to the parameters given."<<endl;
-    cout<<"The list in the given parameters is : ";
+    std::cout<<"-------------------------------------------------"<<std::endl;
+    std::cout<<"The list has been sorted according to the parameters given."<<std::endl;
+    std::cout<<"The list in the given parameters is : ";
     for(int i=low;i<=high;++i)
-      cout<<A[i]<<" ";
-    cout<<endl;
+      std::cout<<A[i]<<" ";
+    std::cout<<std::endl;
+    std::cout<<"-------------------------------------------------"<<std::endl;
+
   }
 
   template<class T>
   void Sort<T>::bubbleSort(LinearList<T>& A,int low,int high){
-    if(low>high || low>A.length()-1 || high>A.length()-1 || low<0 || high<0)
-      cout<<"You have given wrong parameters"<<endl;
+    if(low>high || low>A.size()-1 || high>A.size()-1 || low<0 || high<0)
+      std::cout<<"You have given wrong parameters"<<std::endl;
     else{
-      int n=high-low+1;
-      bool swapped=true;
-      while(swapped!=false){
-        swapped=false;
-        for(int i=low+1;i<=high;++i){
-          if(A[i-1]>A[i]){
-            int temp=A[i];
-            A[i]=A[i-1];
-            A[i-1]=temp;
-            swapped=true;
+      T swap;
+      for(int i=0;i<high;++i){
+        for(int j=0;j<high-i;++j){
+          if(A[j]>A[j+1]){
+            swap=A[j];
+            A[j]=A[j+1];
+            A[j+1]=swap;
           }
         }
       }
     }
-    cout<<"The list has been sorted according to the parameters given."<<endl;
-    cout<<"The list in the given parameters is : ";
+    std::cout<<"-------------------------------------------------"<<std::endl;
+    std::cout<<"The list has been sorted according to the parameters given."<<std::endl;
+    std::cout<<"The list in the given parameters is : ";
     for(int i=low;i<=high;++i)
-      cout<<A[i]<<" ";
-    cout<<endl;
+      std::cout<<A[i]<<" ";
+    std::cout<<std::endl;
+    std::cout<<"-------------------------------------------------"<<std::endl;
+
   }
 
   template<class T>
   void Sort<T>::selectionSort(LinearList<T>& A,int low,int high){
-    if(low>high || low>A.length()-1 || high>A.length()-1 || low<0 || high<0)
-      cout<<"You have given wrong parameters"<<endl;
+    if(low>high || low>A.size()-1 || high>A.size()-1 || low<0 || high<0)
+      std::cout<<"You have given wrong parameters"<<std::endl;
     else{
       int n=high-low+1;
       for(int j=low;j<n-1+low;++j){
@@ -117,80 +123,87 @@ namespace cs202 {
         }
       }
     }
-    cout<<"The list has been sorted according to the parameters given."<<endl;
-    cout<<"The list in the given parameters is : ";
+    std::cout<<"-------------------------------------------------"<<std::endl;
+    std::cout<<"The list has been sorted according to the parameters given."<<std::endl;
+    std::cout<<"The list in the given parameters is : ";
     for(int i=low;i<=high;++i)
-      cout<<A[i]<<" ";
-    cout<<endl;
+      std::cout<<A[i]<<" ";
+    std::cout<<std::endl;
+    std::cout<<"-------------------------------------------------"<<std::endl;
+
+  }
+
+  template<class T>
+  void Sort<T>::merge(LinearList<T>& A,LinearList<T>& left,LinearList<T>& right,int l1,int r1){
+    int i=0,j=0,k=0;
+    while(i<l1 && j<r1){
+      if(left[i]>=right[i]){
+        A[k]=right[j];
+        j++;
+        k++;
+      }
+      else{
+        A[k]=left[i];
+        i++;
+        k++;
+      }
+    }
+    while(i<l1){
+      A[k]=left[i];
+      k++;
+      i++;
+    }
+    while(j<r1){
+      A[k]=right[i];
+      k++;
+      j++;
+    }
   }
 
   template<class T>
   void Sort<T>::mergeSort(LinearList<T>& A,int low,int high){
-    if(low>high || low>A.length()-1 || high>A.length()-1 || low<0 || high<0)
-      cout<<"You have given wrong parameters"<<endl;
-    else{
-      int q=(low+high)/2;
-      mergeSort(A,low,q);
-      mergeSort(A,q+1,high);
-      merge(A,low,q,high);
-    }
-  }
+    int n=high-low+1;
+    int mid=n/2;
+    if(mid==0)
+      return;
 
-  template<class T>
-  void Sort<T>::merge(LinearList<T>& A,int low,int q,int high){
-    int n1=q-low+1;
-    int n2=high-q;
-    LinearList<T> L(n1+1);
-    LinearList<T> R(n2+1);
-    for(int i=0;i<n1;++i)
-      L.push_back(A[low+i]);
-    for(int i=0;i<n2;++i)
-      R.push_back(A[q+j+1]);
-    L[n1]=numeric_limits<T>::max();
-    R[n2]=numeric_limits<T>::max();
-    int i=0;
-    int j=0;
-    for(k=low;k<=high;++k){
-      if(L[i]<=R[j]){
-        A[k]=L[i];
-        i++;
-      }
-      else{
-        A[k]=R[j];
-        j++;
-      }
-    }
+    LinearList<T> left(mid);
+    LinearList<T> right(n-mid);
+    for(int i=0;i<mid;++i)
+      left[i]=A[i];
+    for(int i=mid;i<n;++i)
+      right[i-mid]=A[i];
+
+    mergeSort(left,0,mid-1);
+    mergeSort(right,mid,n-1);
+    merge(A,left,right,mid,n-mid);
   }
 
   template<class T>
   void Sort<T>::quickSort(LinearList<T>& A,int low,int high){
-    if(low>high || low>A.length()-1 || high>A.length()-1 || low<0 || high<0)
-      cout<<"You have given wrong parameters"<<endl;
-    else{
-      int q=partition(A,low,high);
-      quickSort(A,low,q);
-      quickSort(A,q+1,high);
+    if(low<high){
+       int q = partition( A, low, high);
+       quickSort( A, low, q-1);
+       quickSort( A, q+1, high);
     }
   }
 
   template<class T>
   int Sort<T>::partition(LinearList<T>& A,int low, int high){
-    T pivot=A[high];
-    int i=low-1;
-    for(j=low;j<high;++j){
-      if(A[j]<=pivot){
-        i++;
-        T temp;
-        temp=A[i];
-        A[i]=A[j];
-        A[j]=temp;
-      }
+    int i, j;
+    T pivot,t;
+    pivot = A[low];
+    i = low; j = high+1;
+
+    while(1)
+    {
+        do ++i;while(A[i]<=pivot&&i<=high);
+        do --j;while(A[j]>pivot);
+        if(i>=j) break;
+        t=A[i];A[i]=A[j];A[j]=t;
     }
-    T temp;
-    temp=A[high];
-    A[high]=A[i+1];
-    A[i+1]=temp;
-    return i+1;
+    t=A[low];A[low]=A[j];A[j]=t;
+    return j;
   }
 }
 

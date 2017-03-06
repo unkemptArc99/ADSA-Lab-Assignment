@@ -2,10 +2,11 @@
 #define _SEQ_LINEAR_LIST 1
 
 #include <iostream>
+#include <cstdlib>
 #include <string.h>
 
 namespace cs202 {
-	template<typename T>
+	template<class T>
 	class LinearList{
 		private:
         	T* buffer_;
@@ -100,55 +101,43 @@ namespace cs202 {
         	iterator end();
   	};
 
-  	template<typename T>
+  	template<class T>
   	LinearList<T>::LinearList(void){
-  		cout<<"-----------------------------------------------"<<endl;
-		cout<<"The list is being created"<<endl;
-		cout<<"-----------------------------------------------"<<endl;
+  		buffer_=(T *)NULL;
+  		capacity_=0;
+  		size_=0;
 	}
 
-	template<typename T>
+	template<class T>
 	LinearList<T>::LinearList(const int& isize){
 		capacity_=isize;
 		size_=0;
 		buffer_=(T *)malloc(capacity_*sizeof(T));
 		for(int i=0;i<capacity_;++i)
 			buffer_[i]=(T)NULL;
-		cout<<"-----------------------------------------------"<<endl;
-		cout<<"The list is being created"<<endl;
-		cout<<"The maximum size of the list is "<<capacity_<<endl;
-		cout<<"-----------------------------------------------"<<endl;
 	}
 
-	template<typename T>
+	template<class T>
 	LinearList<T>::LinearList(const int& isize, const T& ival){
 		capacity_=isize;
 		size_=capacity_;
 		buffer_=(T *)malloc(capacity_*sizeof(T));
 		for(int i=0;i<capacity_;++i)
 			buffer_[i]=ival;
-		cout<<"-----------------------------------------------"<<endl;
-		cout<<"The list is being created"<<endl;
-		cout<<"The maximum size of the list is "<<capacity_<<endl;
-		cout<<"The default variable in the list is "<<ival<<endl;
-		cout<<"-----------------------------------------------"<<endl;
 	}
 
-	template<typename T>
+	template<class T>
 	LinearList<T>::~LinearList(void){
-		free(element);
-		cout<<"-----------------------------------------------"<<endl;
-		cout<<"The list has been deleted"<<endl;
-		cout<<"-----------------------------------------------"<<endl;
+		free(buffer_);
 	}
 
-	template<typename T>
+	template<class T>
 	void LinearList<T>::push_back(const T& item)
 	{
 		if(size_>=capacity_){
-			cout<<"-----------------------------------------------"<<endl;	
-			cout<<"The list is full!! Cannot add new number"<<endl;
-			cout<<"-----------------------------------------------"<<endl;
+			std::cout<<"-----------------------------------------------"<<std::endl;	
+			std::cout<<"The list is full!! Cannot add new number"<<std::endl;
+			std::cout<<"-----------------------------------------------"<<std::endl;
 		}
 		else{
 			buffer_[size_]=item;
@@ -156,7 +145,7 @@ namespace cs202 {
 		}
 	}
 
-	template<typename T>
+	template<class T>
 	bool LinearList<T>::empty(){
 		if(size_==0)
 			return true;
@@ -164,7 +153,7 @@ namespace cs202 {
 			return false;
 	}
 
-	template<typename T>
+	template<class T>
 	void LinearList<T>::fill(const T& item){
 		for (int i = 0; i < capacity_; ++i)
 		{
@@ -172,7 +161,7 @@ namespace cs202 {
 		}
 	}
 
-	template<typename T>
+	template<class T>
 	void LinearList<T>::resize(const int& n){
 		buffer_=(T *)realloc(buffer_,n*sizeof(T));
 		capacity_=n;
@@ -180,7 +169,7 @@ namespace cs202 {
 			size_=n;
 	}
 
-	template<typename T>
+	template<class T>
 	int LinearList<T>::find(const T& item){
 		int i;
 		for(i=0;i<size_;++i){
@@ -191,41 +180,41 @@ namespace cs202 {
 		return i;
 	}
 
-	template<typename T>
+	template<class T>
 	void LinearList<T>::erase(const T& item){
 		for (int i = 0; i < size_; ++i){
 			if(buffer_[i]==item){
 				for (int j = i; j < size_-1; ++i){
 					buffer_[i]=buffer_[i+1];
 				}
-				buffer_[size_-1]=(T*)NULL;
+				buffer_[size_-1]=(T)NULL;
 				size_--;
 			}
 		}
 	}
 
-	template<typename T>
+	template<class T>
 	void LinearList<T>::erase_pos(const int& pos){
 		if(pos>=size_){
-			cout<<"-----------------------------------------------"<<endl;
-			cout<<"The position does not exist"<<endl;
-			cout<<"-----------------------------------------------"<<endl;
+			std::cout<<"-----------------------------------------------"<<std::endl;
+			std::cout<<"The position does not exist"<<std::endl;
+			std::cout<<"-----------------------------------------------"<<std::endl;
 		}
 		else{
 			for(int i=pos;i<size_-1;++i){
 				buffer_[i]=buffer_[i+1];
 			}
-			buffer_[size_-1]=(T*)NULL:
+			buffer_[size_-1]=(T)NULL;
 			size_--;
 		}
 	}
 
-	template<typename T>
+	template<class T>
 	void LinearList<T>::insert(const T& item, const int& k){
 		if(size_>=capacity_){
-			cout<<"-----------------------------------------------"<<endl;
-			cout<<"There is no space for extra input"<<endl;
-			cout<<"-----------------------------------------------"<<endl;
+			std::cout<<"-----------------------------------------------"<<std::endl;
+			std::cout<<"There is no space for extra input"<<std::endl;
+			std::cout<<"-----------------------------------------------"<<std::endl;
 		}
 		else if(size_==0){
 			size_++;
@@ -236,7 +225,7 @@ namespace cs202 {
 			for(int i=size_-1;i>k;i--){
 				buffer_[i]=buffer_[i-1];
 			}
-			buffer_[k]=x;
+			buffer_[k]=item;
 		}
 	}
 

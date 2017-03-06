@@ -2,40 +2,45 @@
 // Author: Abhishek
 // Roll Number: B15103
 #include <iostream>
+#include <fstream>
 #include "seqLinearList.hpp"
 #include "sorting.hpp"
 #include "timer.hpp"
-
+using namespace std;
 // Please read the guidelines carefully before writing any piece of code
+
 int main(int argc, char const *argv[])
 {
-	Sort<int> sort;
+	cs202::Sort<int> sort;
 	bool stop=false;
+	timer T;
+	double tim;
 	while(!stop){
-		cout<<"1. Ascending"<<endl;
-		cout<<"2. Descending"<<endl;
-		cout<<"3. Random"<<endl;
-		cout<<"4. Exit"<<endl;
+		std::cout<<"1. Ascending"<<std::endl;
+		std::cout<<"2. Descending"<<std::endl;
+		std::cout<<"3. Random"<<std::endl;
+		std::cout<<"4. Exit"<<std::endl;
 		int ch;
-		cout<<"Enter your choice : ";
-		cin>>ch;
-		ifstream file1;
-		
-		int num,pos,n;
+		std::cout<<"Enter your choice : ";
+		std::cin>>ch;
+		std::ifstream file1;
+		std::fstream file2;
+		int num,pos,n,ch1;
+		cs202::LinearList<int> A;
 		switch(ch){
 			case 1:
-				cout<<"1. 100 input"<<endl;
-				cout<<"2. 500 input"<<endl;
-				cout<<"3. 1000 input"<<endl;
-				cout<<"4. 5000 input"<<endl;
-				cout<<"5. 10000 input"<<endl;
-				cout<<"6. 50000 input"<<endl;
-				cout<<"7. 100000 input"<<endl;
-				cout<<"8. 500000 input"<<endl;
-				cout<<"9. 1000000 input"<<endl;
-				cout<<"10. 5000000 input"<<endl;
-				cout<<"Enter your choice : ";
-				cin<<ch1;
+				std::cout<<"1. 100 input"<<std::endl;
+				std::cout<<"2. 500 input"<<std::endl;
+				std::cout<<"3. 1000 input"<<std::endl;
+				std::cout<<"4. 5000 input"<<std::endl;
+				std::cout<<"5. 10000 input"<<std::endl;
+				std::cout<<"6. 50000 input"<<std::endl;
+				std::cout<<"7. 100000 input"<<std::endl;
+				std::cout<<"8. 500000 input"<<std::endl;
+				std::cout<<"9. 1000000 input"<<std::endl;
+				std::cout<<"10. 5000000 input"<<std::endl;
+				std::cout<<"Enter your choice : ";
+				std::cin>>ch1;
 				switch(ch1){
 					case 1:
 						file1.open("input/asc_100.in");
@@ -68,58 +73,96 @@ int main(int argc, char const *argv[])
 						file1.open("input/asc_5000000.in");
 						break;
 					default:
-						cout<<"Wrong Choice!"<<endl;
+						std::cout<<"Wrong Choice!"<<std::endl;
 				}
 				file1>>n;
-				LinearList<int> A1(n);
+				cout<<n<<endl;
+				A.resize(n);
+				cout<<A.size()<<" "<<A.capacity()<<endl;
 				for(int i=0;i<n;++i){
 					file1>>num;
-					A1.push_back(num);
+					A.push_back(num);
 				}
-				cout<<"1. Insertion Sort"<<endl;
-				cout<<"2. Bubble Sort"<<endl;
-				cout<<"3. Rank Sort"<<endl;
-				cout<<"4. Selection Sort"<<endl;
-				cout<<"5. Merge Sort"<<endl;
-				cout<<"6. Quick Sort"<<endl;
-				cout<<"Enter your choice : ";
-				cin>>ch1;
+				std::cout<<"1. Insertion Sort"<<std::endl;
+				std::cout<<"2. Bubble Sort"<<std::endl;
+				std::cout<<"3. Rank Sort"<<std::endl;
+				std::cout<<"4. Selection Sort"<<std::endl;
+				std::cout<<"5. Merge Sort"<<std::endl;
+				std::cout<<"6. Quick Sort"<<std::endl;
+				std::cout<<"Enter your choice : ";
+				std::cin>>ch1;
 				switch(ch1){
 					case 1:
-						sort.insertionSort(A1,0,n-1);
+						T.start();
+						sort.insertionSort(A,0,n-1);
+						T.stop();
+						tim=T.last_timing();
+						file2.open("output_ins_asc.txt",std::fstream::app);
+						file2<<n<<" "<<tim<<std::endl;
+						std::cout<<tim<<" s"<<std::endl;
 						break;
 					case 2:
-						sort.bubbleSort(A1,0,n-1);
+						T.start();
+						sort.bubbleSort(A,0,n-1);
+						T.stop();
+						tim=T.last_timing();
+						file2.open("output_bub_asc.txt",std::fstream::app);
+						file2<<n<<" "<<tim<<std::endl;
+						std::cout<<tim<<" s"<<std::endl;
 						break;
 					case 3:
-						sort.rankSort(A1,0,n-1);
+						T.start();
+						sort.rankSort(A,0,n-1);
+						T.stop();
+						tim=T.last_timing();
+						file2.open("output_rank_asc.txt",std::fstream::app);
+						file2<<n<<" "<<tim<<std::endl;
+						std::cout<<tim<<" s"<<std::endl;
 						break;
 					case 4:
-						sort.selectionSort(A1,0,n-1);
+						T.start();
+						sort.selectionSort(A,0,n-1);
+						T.stop();
+						tim=T.last_timing();
+						file2.open("output_sel_asc.txt",std::fstream::app);
+						file2<<n<<" "<<tim<<std::endl;
+						std::cout<<tim<<" s"<<std::endl;
 						break;
 					case 5:
-						sort.mergeSort(A1,0,n-1);
+						T.start();
+						sort.mergeSort(A,0,n-1);
+						T.stop();
+						tim=T.last_timing();
+						file2.open("output_mer_asc.txt",std::fstream::app);
+						file2<<n<<" "<<tim<<std::endl;
+						std::cout<<tim<<" s"<<std::endl;
 						break;
 					case 6:
-						sort.quickSort(A1,0,n-1);
+						T.start();
+						sort.quickSort(A,0,n-1);
+						T.stop();
+						tim=T.last_timing();
+						file2.open("output_qui_asc.txt",std::fstream::app);
+						file2<<n<<" "<<tim<<std::endl;
+						std::cout<<tim<<" s"<<std::endl;
 						break;
 					default:
-						cout<<"Wrong choice";
+						std::cout<<"Wrong choice";
 				}
 				break;
 			case 2:
-				cout<<"1. 100 input"<<endl;
-				cout<<"2. 500 input"<<endl;
-				cout<<"3. 1000 input"<<endl;
-				cout<<"4. 5000 input"<<endl;
-				cout<<"5. 10000 input"<<endl;
-				cout<<"6. 50000 input"<<endl;
-				cout<<"7. 100000 input"<<endl;
-				cout<<"8. 500000 input"<<endl;
-				cout<<"9. 1000000 input"<<endl;
-				cout<<"10. 5000000 input"<<endl;
-				cout<<"Enter your choice : ";
-				cin<<ch1;
+				std::cout<<"1. 100 input"<<std::endl;
+				std::cout<<"2. 500 input"<<std::endl;
+				std::cout<<"3. 1000 input"<<std::endl;
+				std::cout<<"4. 5000 input"<<std::endl;
+				std::cout<<"5. 10000 input"<<std::endl;
+				std::cout<<"6. 50000 input"<<std::endl;
+				std::cout<<"7. 100000 input"<<std::endl;
+				std::cout<<"8. 500000 input"<<std::endl;
+				std::cout<<"9. 1000000 input"<<std::endl;
+				std::cout<<"10. 5000000 input"<<std::endl;
+				std::cout<<"Enter your choice : ";
+				std::cin>>ch1;
 				switch(ch1){
 					case 1:
 						file1.open("input/desc_100.in");
@@ -152,58 +195,94 @@ int main(int argc, char const *argv[])
 						file1.open("input/desc_5000000.in");
 						break;
 					default:
-						cout<<"Wrong Choice!"<<endl;
+						std::cout<<"Wrong Choice!"<<std::endl;
 				}
 				file1>>n;
-				LinearList<int> A2(n);
+				A.resize(n);
 				for(int i=0;i<n;++i){
 					file1>>num;
-					A2.push_back(num);
+					A.push_back(num);
 				}
-				cout<<"1. Insertion Sort"<<endl;
-				cout<<"2. Bubble Sort"<<endl;
-				cout<<"3. Rank Sort"<<endl;
-				cout<<"4. Selection Sort"<<endl;
-				cout<<"5. Merge Sort"<<endl;
-				cout<<"6. Quick Sort"<<endl;
-				cout<<"Enter your choice : ";
-				cin>>ch1;
+				std::cout<<"1. Insertion Sort"<<std::endl;
+				std::cout<<"2. Bubble Sort"<<std::endl;
+				std::cout<<"3. Rank Sort"<<std::endl;
+				std::cout<<"4. Selection Sort"<<std::endl;
+				std::cout<<"5. Merge Sort"<<std::endl;
+				std::cout<<"6. Quick Sort"<<std::endl;
+				std::cout<<"Enter your choice : ";
+				std::cin>>ch1;
 				switch(ch1){
 					case 1:
-						sort.insertionSort(A1,0,n-1);
+						T.start();
+						sort.insertionSort(A,0,n-1);
+						T.stop();
+						tim=T.last_timing();
+						file2.open("output_ins_desc.txt",std::fstream::app);
+						file2<<n<<" "<<tim<<std::endl;
+						std::cout<<tim<<" s"<<std::endl;
 						break;
 					case 2:
-						sort.bubbleSort(A1,0,n-1);
+						T.start();
+						sort.bubbleSort(A,0,n-1);
+						T.stop();
+						tim=T.last_timing();
+						file2.open("output_bub_desc.txt",std::fstream::app);
+						file2<<n<<" "<<tim<<std::endl;
+						std::cout<<tim<<" s"<<std::endl;
 						break;
 					case 3:
-						sort.rankSort(A1,0,n-1);
+						T.start();
+						sort.rankSort(A,0,n-1);
+						T.stop();
+						tim=T.last_timing();
+						file2.open("output_rank_desc.txt",std::fstream::app);
+						file2<<n<<" "<<tim<<std::endl;
+						std::cout<<tim<<" s"<<std::endl;
 						break;
 					case 4:
-						sort.selectionSort(A1,0,n-1);
+						T.start();
+						sort.selectionSort(A,0,n-1);
+						T.stop();
+						tim=T.last_timing();
+						file2.open("output_sel_desc.txt",std::fstream::app);
+						file2<<n<<" "<<tim<<std::endl;
+						std::cout<<tim<<" s"<<std::endl;
 						break;
 					case 5:
-						sort.mergeSort(A1,0,n-1);
+						T.start();
+						sort.mergeSort(A,0,n-1);
+						T.stop();
+						tim=T.last_timing();
+						file2.open("output_mer_desc.txt",std::fstream::app);
+						file2<<n<<" "<<tim<<std::endl;
+						std::cout<<tim<<" s"<<std::endl;
 						break;
 					case 6:
-						sort.quickSort(A1,0,n-1);
+						T.start();
+						sort.quickSort(A,0,n-1);
+						T.stop();
+						tim=T.last_timing();
+						file2.open("output_qui_desc.txt",std::fstream::app);
+						file2<<n<<" "<<tim<<std::endl;
+						std::cout<<tim<<" s"<<std::endl;
 						break;
 					default:
-						cout<<"Wrong choice";
+						std::cout<<"Wrong choice";
 				}
 				break;
 			case 3:
-				cout<<"1. 100 input"<<endl;
-				cout<<"2. 500 input"<<endl;
-				cout<<"3. 1000 input"<<endl;
-				cout<<"4. 5000 input"<<endl;
-				cout<<"5. 10000 input"<<endl;
-				cout<<"6. 50000 input"<<endl;
-				cout<<"7. 100000 input"<<endl;
-				cout<<"8. 500000 input"<<endl;
-				cout<<"9. 1000000 input"<<endl;
-				cout<<"10. 5000000 input"<<endl;
-				cout<<"Enter your choice : ";
-				cin<<ch1;
+				std::cout<<"1. 100 input"<<std::endl;
+				std::cout<<"2. 500 input"<<std::endl;
+				std::cout<<"3. 1000 input"<<std::endl;
+				std::cout<<"4. 5000 input"<<std::endl;
+				std::cout<<"5. 10000 input"<<std::endl;
+				std::cout<<"6. 50000 input"<<std::endl;
+				std::cout<<"7. 100000 input"<<std::endl;
+				std::cout<<"8. 500000 input"<<std::endl;
+				std::cout<<"9. 1000000 input"<<std::endl;
+				std::cout<<"10. 5000000 input"<<std::endl;
+				std::cout<<"Enter your choice : ";
+				std::cin>>ch1;
 				switch(ch1){
 					case 1:
 						file1.open("input/rand_100.in");
@@ -236,53 +315,89 @@ int main(int argc, char const *argv[])
 						file1.open("input/rand_5000000.in");
 						break;
 					default:
-						cout<<"Wrong Choice!"<<endl;
+						std::cout<<"Wrong Choice!"<<std::endl;
 				}
 				file1>>n;
-				LinearList<int> A3(n);
+				A.resize(n);
 				for(int i=0;i<n;++i){
 					file1>>num;
-					A1.push_back(num);
+					A.push_back(num);
 				}
-				cout<<"1. Insertion Sort"<<endl;
-				cout<<"2. Bubble Sort"<<endl;
-				cout<<"3. Rank Sort"<<endl;
-				cout<<"4. Selection Sort"<<endl;
-				cout<<"5. Merge Sort"<<endl;
-				cout<<"6. Quick Sort"<<endl;
-				cout<<"Enter your choice : ";
-				cin>>ch1;
+				std::cout<<"1. Insertion Sort"<<std::endl;
+				std::cout<<"2. Bubble Sort"<<std::endl;
+				std::cout<<"3. Rank Sort"<<std::endl;
+				std::cout<<"4. Selection Sort"<<std::endl;
+				std::cout<<"5. Merge Sort"<<std::endl;
+				std::cout<<"6. Quick Sort"<<std::endl;
+				std::cout<<"Enter your choice : ";
+				std::cin>>ch1;
 				switch(ch1){
 					case 1:
-						sort.insertionSort(A1,0,n-1);
+						T.start();
+						sort.insertionSort(A,0,n-1);
+						T.stop();
+						tim=T.last_timing();
+						file2.open("output_ins_rand.txt",std::fstream::app);
+						file2<<n<<" "<<tim<<std::endl;
+						std::cout<<tim<<" s"<<std::endl;
 						break;
 					case 2:
-						sort.bubbleSort(A1,0,n-1);
+						T.start();
+						sort.bubbleSort(A,0,n-1);
+						T.stop();
+						tim=T.last_timing();
+						file2.open("output_bub_rand.txt",std::fstream::app);
+						file2<<n<<" "<<tim<<std::endl;
+						std::cout<<tim<<" s"<<std::endl;
 						break;
 					case 3:
-						sort.rankSort(A1,0,n-1);
+						T.start();
+						sort.rankSort(A,0,n-1);
+						T.stop();
+						tim=T.last_timing();
+						file2.open("output_rank_rand.txt",std::fstream::app);
+						file2<<n<<" "<<tim<<std::endl;
+						std::cout<<tim<<" s"<<std::endl;
 						break;
 					case 4:
-						sort.selectionSort(A1,0,n-1);
+						T.start();
+						sort.selectionSort(A,0,n-1);
+						T.stop();
+						tim=T.last_timing();
+						file2.open("output_sel_rand.txt",std::fstream::app);
+						file2<<n<<" "<<tim<<std::endl;
+						std::cout<<tim<<" s"<<std::endl;
 						break;
 					case 5:
-						sort.mergeSort(A1,0,n-1);
+						T.start();
+						sort.mergeSort(A,0,n-1);
+						T.stop();
+						tim=T.last_timing();
+						file2.open("output_mer_rand.txt",std::fstream::app);
+						file2<<n<<" "<<tim<<std::endl;
+						std::cout<<tim<<" s"<<std::endl;
 						break;
 					case 6:
-						sort.quickSort(A1,0,n-1);
+						T.start();
+						sort.quickSort(A,0,n-1);
+						T.stop();
+						tim=T.last_timing();
+						file2.open("output_qui_rand.txt",std::fstream::app);
+						file2<<n<<" "<<tim<<std::endl;
+						std::cout<<tim<<" s"<<std::endl;
 						break;
 					default:
-						cout<<"Wrong choice";
+						std::cout<<"Wrong choice";
 				}
 				break;
 			case 4:
-				cout<<"---------------------------"<<endl;
-				cout<<"Exiting the program"<<endl;
+				std::cout<<"---------------------------"<<std::endl;
+				std::cout<<"Exiting the program"<<std::endl;
 				stop=true;
-				cout<<"---------------------------"<<endl;
+				std::cout<<"---------------------------"<<std::endl;
 				break;
 			default:
-				cout<<"Wrong choice!"<<endl;
+				std::cout<<"Wrong choice!"<<std::endl;
 				break;
 		}
 	}
