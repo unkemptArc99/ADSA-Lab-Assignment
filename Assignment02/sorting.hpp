@@ -36,13 +36,6 @@ namespace cs202 {
           A[i+1]=key;
         }
       }
-    std::cout<<"-------------------------------------------------"<<std::endl;
-    std::cout<<"The list has been sorted according to the parameters given."<<std::endl;
-    std::cout<<"The list in the given parameters is : ";
-    for(int i=low;i<=high;++i)
-      std::cout<<A[i]<<" ";
-    std::cout<<std::endl;
-    std::cout<<"-------------------------------------------------"<<std::endl;
   }
 
   template<class T>
@@ -68,15 +61,7 @@ namespace cs202 {
       for(int i=0;i<n;++i)
         A[i+low]=b[i];
     }
-    std::cout<<"-------------------------------------------------"<<std::endl;
-    std::cout<<"The list has been sorted according to the parameters given."<<std::endl;
-    std::cout<<"The list in the given parameters is : ";
-    for(int i=low;i<=high;++i)
-      std::cout<<A[i]<<" ";
-    std::cout<<std::endl;
-    std::cout<<"-------------------------------------------------"<<std::endl;
-
-  }
+   }
 
   template<class T>
   void Sort<T>::bubbleSort(LinearList<T>& A,int low,int high){
@@ -94,14 +79,6 @@ namespace cs202 {
         }
       }
     }
-    std::cout<<"-------------------------------------------------"<<std::endl;
-    std::cout<<"The list has been sorted according to the parameters given."<<std::endl;
-    std::cout<<"The list in the given parameters is : ";
-    for(int i=low;i<=high;++i)
-      std::cout<<A[i]<<" ";
-    std::cout<<std::endl;
-    std::cout<<"-------------------------------------------------"<<std::endl;
-
   }
 
   template<class T>
@@ -123,14 +100,6 @@ namespace cs202 {
         }
       }
     }
-    std::cout<<"-------------------------------------------------"<<std::endl;
-    std::cout<<"The list has been sorted according to the parameters given."<<std::endl;
-    std::cout<<"The list in the given parameters is : ";
-    for(int i=low;i<=high;++i)
-      std::cout<<A[i]<<" ";
-    std::cout<<std::endl;
-    std::cout<<"-------------------------------------------------"<<std::endl;
-
   }
 
   template<class T>
