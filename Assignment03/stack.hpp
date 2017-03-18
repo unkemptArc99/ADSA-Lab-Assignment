@@ -67,24 +67,23 @@ namespace cs202
 
     template<typename T>
     stack<T>::stack(void){
-        st.head->next = (node<T> *)NULL;
+        st.head = (node<T> *)NULL;
     }
 
     template<typename T>
     void stack<T>::push(const T& t){
-        st.append(t);
+        st.cons(t);
     }
 
     template<typename T>
     T stack<T>::pop(void){
-        node<T> *temp;
-        temp = st.head;
-        while(temp->next!=NULL){
-            temp = temp->next;
+        if(!st.empty()){
+            T x = (st.head)->node_val;
+            node<T> *temp = st.head;
+            st.head = (st.head)->next;
+            free(temp);
+            return x;
         }
-        T x = temp->node_val;
-        free(temp);
-        return x;
     }
 
     template<typename T>
@@ -100,7 +99,7 @@ namespace cs202
 
     template<typename T>
     stack<T>::~stack(void){
-        ~st();
+        std::cout<<std::endl;
     }
 }
 

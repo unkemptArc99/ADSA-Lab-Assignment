@@ -67,7 +67,7 @@ namespace cs202
 
     template<class T>
     queue<T>::queue(void){
-        qu.head->next = (node<T> *)NULL;
+        qu.head = (node<T> *)NULL;
     }
 
     template<class T>
@@ -92,7 +92,7 @@ namespace cs202
 
     template<class T>
     queue<T>::~queue(void){
-        ~qu();
+        cout<<endl;
     }
 }
 #endif
