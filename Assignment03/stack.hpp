@@ -63,6 +63,8 @@ namespace cs202
          * Fress the memory occupied by the stack elements.
          */
         ~stack();
+
+        void print();
     };
 
     template<typename T>
@@ -88,18 +90,17 @@ namespace cs202
 
     template<typename T>
     T stack<T>::top(void){
-        node<T> *temp;
-        temp = st.head;
-        while(temp->next!=NULL){
-            temp = temp->next;
-        }
-        T x = temp->node_val;
-        return x;
+        return st.head->node_val;
     }
 
     template<typename T>
     stack<T>::~stack(void){
         std::cout<<std::endl;
+    }
+
+    template<typename T>
+    void stack<T>::print(void){
+        st.display();
     }
 }
 

@@ -152,24 +152,33 @@ namespace cs202
 
     template<class T>
     void list<T>::remove(const T& x){
-        node<T> *temp;
+        node<T> *temp,*temp1;
         temp = head;
         if(temp!=NULL){
-            while(temp->node_val!=x && temp!=NULL){
-                temp=temp->next;
-            }
-            if(temp!=NULL){
-                node<T> *temp1;
-                temp1 = head;
-                while((temp1->next)->node_val!=x){
-                    temp1=temp1->next;
+            while(temp!=NULL){
+                if(temp->node_val == x){
+                    std::cout<<temp->node_val<<std::endl;
+                    if(temp!=head){
+                        temp1 = head;
+                        while(temp1->next != temp){
+                            temp1 = temp1->next;
+                        }
+                        temp1->next = temp->next;
+                    }
+                    else{
+                        head = temp->next;
+                    }
+                    delete temp;
+                    break;
                 }
-                temp1->next=temp->next;
-                free(temp);
+                else{
+                    temp = temp->next;
+                }
             }
-            else
-                return;
+            return;
         }
+        else
+            return;
     }
 
     template<class T>
