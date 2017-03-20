@@ -87,6 +87,8 @@ namespace cs202
          * Appends the given list x at the end of the current list.
          */
             void append(list<T>& x);
+
+            void display();
     };
 
     template<class T>
@@ -177,6 +179,16 @@ namespace cs202
             temp=temp->next;
         }
         temp->next = x.head;
+    }
+
+    template<class T>
+    void list<T>::display(void){
+        node<T> *temp = head;
+        while(temp!=NULL){
+            std::cout<<temp->node_val<<" ";
+            temp = temp->next;
+        }
+        std::cout<<std::endl;
     }
 }
 #endif
