@@ -63,6 +63,8 @@ namespace cs202
          * Fress the memory occupied by the queue elements.
          */
         ~queue();
+
+        void print();
     };
 
     template<class T>
@@ -92,7 +94,12 @@ namespace cs202
 
     template<class T>
     queue<T>::~queue(void){
-        cout<<endl;
+        std::cout<<std::endl;
+    }
+
+    template<typename T>
+    void queue<T>::print(void){
+        qu.display();
     }
 }
 #endif
