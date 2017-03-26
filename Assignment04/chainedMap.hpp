@@ -11,18 +11,26 @@ CS202 - ADSA Lab Assignment 04 - Chained Map header file
 #ifndef CHAINEDMAP_HPP_
 #define CHAINEDMAP_HPP_
 
+#include <cstdlib>
+#include <iostream>
+#include "../Assignment03/list.hpp"
+#include "dictionary.hpp"
+#include <cmath>
+#include <limits>
+#include <exception>
+
 namespace cs202
 {
 template<class Key, class Value>
 class ChainedMap  : public Dictionary<Key,Value>
 {
+public:
     /*
      * Function rehash:
      * Resizes the hash table to the next convenient size.
      * Called when all the slots are full and a new element needs to be inserted.
      */
-	void rehash();
-public:
+    void rehash();
     /*
      * Constructor: ChainedMap
      * Creates a Chained Hash Table with some default size.

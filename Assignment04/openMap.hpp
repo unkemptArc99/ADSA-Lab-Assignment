@@ -20,7 +20,6 @@ CS202 - ADSA Lab Assignment 04 - Linear Probe header file
 #include <exception>
 
 namespace cs202{
-
 bool isPrime(int n){
     if(n%2==0 || n%3==0)
         return false;
@@ -47,25 +46,14 @@ int nextPrime(int n){
     }
 }
 
-class storageException{
-  virtual const char* what() const throw()
-  {
-    return "Hash-table full";
-  }
-} stEx;
-
-class unavailableException{
-  virtual const char* what() const throw()
-  {
-    return "Cannot find in the hash-table";
-  }
-} unEx;
+//-1 is for unavailability exception and -2 is for storage exception.
 
 template<class Key, class Value>
 class OpenMap  : public Dictionary<Key,Value>
 {
 private:
     Value *vals;
+    Key *keys;
     int maxlength;
     int length;
 public:
@@ -80,23 +68,26 @@ public:
      * Creates a Open Hash Table with some default size.
      * NOTE: Please try to ensure that the size is a prime number for better performance.
      */
-	OpenMap();
+    OpenMap();
     /*
      * Constructor:OpenMap
      * Creates an empty Open Map with the ability to hold atleast num Key value pairs.
      */
-	OpenMap(const int& num);
+    OpenMap(const int& num);
     /*
      * Constructor: Open Map
      * Creates a new Hash Table which is the exact copy of the given hash table.
      **/
-	OpenMap(OpenMap<Key, Value>& ht);
+    OpenMap(OpenMap<Key, Value>& ht);
     /*
      * Destructor
      * Deletes the memory acquired by the given Hash Map.
      */
-	~OpenMap();
-    /*
+    ~OpenMap(){
+        delete vals;
+        delete keys;
+    };
+     /*
      * A convenience wrapper operator.
      * Returns a reference to the value corresponding to the given key.
      * If the key does'nt exist, then inserts the key in the table,
@@ -107,7 +98,7 @@ public:
      * ht[1] = 4;
      * ht[2] = 3;
      */
-	Value& operator[](const Key& key);
+    Value& operator[](const Key& key);
 
     inline int capacity(void){
         return maxlength;
@@ -116,6 +107,15 @@ public:
     inline int size(void){
         return length;
     };
+
+    inline void print(void){
+        for(int i = 0; i < maxlength; ++i){
+            if(vals[i] == std::numeric_limits<Value>::min())
+                std::cout<<"N/A"<<std::endl;
+            else
+                std::cout<<vals[i]<<std::endl;
+        }
+    }
 
     bool has(const Key& key){
         int i = 0;
@@ -130,7 +130,7 @@ public:
             return true;
     };
 
-    Value search(const Key& key, Value& x){
+    Value search(const Key& key, const Value& x){
         int i = 0;
         int j = key;
         while(vals[j]!=std::numeric_limits<Value>::min() && i < maxlength){
@@ -142,7 +142,7 @@ public:
             }   
         }
         if(i == maxlength || vals[j] == std::numeric_limits<Value>::min())
-            throw unEx;
+            throw -1;
     };
 
     void remove(const Key& key){
@@ -156,6 +156,7 @@ public:
             return;
         else{
             vals[j] == std::numeric_limits<Value>::min();
+            keys[j] == std::numeric_limits<Value>::min();
             length--;
         }   
     };
@@ -168,31 +169,38 @@ public:
             i++;
         }
         if(i == maxlength)
-            throw unEx;
+            throw -1;
         else
             return vals[j];
     };
 
-    void put(const Key& key, const Value& value){
-        if(length<maxlength){
-            int j = key;
-            while(vals[j]!=std::numeric_limits<Value>::min())
-                j = (j+1)%maxlength;
-            vals[j] = value;
-            length++;
+    void put(const Key& key,const Value& value){
+        int i = 0;
+        int j = key;
+        while(vals[j] != std::numeric_limits<Value>::min() && i < maxlength){
+            j = (j + 1) % maxlength;
+            i++;   
         }
-        else
-            throw stEx;        
-    }; 
+        if(i == maxlength){
+            throw -2;
+            //rehash();
+        }
+        else{
+            vals[j] = value;
+            keys[j] = key;
+        }
+    };
 };
 
 template<class Key,class Value>
 OpenMap<Key,Value>::OpenMap(void){
     maxlength=97;
     vals = new Value[maxlength];
+    keys = new Value[maxlength];
     length = 0;
     for(int i = 0; i < maxlength; ++i){
         vals[i] = std::numeric_limits<Value>::min();
+        keys[i] = std::numeric_limits<Value>::min();
     }
 }
 
@@ -203,8 +211,10 @@ OpenMap<Key,Value>::OpenMap(const int& num){
     else
         maxlength = nextPrime(num);
     vals = new Value[maxlength];
+    keys = new Value[maxlength];
     for(int i = 0; i < maxlength; ++i){
         vals[i] = std::numeric_limits<Value>::min();
+        keys[i] = std::numeric_limits<Value>::min();
     }
     length = 0;
 }
@@ -214,6 +224,7 @@ OpenMap<Key,Value>::OpenMap(OpenMap<Key,Value>& ht){
     maxlength = ht.capacity();
     length = 0;
     vals = new Value[maxlength];
+    keys = new Value[maxlength];
     for(int i = 0; i < maxlength; ++i){
         vals[i] = ht[i];
     }
@@ -225,8 +236,21 @@ Value& OpenMap<Key,Value>::operator[](const Key& key){
         return vals[key];
     else{
         put(key,std::numeric_limits<Value>::min());
-        return std::numeric_limits<Value>::min();
+        return vals[key];
     }
-}}
+}
+
+template<class Key,class Value>
+void OpenMap<Key,Value>::rehash(void){
+    for(int i = 0; i < maxlength; ++i){
+        if(vals[i] != std::numeric_limits<Value>::min()){
+            Key key = keys[i];
+            Value value = vals[i];
+            put(key,value);
+        }
+    }
+}
+
+}
 
 #endif 

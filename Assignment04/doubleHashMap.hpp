@@ -11,20 +11,72 @@ CS202 - ADSA Lab Assignment 04 - Double Hash Map header file
 
 #ifndef DOUBLEHASHMAP_HPP_
 #define DOUBLEHASHMAP_HPP_
-
+#include <cstdlib>
+#include <iostream>
+#include "../Assignment03/list.hpp"
+#include "dictionary.hpp"
+#include <cmath>
+#include <limits>
+#include <exception>
 
 namespace cs202
 {
+
+bool isPrime(int n){
+    if(n%2==0 || n%3==0)
+        return false;
+    for(int i = 5; i <= (int)sqrt(n); i+=6){
+        if(n%i == 0){
+            return false;
+        }
+    }
+    for(int i = 7; i<= (int)sqrt(n); i+=6){
+        if(n%i == 0){
+            return false;
+        }
+    }
+    return true;
+}
+
+int nextPrime(int n){
+    int i = n+1;
+    while(1){
+        if(isPrime(i))
+            return i;
+        else
+            i++;
+    }
+}
+
+class storageException{
+    virtual const char* what() const throw()
+    {
+        return "Hash-table full";
+    }
+} stEx;
+
+class unavailableException{
+    virtual const char* what() const throw()
+    {
+        return "Cannot find in the hash-table";
+    }
+} unEx;
+
 template<class Key, class Value>
 class DoubleHashMap  : public Dictionary<Key,Value>
 {
+private:
+    Value *vals;
+    Key *keys;
+    int maxlength;
+    int length;
+public:
     /*
      * Function rehash:
      * Resizes the has table to the next convenient size.
      * Called when all the slots are full and a new element needs to be inserted.
      */
-	void rehash();
-public:
+    void rehash();
     /*
      * Constructor: DoubleHashMap
      * Creates a Double Hash Hash Table with some default size.
@@ -59,6 +111,8 @@ public:
      */
 	Value& operator[](const Key& key);
 };
+
+
 }
 
 #endif 
