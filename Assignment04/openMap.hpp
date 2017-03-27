@@ -143,8 +143,8 @@ public:
         if(i == maxlength)
             return;
         else{
-            vals[j] == std::numeric_limits<Value>::min();
-            keys[j] == std::numeric_limits<Value>::min();
+            vals[j] = std::numeric_limits<Value>::min();
+            keys[j] = std::numeric_limits<Key>::min();
             length--;
         }   
     };
@@ -183,10 +183,13 @@ public:
             else{
                 vals[q] = value;
                 keys[q] = key;
+                length++;
             }
         }
-        else
+        else{
             vals[j] = value;
+            length++;
+        }
     };
 
     Key max_val(void){

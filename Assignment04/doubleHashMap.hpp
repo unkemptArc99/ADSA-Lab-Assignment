@@ -118,10 +118,9 @@ public:
 
     inline void print(void){
         for(int i = 0; i < maxlength; ++i){
-            if(vals[i] == std::numeric_limits<Value>::min())
-                std::cout<<"N/A"<<std::endl;
-            else
-                std::cout<<vals[i]<<std::endl;
+            if(keys[i] > std::numeric_limits<Key>::min()){
+                std::cout<<"Key : "<<keys[i]<<" Value : "<<vals[i]<<std::endl;
+            }
         }
     }
 
@@ -148,8 +147,8 @@ public:
         if(i == maxlength)
             return;
         else{
-            vals[j] == std::numeric_limits<Value>::min();
-            keys[j] == std::numeric_limits<Value>::min();
+            vals[j] = std::numeric_limits<Value>::min();
+            keys[j] = std::numeric_limits<Value>::min();
             length--;
         }   
     };
@@ -188,10 +187,13 @@ public:
             else{
                 vals[q] = value;
                 keys[q] = key;
+                length++;
             }
         }
-        else
+        else{
             vals[j] = value;
+            length++;
+        }
     };
 };
 
