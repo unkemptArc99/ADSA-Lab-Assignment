@@ -20,6 +20,11 @@ CS202 - ADSA Lab Assignment 04 - Linear Probe header file
 #include <exception>
 
 namespace cs202{
+
+int hash_function(const Key& key, const int& maxlength){
+    return key%maxlength;
+}
+
 bool isPrime(int n){
     if(n%2==0 || n%3==0)
         return false;
@@ -51,12 +56,11 @@ int nextPrime(int n){
 template<class Key, class Value>
 class OpenMap  : public Dictionary<Key,Value>
 {
-private:
+public:
     Value *vals;
     Key *keys;
     int maxlength;
     int length;
-public:
     /*
      * Function rehash:
      * Resizes the has table to the next convenient size.
@@ -119,8 +123,8 @@ public:
 
     bool has(const Key& key){
         int i = 0;
-        int j = key;
-        while(vals[j] == std::numeric_limits<Value>::min() && i < maxlength){
+        int j = hash_function(key,maxlength);
+        while(keys[j] != key && i < maxlength){
             j = (j + 1)%maxlength;
             i++;
         }
@@ -132,23 +136,23 @@ public:
 
     Value search(const Key& key, const Value& x){
         int i = 0;
-        int j = key;
-        while(vals[j]!=std::numeric_limits<Value>::min() && i < maxlength){
-            if(vals[j] == x)
+        int j = hash_function(key,maxlength);
+        while(keys[j] != key && i < maxlength){
+            if(vals[j] == x && keys[j] == key)
                 return j;
             else{
                 j = (j + 1) % maxlength;
                 i++;
             }   
         }
-        if(i == maxlength || vals[j] == std::numeric_limits<Value>::min())
+        if(i == maxlength)
             throw -1;
     };
 
     void remove(const Key& key){
         int i = 0;
-        int j = key;
-        while(vals[j] == std::numeric_limits<Value>::min() && i < maxlength){
+        int j = hash_function(key,maxlength);
+        while(keys[j] != key && i < maxlength){
             j = (j + 1) % maxlength;
             i++;
         }
@@ -163,8 +167,8 @@ public:
 
     Value get(const Key& key){
         int i = 0;
-        int j = key;
-        while(vals[j] == std::numeric_limits<Value>::min() && i < maxlength){
+        int j = hash_function(key,maxlength);
+        while(keys[j] != key && i < maxlength){
             j = (j + 1)%maxlength;
             i++;
         }
@@ -176,7 +180,7 @@ public:
 
     void put(const Key& key,const Value& value){
         int i = 0;
-        int j = key;
+        int j = hash_function(key,maxlength);
         while(vals[j] != std::numeric_limits<Value>::min() && i < maxlength){
             j = (j + 1) % maxlength;
             i++;   
@@ -194,13 +198,13 @@ public:
 
 template<class Key,class Value>
 OpenMap<Key,Value>::OpenMap(void){
-    maxlength=97;
+    maxlength = 97;
     vals = new Value[maxlength];
-    keys = new Value[maxlength];
+    keys = new Key[maxlength];
     length = 0;
     for(int i = 0; i < maxlength; ++i){
         vals[i] = std::numeric_limits<Value>::min();
-        keys[i] = std::numeric_limits<Value>::min();
+        keys[i] = std::numeric_limits<Key>::min();
     }
 }
 
@@ -211,10 +215,10 @@ OpenMap<Key,Value>::OpenMap(const int& num){
     else
         maxlength = nextPrime(num);
     vals = new Value[maxlength];
-    keys = new Value[maxlength];
+    keys = new Key[maxlength];
     for(int i = 0; i < maxlength; ++i){
         vals[i] = std::numeric_limits<Value>::min();
-        keys[i] = std::numeric_limits<Value>::min();
+        keys[i] = std::numeric_limits<Key>::min();
     }
     length = 0;
 }
@@ -224,20 +228,27 @@ OpenMap<Key,Value>::OpenMap(OpenMap<Key,Value>& ht){
     maxlength = ht.capacity();
     length = 0;
     vals = new Value[maxlength];
-    keys = new Value[maxlength];
-    for(int i = 0; i < maxlength; ++i){
-        vals[i] = ht[i];
+    keys = new Key[maxlength];
+    for (int i = 0; i < maxlength; ++i)
+    {
+        vals[i] = ht.vals[i];
+        keys[i] = ht.keys[i];
     }
 }
 
 template<class Key,class Value>
 Value& OpenMap<Key,Value>::operator[](const Key& key){
-    if(vals[key]!=std::numeric_limits<Value>::min())
-        return vals[key];
-    else{
-        put(key,std::numeric_limits<Value>::min());
-        return vals[key];
+    int i = 0;
+    int j = hash_function(key,maxlength);
+    while(keys[j] != key && i < maxlength){
+        j = (j + 1)%maxlength;
+        i++;
     }
+    if(i == maxlength){
+        put(key,std::numeric_limits<Value>::min());
+    }
+    else
+        return vals[j];
 }
 
 template<class Key,class Value>

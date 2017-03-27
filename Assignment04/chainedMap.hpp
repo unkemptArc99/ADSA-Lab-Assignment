@@ -21,9 +21,40 @@ CS202 - ADSA Lab Assignment 04 - Chained Map header file
 
 namespace cs202
 {
+
+bool isPrime(int n){
+    if(n%2==0 || n%3==0)
+        return false;
+    for(int i = 5; i <= (int)sqrt(n); i+=6){
+        if(n%i == 0){
+            return false;
+        }
+    }
+    for(int i = 7; i<= (int)sqrt(n); i+=6){
+        if(n%i == 0){
+            return false;
+        }
+    }
+    return true;
+}
+
+int nextPrime(int n){
+    int i = n+1;
+    while(1){
+        if(isPrime(i))
+            return i;
+        else
+            i++;
+    }
+}
+
 template<class Key, class Value>
 class ChainedMap  : public Dictionary<Key,Value>
 {
+private:
+    list<Value> **mains; 
+    int maxlength;
+    int *length; 
 public:
     /*
      * Function rehash:
@@ -64,7 +95,111 @@ public:
      * ht[2] = 3;
      */
 	Value& operator[](const Key& key);
+
+    inline int capacity(void){
+        return maxlength;
+    };
+
+    inline int size(void){
+        int sum = 0;
+        for (int i = 0; i < maxlength; ++i)
+        {
+            sum += length[i];
+        }
+        return sum;
+    };
+
+    inline void print(void){
+        for(int i = 0; i < maxlength; ++i){
+            if(length[i] != 0){
+                std::cout<<"Key : "<<i<<std::endl;
+                mains[i]->display();
+            }
+        }
+    }
+
+    bool has(const Key& key){
+        if(length[key] != 0)
+            return true;
+        else
+            return false;
+    };
+
+    Value search(const Key& key, const Value& x){
+        bool flag = false;
+        node<Value> *temp;
+        temp = mains[key]->head;
+        for (int i = 0; i < length[key] && !flag; ++i)
+        {
+            if(temp->node_val)
+                flag = true;
+            else
+                temp = temp->next;
+        }
+        if(flag)
+            return key;
+        else
+            throw -1;
+    };
+
+    void remove(const Key& key){
+        delete mains[key];
+        mains[key] = new list<Value>;
+        length[key] = 0;
+    };
+
+    Value get(const Key& key){
+        if(length[key] > 0){
+            mains[key]->display();
+            return 1;
+        }
+        else
+            throw -1;
+    };
+
+    void put(const Key& key,const Value& value){
+        mains[key]->cons(value);
+        length[key]++;
+    };
 };
+
+template<class Key, class Value>
+ChainedMap<Key,Value>::ChainedMap(void){
+    mains = new list<Value>*[97];
+    maxlength = 97;
+    length = new int[97];
+    for (int i = 0; i < 97; ++i)
+    {
+        length[i] = 0;
+        mains[i] = new list<Value>;
+    }
 }
 
+template<class Key, class Value>
+ChainedMap<Key,Value>::ChainedMap(const int& num){
+    if(!isPrime(num)){
+        num = nextPrime(num);
+    }
+    mains = new list<Value>*[num];
+    maxlength = num;
+    length = new int[num];
+    for (int i = 0; i < num; ++i)
+    {
+        length[i] = 0;
+        mains[i] = new list<Value>;
+    }
+}
+
+template<class Key, class Value>
+Value& ChainedMap<Key,Value>::operator[](const Key& key){
+    if(length[key] > 0){
+        return mains[key]->head->node_val;
+    }
+    else{
+        put(key,std::numeric_limits<Value>::min());
+    }
+}
+
+
+}
 #endif /* CHAINEDMAP_HPP_ */
