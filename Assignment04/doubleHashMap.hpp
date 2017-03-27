@@ -21,15 +21,6 @@ CS202 - ADSA Lab Assignment 04 - Double Hash Map header file
 
 namespace cs202
 {
-template<class Key,class Value>
-int hash_function(const Key& key, const int& maxlength){
-    return key%maxlength;
-}
-
-template<class Key,class Value>
-int offset_calculator(const Key& key, const int& maxlength){
-    return (maxlength/2) - (key % (maxlength/2));
-}
 
 bool isPrime(int n){
     if(n%2==0 || n%3==0)
@@ -91,7 +82,10 @@ public:
      * Destructor
      * Deletes the memory acquired by the given Hash Map.
      */
-	~DoubleHashMap();
+	~DoubleHashMap(){
+        delete vals;
+        delete keys;
+    };
     /*
      * A convenience wrapper operator.
      * Returns a reference to the value corresponding to the given key.
@@ -104,6 +98,15 @@ public:
      * ht[2] = 3;
      */
 	Value& operator[](const Key& key);
+
+    int hash_function(const Key& key, const int& maxlength){
+        return key%maxlength;
+    };
+
+    int offset_calculator(const Key& key, const int& maxlength){
+        return (maxlength/2) - (key % (maxlength/2));
+    };
+
 
     inline int capacity(void){
         return maxlength;
