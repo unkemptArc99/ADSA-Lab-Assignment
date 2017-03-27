@@ -22,11 +22,6 @@ CS202 - ADSA Lab Assignment 04 - Chained Map header file
 namespace cs202
 {
 
-template<class Key,class Value>
-int hash_function(const Key& key, const int& maxlength){
-    return key%maxlength;
-}
-
 bool isPrime(int n){
     if(n%2==0 || n%3==0)
         return false;
@@ -87,7 +82,10 @@ public:
      * Destructor
      * Deletes the memory acquired by the given Hash Map.
      */
-	~ChainedMap();
+	~ChainedMap(){
+        delete mains;
+        delete mains_key;
+    };
     /*
      * A convenience wrapper operator.
      * Returns a reference to the value corresponding to the given key.
@@ -100,6 +98,10 @@ public:
      * ht[2] = 3;
      */
 	Value& operator[](const Key& key);
+
+    int hash_function(const Key& key, const int& maxlength){
+        return key%maxlength;
+    }
 
     inline int capacity(void){
         return maxlength;
@@ -120,7 +122,7 @@ public:
                 std::cout<<"Key : ";
                 mains_key[i]->display();
                 std::cout<<"Value : ";
-                mains[i]->display;
+                mains[i]->display();
             }
         }
     }
@@ -151,8 +153,8 @@ public:
             {
                 if(temp_key->node_val == key){
                     if(temp_key == mains_key[hash_function(key,maxlength)]->head){
-                        mains_key->head = mains_key[hash_function(key,maxlength)]->head->next;
-                        mains->head = mains[hash_function(key,maxlength)]->head->next;
+                        mains_key[hash_function(key,maxlength)]->head = mains_key[hash_function(key,maxlength)]->head->next;
+                        mains[hash_function(key,maxlength)]->head = mains[hash_function(key,maxlength)]->head->next;
                     }
                     else{
                         node<Value> *temp_val1 = mains[hash_function(key,maxlength)]->head;
@@ -213,7 +215,7 @@ public:
             length[hash_function(key,maxlength)]++;
         }
         else
-            return false;
+            throw -2;
     };
 };
 
@@ -233,18 +235,19 @@ ChainedMap<Key,Value>::ChainedMap(void){
 
 template<class Key, class Value>
 ChainedMap<Key,Value>::ChainedMap(const int& num){
-    if(!isPrime(num)){
-        num = nextPrime(num);
+    int x = num;
+    if(!isPrime(x)){
+        x = nextPrime(x);
     }
-    mains = new list<Value>*[num];
-    mains_key = new list<Key>*[num];
-    maxlength = num;
-    length = new int[num];
-    for (int i = 0; i < num; ++i)
+    mains = new list<Value>*[x];
+    mains_key = new list<Key>*[x];
+    maxlength = x;
+    length = new int[x];
+    for (int i = 0; i < x; ++i)
     {
         length[i] = 0;
         mains[i] = new list<Value>;
-        mains_key = new list<Key>;
+        mains_key[i] = new list<Key>;
     }
 }
 
