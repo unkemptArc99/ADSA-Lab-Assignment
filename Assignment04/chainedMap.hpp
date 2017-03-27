@@ -22,6 +22,11 @@ CS202 - ADSA Lab Assignment 04 - Chained Map header file
 namespace cs202
 {
 
+template<class Key,class Value>
+int hash_function(const Key& key, const int& maxlength){
+    return key%maxlength;
+}
+
 bool isPrime(int n){
     if(n%2==0 || n%3==0)
         return false;
@@ -51,11 +56,11 @@ int nextPrime(int n){
 template<class Key, class Value>
 class ChainedMap  : public Dictionary<Key,Value>
 {
-private:
+public:
     list<Value> **mains; 
+    list<Key> **mains_key;
     int maxlength;
     int *length; 
-public:
     /*
      * Function rehash:
      * Resizes the hash table to the next convenient size.
@@ -112,66 +117,117 @@ public:
     inline void print(void){
         for(int i = 0; i < maxlength; ++i){
             if(length[i] != 0){
-                std::cout<<"Key : "<<i<<std::endl;
-                mains[i]->display();
+                std::cout<<"Key : ";
+                mains_key[i]->display();
+                std::cout<<"Value : ";
+                mains[i]->display;
             }
         }
     }
 
     bool has(const Key& key){
-        if(length[key] != 0)
-            return true;
+        if(length[hash_function(key,maxlength)] != 0){
+            node<Key> *temp = mains_key[hash_function(key,maxlength)]->head;
+            while(temp != NULL){
+                if(temp->node_val == key){
+                    return true;
+                }
+                else{
+                    temp = temp->next;
+                }
+            }
+            if(temp == NULL)
+                return false;
+        }
         else
             return false;
     };
 
-    Value search(const Key& key, const Value& x){
-        bool flag = false;
-        node<Value> *temp;
-        temp = mains[key]->head;
-        for (int i = 0; i < length[key] && !flag; ++i)
-        {
-            if(temp->node_val)
-                flag = true;
-            else
-                temp = temp->next;
-        }
-        if(flag)
-            return key;
-        else
-            throw -1;
-    };
-
     void remove(const Key& key){
-        delete mains[key];
-        mains[key] = new list<Value>;
-        length[key] = 0;
+        if(length[hash_function(key,maxlength)] > 0){
+            node<Value> *temp_val = mains[hash_function(key,maxlength)]->head;
+            node<Key> *temp_key = mains_key[hash_function(key,maxlength)]->head;
+            for (int i = 0; i < length[hash_function(key,maxlength)]; ++i)
+            {
+                if(temp_key->node_val == key){
+                    if(temp_key == mains_key[hash_function(key,maxlength)]->head){
+                        mains_key->head = mains_key[hash_function(key,maxlength)]->head->next;
+                        mains->head = mains[hash_function(key,maxlength)]->head->next;
+                    }
+                    else{
+                        node<Value> *temp_val1 = mains[hash_function(key,maxlength)]->head;
+                        node<Key> *temp_key1 = mains_key[hash_function(key,maxlength)]->head;
+                        for (int j = 1; j < i; ++j)
+                        {
+                            temp_val1 = temp_val1->next;
+                            temp_key1 = temp_key1->next;
+                        }
+                        temp_key1->next = temp_key->next;
+                        temp_val1->next = temp_val->next;
+                    }
+                    delete temp_key;
+                    delete temp_val;
+                    length[hash_function(key,maxlength)]--;
+                    return;
+                }
+                else{
+                    temp_val = temp_val->next;
+                    temp_key = temp_key->next;
+                }
+            }
+        }
     };
 
     Value get(const Key& key){
-        if(length[key] > 0){
-            mains[key]->display();
-            return 1;
+        if(length[hash_function(key,maxlength)] > 0){
+            node<Value> *temp_val = mains[hash_function(key,maxlength)]->head;
+            node<Key> *temp_key = mains_key[hash_function(key,maxlength)]->head;
+            for(int i = 0; i < length[hash_function(key,maxlength)]; ++i){
+                if(temp_key->node_val == key){
+                    return temp_val->node_val;
+                }
+                else{
+                    temp_val = temp_val->next;
+                    temp_key = temp_key->next;
+                }
+            }
         }
-        else
-            throw -1;
+        throw -1;
     };
 
     void put(const Key& key,const Value& value){
-        mains[key]->cons(value);
-        length[key]++;
+        node<Key> *temp = mains_key[hash_function(key,maxlength)]->head;
+        node<Value> *temp1 = mains[hash_function(key,maxlength)]->head;
+        while(temp != NULL){
+            if(temp->node_val == key){
+                temp1->node_val = value;
+            }
+            else{
+                temp = temp->next;
+                temp1 = temp1->next;
+            }
+        }
+        if(temp == NULL){
+            mains[hash_function(key,maxlength)]->cons(value);
+            mains_key[hash_function(key,maxlength)]->cons(key);
+            length[hash_function(key,maxlength)]++;
+        }
+        else
+            return false;
     };
 };
 
 template<class Key, class Value>
 ChainedMap<Key,Value>::ChainedMap(void){
     mains = new list<Value>*[97];
+    mains_key = new list<Key>*[97];
     maxlength = 97;
     length = new int[97];
     for (int i = 0; i < 97; ++i)
     {
         length[i] = 0;
         mains[i] = new list<Value>;
+        mains_key = new list<Key>;
     }
 }
 
@@ -181,23 +237,33 @@ ChainedMap<Key,Value>::ChainedMap(const int& num){
         num = nextPrime(num);
     }
     mains = new list<Value>*[num];
+    mains_key = new list<Key>*[num];
     maxlength = num;
     length = new int[num];
     for (int i = 0; i < num; ++i)
     {
         length[i] = 0;
         mains[i] = new list<Value>;
+        mains_key = new list<Key>;
     }
 }
 
 template<class Key, class Value>
 Value& ChainedMap<Key,Value>::operator[](const Key& key){
-    if(length[key] > 0){
-        return mains[key]->head->node_val;
+    if(length[hash_function(key,maxlength)] > 0){
+        node<Value> *temp_val = mains->head;
+        node<Key> *temp_key = mains_key->head;
+        for(int i = 0; i < length[hash_function(key,maxlength)]; ++i){
+            if(temp_key->node_val == key){
+                return temp_val->node_val;
+            }
+            else{
+                temp_val = temp_val->next;
+                temp_key = temp_key->next;
+            }
+        }
     }
-    else{
-        put(key,std::numeric_limits<Value>::min());
-    }
+    put(key, std::numeric_limits<Value>::min());
 }
 
 

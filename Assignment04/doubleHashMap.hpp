@@ -21,11 +21,12 @@ CS202 - ADSA Lab Assignment 04 - Double Hash Map header file
 
 namespace cs202
 {
-
+template<class Key,class Value>
 int hash_function(const Key& key, const int& maxlength){
     return key%maxlength;
 }
 
+template<class Key,class Value>
 int offset_calculator(const Key& key, const int& maxlength){
     return (maxlength/2) - (key % (maxlength/2));
 }
@@ -134,21 +135,6 @@ public:
             return true;
     };
 
-    Value search(const Key& key, const Value& x){
-        int i = 0;
-        int j = hash_function(key,maxlength);
-        while(keys[j] != key && i < maxlength){
-            if(vals[j] == x && keys[j] == key)
-                return j;
-            else{
-                j = (j + offset_calculator(key,maxlength)) % maxlength;
-                i++;
-            }   
-        }
-        if(i == maxlength)
-            throw -1;
-    };
-
     void remove(const Key& key){
         int i = 0;
         int j = hash_function(key,maxlength);
@@ -181,23 +167,33 @@ public:
     void put(const Key& key,const Value& value){
         int i = 0;
         int j = hash_function(key,maxlength);
-        while(vals[j] != std::numeric_limits<Value>::min() && i < maxlength){
-            j = (j + offset_calculator(key,maxlength)) % maxlength;
-            i++;   
+        while(keys[j] != key && i < maxlength){
+            j = (j + offset_calculator(key,maxlength))%maxlength;
+            i++;
         }
         if(i == maxlength){
-            throw -2;
+            int p = 0;
+            int q = hash_function(key,maxlength);
+            while(vals[q] != std::numeric_limits<Value>::min() && p < maxlength){
+                q = (q + offset_calculator(key,maxlength)) % maxlength;
+                p++;       
+            }
+            if(p == maxlength){
+                throw -2;
             //rehash();
+            }
+            else{
+                vals[q] = value;
+                keys[q] = key;
+            }
         }
-        else{
+        else
             vals[j] = value;
-            keys[j] = key;
-        }
     };
 };
 
 template<class Key,class Value>
-OpenMap<Key,Value>::OpenMap(void){
+DoubleHashMap<Key,Value>::DoubleHashMap(void){
     maxlength = 97;
     vals = new Value[maxlength];
     keys = new Key[maxlength];
@@ -209,7 +205,7 @@ OpenMap<Key,Value>::OpenMap(void){
 }
 
 template<class Key,class Value>
-OpenMap<Key,Value>::OpenMap(const int& num){
+DoubleHashMap<Key,Value>::DoubleHashMap(const int& num){
     if(isPrime(num))
         maxlength = num;
     else
@@ -224,7 +220,7 @@ OpenMap<Key,Value>::OpenMap(const int& num){
 }
 
 template<class Key,class Value>
-OpenMap<Key,Value>::OpenMap(OpenMap<Key,Value>& ht){
+DoubleHashMap<Key,Value>::DoubleHashMap(DoubleHashMap<Key,Value>& ht){
     maxlength = ht.capacity();
     length = 0;
     vals = new Value[maxlength];
@@ -237,7 +233,7 @@ OpenMap<Key,Value>::OpenMap(OpenMap<Key,Value>& ht){
 }
 
 template<class Key,class Value>
-Value& OpenMap<Key,Value>::operator[](const Key& key){
+Value& DoubleHashMap<Key,Value>::operator[](const Key& key){
     int i = 0;
     int j = hash_function(key,maxlength);
     while(keys[j] != key && i < maxlength){
@@ -252,7 +248,7 @@ Value& OpenMap<Key,Value>::operator[](const Key& key){
 }
 
 template<class Key,class Value>
-void OpenMap<Key,Value>::rehash(void){
+void DoubleHashMap<Key,Value>::rehash(void){
     for(int i = 0; i < maxlength; ++i){
         if(vals[i] != std::numeric_limits<Value>::min()){
             Key key = keys[i];

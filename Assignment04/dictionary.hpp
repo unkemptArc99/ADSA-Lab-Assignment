@@ -25,12 +25,6 @@ public:
      */
 	virtual bool has(const Key& key) = 0;
     /*
-     * Function : search
-     * Returns the index of the value x associated with the key
-     * Raises an exception otherwise
-     */
-    virtual Value search(const Key& key, const Value& x) = 0;
-    /*
      * Function : remove
      * Removes the given key and the corresponding value from the Dictionary if the key is in the dictionary.
      * Does nothing otherwise.

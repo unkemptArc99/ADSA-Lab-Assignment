@@ -21,6 +21,7 @@ CS202 - ADSA Lab Assignment 04 - Linear Probe header file
 
 namespace cs202{
 
+template<class Key,class Value>
 int hash_function(const Key& key, const int& maxlength){
     return key%maxlength;
 }
@@ -134,21 +135,6 @@ public:
             return true;
     };
 
-    Value search(const Key& key, const Value& x){
-        int i = 0;
-        int j = hash_function(key,maxlength);
-        while(keys[j] != key && i < maxlength){
-            if(vals[j] == x && keys[j] == key)
-                return j;
-            else{
-                j = (j + 1) % maxlength;
-                i++;
-            }   
-        }
-        if(i == maxlength)
-            throw -1;
-    };
-
     void remove(const Key& key){
         int i = 0;
         int j = hash_function(key,maxlength);
@@ -181,18 +167,28 @@ public:
     void put(const Key& key,const Value& value){
         int i = 0;
         int j = hash_function(key,maxlength);
-        while(vals[j] != std::numeric_limits<Value>::min() && i < maxlength){
-            j = (j + 1) % maxlength;
-            i++;   
+        while(keys[j] != key && i < maxlength){
+            j = (j + 1)%maxlength;
+            i++;
         }
         if(i == maxlength){
-            throw -2;
+            int p = 0;
+            int q = hash_function(key,maxlength);
+            while(vals[q] != std::numeric_limits<Value>::min() && p < maxlength){
+                q = (q + 1) % maxlength;
+                p++;       
+            }
+            if(p == maxlength){
+                throw -2;
             //rehash();
+            }
+            else{
+                vals[q] = value;
+                keys[q] = key;
+            }
         }
-        else{
+        else
             vals[j] = value;
-            keys[j] = key;
-        }
     };
 };
 
