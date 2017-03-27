@@ -21,11 +21,6 @@ CS202 - ADSA Lab Assignment 04 - Linear Probe header file
 
 namespace cs202{
 
-template<class Key,class Value>
-int hash_function(const Key& key, const int& maxlength){
-    return key%maxlength;
-}
-
 bool isPrime(int n){
     if(n%2==0 || n%3==0)
         return false;
@@ -104,6 +99,10 @@ public:
      * ht[2] = 3;
      */
     Value& operator[](const Key& key);
+
+    int hash_function(const Key& key, const int& maxlength){
+        return key%maxlength;
+    };
 
     inline int capacity(void){
         return maxlength;
@@ -189,6 +188,18 @@ public:
         }
         else
             vals[j] = value;
+    };
+
+    Key max_val(void){
+        Key max_key = std::numeric_limits<Key>::min();
+        Value max_value = std::numeric_limits<Value>::min();
+        for(int i = 0; i < maxlength; ++i){
+            if(max_value < vals[i]){
+                max_value = vals[i];
+                max_key = keys[i];
+            }
+        }
+        return max_key;
     };
 };
 

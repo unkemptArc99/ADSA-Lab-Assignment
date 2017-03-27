@@ -7,13 +7,10 @@ CS202 - ADSA Assignment 04 - Main LRU Solver file
 #include <cstdlib>
 #include <iostream>
 #include <exception>
+#include <limits>
 #include "openMap.hpp"
 
 using namespace std;
-
-int hash_function(int n,int size){
-	return n%size;
-}
 
 int maxkey(int *array, int size){
 	int max = 0;
@@ -23,6 +20,15 @@ int maxkey(int *array, int size){
 		}
 	}	
 }
+
+/*int search(int *array, int block, int size){
+	for (int i = 0; i < size; ++i)
+	{
+		if(array[i] == block)
+			return i;
+	}
+	return -1;
+}*/
 
 int main(int argc, char const *argv[])
 {
@@ -35,10 +41,10 @@ int main(int argc, char const *argv[])
 	cin>>n;
 	cs202::OpenMap<int,int> A(n);
 	cout<<"The size of the cache memory is resized to "<<A.capacity()<<" for more efficiency"<<endl;
-	int counter[A.capacity()];
-	for (int i = 0; i < A.capacity(); ++i)
+	int counter[m];
+	for (int i = 0; i < m; ++i)
 	{
-		counter[i] = 0;
+		counter[i] = std::numeric_limits<int>::min();
 	}
 	int numofOp;
 	cout<<"Enter the number of operations you want to do : ";
@@ -48,25 +54,34 @@ int main(int argc, char const *argv[])
 		cout<<"Enter the location you want to read : ";
 		int address;
 		cin>>address;
+		int memblock = address/k;
 		try{
-			A.put(hash_function(address%k,A.capacity()),address%k);
+			A.put(memblock,address);
 		}
-		catch(int n){
-			if(n==-2){
-				int mk = maxkey(counter,A.capacity());
-				int memblock = A[mk];
-				A.remove(mk);
-				A.put(hash_function(address%k,A.capacity()),address%k);
+		catch(int error){
+			int max_key = maxkey(counter,m);
+			A.remove(max_key);
+			counter[max_key] = std::numeric_limits<int>::min();
+			A.put(memblock,address);
+		}
+		counter[memblock] = 0;
+		for (int i = 0; i < m; ++i)
+		{
+			if(i != memblock){
+				if(counter[memblock] != std::numeric_limits<int>::min()){
+					counter[i]++;
+				}
 			}
 		}
-		int key = A.search(hash_function(address%k,A.capacity()),address%k);
-		counter[key] = 0;
-		for (int i = 0; i < A.capacity(); ++i)
+		A.print();
+		cout<<"Counter list : "<<endl;
+		cout<<"Memblock \t Counter"<<endl;
+		for (int i = 0; i < m; ++i)
 		{
-			if(i!=key)
-				counter[key]++;
+			if(counter[i] != std::numeric_limits<int>::min()){
+				cout<<i<<"\t"<<counter[i]<<endl;
+			}
 		}
 	}
-	A.print();
 	return 0;
 }
