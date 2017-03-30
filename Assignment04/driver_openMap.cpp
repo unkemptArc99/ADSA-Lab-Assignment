@@ -12,6 +12,7 @@ CS202 - ADSA Lab Assignment 04 - Linear Probe driver file
 #include <cmath>
 #include <limits>
 #include <exception>
+#include <string>
 
 using namespace std;
 
@@ -20,13 +21,12 @@ int main(int argc, char const *argv[])
 	int no;
     std::cout<<"Enter the size of the dictionary : ";
     std::cin>>no;
-    cs202::OpenMap<int,int> A(no);
+    cs202::OpenMap<string,int> A(no);
    	if(A.capacity() != no){
    		cout<<"The size of the table has been changed to "<<A.capacity()<<" for better efficiency"<<endl;
    	}
-    int key, value;
-    int choice;
-
+    string key;
+    int value,choice;
     while (1)
     {
         std::cout<<"\n----------------------"<<std::endl;
@@ -46,8 +46,13 @@ int main(int argc, char const *argv[])
             	std::cout<<"Enter element to be inserted: ";
 	            std::cin>>value;
     	        std::cout<<"Enter key at which element to be inserted";
-        	    std::cin>>key;
-            	A.put(key,value);
+                cin>>key;
+                try{
+                    A.put(key,value);
+                }
+                catch(int error){
+                    cout<<"There is no space for the input! Rehashing.";
+                }
             	break;
         	case 2:
             	std::cout<<"Enter key of the element to be searched: ";
@@ -57,7 +62,7 @@ int main(int argc, char const *argv[])
             		value = A.get(key);
             	}
             	catch(int error){
-            		cout<<"there is no element on such key"<<endl;
+            		cout<<"There is no element on such key"<<endl;
             	}
             	cout<<value<<endl;
             	break;

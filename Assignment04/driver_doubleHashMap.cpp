@@ -12,6 +12,7 @@ CS202 - ADSA Lab Assignment 04 - DoubleHashMap driver file
 #include <cmath>
 #include <limits>
 #include <exception>
+#include <string>
 
 using namespace std;
 
@@ -20,12 +21,12 @@ int main(int argc, char const *argv[])
 	int no;
     std::cout<<"Enter the size of the dictionary : ";
     std::cin>>no;
-    cs202::DoubleHashMap<int,int> A(no);
+    cs202::DoubleHashMap<string,int> A(no);
    	if(A.capacity() != no){
    		cout<<"The size of the table has been changed to "<<A.capacity()<<" for better efficiency"<<endl;
    	}
-    int key, value;
-    int choice;
+    string key;
+    int choice, value;
 
     while (1)
     {

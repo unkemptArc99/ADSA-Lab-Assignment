@@ -9,6 +9,9 @@ CS202 - ADSA Assignment 04 - Main LRU Solver file
 #include <exception>
 #include <limits>
 #include "openMap.hpp"
+#include <string>
+#include <algorithm>
+#include <sstream>
 
 using namespace std;
 
@@ -30,6 +33,12 @@ int maxkey(int *array, int size){
 	return -1;
 }*/
 
+string int2str(int inter){
+	stringstream num_str;
+	num_str << inter;
+	return num_str.str();
+}
+
 int main(int argc, char const *argv[])
 {
 	int n,m,k;
@@ -39,7 +48,7 @@ int main(int argc, char const *argv[])
 	cin>>m;
 	cout<<"Enter the number of memory blocks in the cache memory : ";
 	cin>>n;
-	cs202::OpenMap<int,int> A(n);
+	cs202::OpenMap<string,int> A(n);
 	cout<<"The size of the cache memory is resized to "<<A.capacity()<<" for more efficiency"<<endl;
 	int counter[m];
 	for (int i = 0; i < m; ++i)
@@ -56,13 +65,13 @@ int main(int argc, char const *argv[])
 		cin>>address;
 		int memblock = address/k;
 		try{
-			A.put(memblock,address);
+			A.put(int2str(memblock),address);
 		}
 		catch(int error){
 			int max_key = maxkey(counter,m);
-			A.remove(max_key);
+			A.remove(int2str(max_key));
 			counter[max_key] = std::numeric_limits<int>::min();
-			A.put(memblock,address);
+			A.put(int2str(memblock),address);
 		}
 		counter[memblock] = 0;
 		for (int i = 0; i < m; ++i)

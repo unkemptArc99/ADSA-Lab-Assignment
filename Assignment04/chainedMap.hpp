@@ -18,6 +18,7 @@ CS202 - ADSA Lab Assignment 04 - Chained Map header file
 #include <cmath>
 #include <limits>
 #include <exception>
+#include <string>
 
 namespace cs202
 {
@@ -99,9 +100,19 @@ public:
      */
 	Value& operator[](const Key& key);
 
+    unsigned int primary_hash_map(const Key& key){
+        unsigned int returning_number = 0;
+        for (int i = 0; i < key.length(); ++i)
+        {
+            returning_number += (unsigned int)(key[i]) * (unsigned int)(pow(33,i));
+        }
+        return returning_number;
+    };
+
     int hash_function(const Key& key, const int& maxlength){
-        return key%maxlength;
-    }
+        unsigned int x = primary_hash_map(key);
+        return x % maxlength;
+    };
 
     inline int capacity(void){
         return maxlength;
