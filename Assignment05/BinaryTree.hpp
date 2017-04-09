@@ -12,7 +12,7 @@ CS202 - ADSA - Assignment05 - Binary Tree header file
 #include <limits>
 
 namespace cs202{
-    template <Key, Value>
+    template <typename Key, typename Value>
     class BinaryNode
     {
     public:
@@ -27,7 +27,7 @@ namespace cs202{
         BinaryNode(Key key, Value value);
     };
 
-    template<Key, Value>
+    template<typename Key, typename Value>
     class BinaryTree
     {
         /* You can implement your own helper functions whenever required.

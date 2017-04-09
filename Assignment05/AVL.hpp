@@ -12,9 +12,25 @@ CS202 - ADSA - Assignment05 - AVL Tree header file
 #include <limits>
 
 #include "BSTree.hpp"
+#include "BinaryTree.hpp"
 
 namespace cs202{
-    template <Key, Value>
+
+    template <typename Key, typename Value>
+    class AVLNode : public BinaryNode<Key,Value>{
+    public:
+        int AVLheight;
+        int AVL_BF;
+
+        /*Default constructor. Should assign the default value to key and value
+        */
+        AVLNode();
+        /*This contructor should assign the key and val from the passed parameters
+        */
+        AVLNode(Key key, Value value);
+    };
+
+    template <typename Key, typename Value>
     class AVL : public BSTree<Key, Value> {
     /*
     * Inherit as much functionality as possible from the BSTree class.
