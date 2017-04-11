@@ -24,10 +24,22 @@ namespace cs202{
 
         /*Default constructor. Should assign the default value to key and value
         */
-        AVLNode();
+        AVLNode(){
+            BinaryNode<Key,Value>::key_value = std::numeric_limits<Key>::min();
+            BinaryNode<Key,Value>::val_value = std::numeric_limits<Value>::min();
+            BinaryNode<Key,Value>::left = NULL;
+            BinaryNode<Key,Value>::right = NULL;
+            BinaryNode<Key,Value>::parent = NULL;
+        };
         /*This contructor should assign the key and val from the passed parameters
         */
-        AVLNode(Key key, Value value);
+        AVLNode(Key key, Value value){
+            BinaryNode<Key,Value>::key_value = key;
+            BinaryNode<Key,Value>::val_value = value;
+            BinaryNode<Key,Value>::left = NULL;
+            BinaryNode<Key,Value>::right = NULL;
+            BinaryNode<Key,Value>::parent = NULL;
+        };
     };
 
     template <typename Key, typename Value>
