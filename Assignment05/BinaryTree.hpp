@@ -85,10 +85,58 @@ namespace cs202{
             }
             throw -1;
         }
+        
+        void transplant(BinaryNode<Key,Value>* u,BinaryNode<Key,Value>* v){
+            if(u->parent == NULL)
+                root = v;
+            else if(u == u->parent->left)
+                u->parent->left = v;
+            else
+                u->parent->right = v;
+            if(v != NULL){
+                v->parent = u->parent;
+            }
+        }
 
         /* Implement remove function that can delete a node in binary tree with given key. 
         */
-        virtual void remove(const Key& key) ;
+        virtual void remove(const Key& key){
+            std::queue<BinaryNode<Key,Value> *> q;
+            q.push(root);
+            while(q.size() > 0){
+                BinaryNode<Key,Value> *x = q.front();
+                q.pop();
+                if(x->key_value == key){
+                    BinaryNode<Key,Value> *y;
+                    if(x->left == NULL){                                        //having no child or only left child
+                        transplant(x,x->right);
+                    }
+                    else if(x->right == NULL){                                  //having only right child
+                        transplant(x,x->left);
+                    }
+                    else{                                                       //having both children
+                        BinaryNode<Key,Value> *z = x->right;
+                        while(z->left != NULL){                                 //seeking out the successor of x
+                            z = z->left;
+                        }
+                        y = z;              
+                        if(y->parent != x){                                     //stabilising at the previous y node and
+                            transplant(y,y->right);                             //taking care of its right child
+                            y->right = x->right;
+                            y->right->parent = y;
+                        }
+                        transplant(x,y);                                        //swapping x and its successor
+                        y->left = x->left;
+                        y->left->parent = y;
+                    }
+                }
+                if(x->left != NULL)
+                    q.push(x->left);
+                if(x->right != NULL)
+                    q.push(x->right);
+            }
+            throw -1;
+        }
 
         /* Implement has function which will return true if the given key is present in binary tree 
         * otherwise return false.  
