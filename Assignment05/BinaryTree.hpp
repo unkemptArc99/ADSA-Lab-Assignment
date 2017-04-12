@@ -15,6 +15,7 @@ CS202 - ADSA - Assignment05 - Binary Tree header file
 #include <vector>
 #include <algorithm>
 #include <iterator>
+#include <exception>
 
 namespace cs202{
     std::string convbinary(int n){
