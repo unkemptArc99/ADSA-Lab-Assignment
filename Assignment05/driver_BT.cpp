@@ -34,21 +34,21 @@ int main(int argc, char *argv[]){
         std::cin>>ch;
         switch(ch){
             case 1:
-                std::cout<<"Enter the key you want to store";
+                std::cout<<"Enter the key you want to store : ";
                 std::cin>>key;
-                std::cout<<"Enter the value you want to store with the above associated key";
+                std::cout<<"Enter the value you want to store with the above associated key : ";
                 std::cin>>value;
                 A.put(key,value);
                 break;
             case 2:
-                std::cout<<"Enter the key you want to remove";
+                std::cout<<"Enter the key you want to remove : ";
                 std::cin>>key;
                 try{
                     A.remove(key);
                 }
                 catch(int error){
                     if(error == -1){
-                        std::cout<<"The inputted key is not stored in the tree";
+                        std::cout<<"The inputted key is not stored in the tree"<<std::endl;
                         break;
                     }
                 }

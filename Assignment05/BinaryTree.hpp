@@ -29,6 +29,7 @@ namespace cs202{
                 s.push_back('0');
             n = n/2;
         }
+        std::reverse(s.begin(), s.end());
         return s;
     }
 
@@ -135,13 +136,13 @@ namespace cs202{
                         y->left = x->left;
                         y->left->parent = y;
                     }
+                    total_node--;
                 }
                 if(x->left != NULL)
                     q.push(x->left);
                 if(x->right != NULL)
                     q.push(x->right);
             }
-            throw -1;
         }
 
         /* Implement has function which will return true if the given key is present in binary tree 
