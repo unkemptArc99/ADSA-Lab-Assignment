@@ -17,6 +17,8 @@ CS202 - ADSA - Assignment05 - Binary Tree header file
 #include <iterator>
 #include <exception>
 
+#include "hash_main.hpp"
+
 namespace cs202{
     std::string convbinary(int n){
         std::string s;
@@ -37,6 +39,7 @@ namespace cs202{
         Key key_value;
         Value val_value;
         BinaryNode<Key,Value> * left,* right,* parent;
+        unsigned int compressed_key;
         /*Default constructor. Should assign the default value to key and value
         */
         BinaryNode(){
@@ -45,6 +48,7 @@ namespace cs202{
             left = NULL;
             right = NULL;
             parent = NULL;
+            compressed_key = cs202_hash::primary_hash_map(key_value);
         }
         /*This contructor should assign the key and val from the passed parameters
         */
@@ -54,6 +58,7 @@ namespace cs202{
             left = NULL;
             right = NULL;
             parent = NULL;
+            compressed_key = cs202_hash::primary_hash_map(key_value);
         }
     };
 
