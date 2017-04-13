@@ -25,6 +25,9 @@ namespace cs202{
         * Also make sure that all inherited functions work correctly in the context of a binary search tree.
         */
     public:
+        BSTree(){
+            BinaryTree<Key,Value>::root = NULL;
+        }
         /*
         * This method returns the current height of the binary search tree.
         */
@@ -56,6 +59,7 @@ namespace cs202{
                 }
             }
         };
+
         /*
         * This method returns the total number of elements in the binary search tree.
         */
@@ -65,7 +69,7 @@ namespace cs202{
             }
             std::queue<BinaryNode<Key,Value> *> q1,q2;
             q1.push(BinaryTree<Key,Value>::root);
-            while(q1.size > 0){
+            while(q1.size() > 0){
                 BinaryNode<Key,Value> *x = q1.front();
                 q1.pop();
                 if(x->left != NULL){
@@ -78,6 +82,7 @@ namespace cs202{
             }
             return q2.size();
         }
+
         /*
         * This method prints the key value pairs of the binary search tree, sorted by
         * their keys.
@@ -91,9 +96,10 @@ namespace cs202{
         void put(const Key& key, const Value& value){
             BinaryNode<Key,Value> *y = NULL;
             BinaryNode<Key,Value> *x = BinaryTree<Key,Value>::root;
+            unsigned int key1 = cs202_hash::primary_hash_map(key);
             while(x != NULL){
                 y = x;
-                if(key < x->key_value){
+                if(key1 < x->compressed_key){
                     x = x->left;
                 }
                 else{
@@ -105,7 +111,7 @@ namespace cs202{
             if(y == NULL){
                 BinaryTree<Key,Value>::root = z;
             }
-            else if(key < y->key){
+            else if(key1 < y->compressed_key){
                 y->left = z;
             }
             else{
@@ -118,11 +124,12 @@ namespace cs202{
         */
         bool has(const Key& key){
             BinaryNode<Key,Value> *x = BinaryTree<Key,Value>::root;
+            unsigned int key1 = cs202_hash::primary_hash_map(key);
             while(x != NULL){
-                if(key == x->key){
+                if(key1 == x->compressed_key){
                     return true;
                 }
-                else if(key < x->key){
+                else if(key1 < x->compressed_key){
                     x = x->left;
                 }
                 else{
@@ -136,11 +143,12 @@ namespace cs202{
         */
         Value get(const Key& key){
             BinaryNode<Key,Value> *x = BinaryTree<Key,Value>::root;
+            unsigned int key1 = cs202_hash::primary_hash_map(key);
             while(x != NULL){
-                if(key == x->key){
-                    return x->value;
+                if(key1 == x->compressed_key){
+                    return x->val_value;
                 }
-                else if(key < x->key){
+                else if(key1 < x->compressed_key){
                     x = x->left;
                 }
                 else{
@@ -188,8 +196,9 @@ namespace cs202{
         */
         void remove(const Key& key){
             BinaryNode<Key,Value> *x = BinaryTree<Key,Value>::root;
+            unsigned int key1 = cs202_hash::primary_hash_map(key);
             while(x != NULL){
-                if(key == x->key){
+                if(key1 == x->compressed_key){
                     BinaryNode<Key,Value> *y;
                     if(x->left == NULL){                                        //having no child or only left child
                         transplant(x,x->right);
@@ -213,7 +222,7 @@ namespace cs202{
                         y->left->parent = y;
                     }
                 }
-                else if(key < x->key){
+                else if(key1 < x->compressed_key){
                     x = x->left;
                 }
                 else{
@@ -229,8 +238,9 @@ namespace cs202{
         */
         Key successor(const Key& key){
             BinaryNode<Key,Value> *x = BinaryTree<Key,Value>::root;
+            unsigned int key1 = cs202_hash::primary_hash_map(key);
             while(x != NULL){
-                if(key == x->key){
+                if(key1 == x->compressed_key){
                     if(x->right != NULL){
                         x = x->right;
                         while(x->left != NULL){
@@ -245,7 +255,7 @@ namespace cs202{
                     }
                     return y->key_value;
                 }
-                else if(key < x->key){
+                else if(key1 < x->compressed_key){
                     x = x->left;
                 }
                 else{
@@ -261,8 +271,9 @@ namespace cs202{
         */
         Key predecessor(const Key& key){
             BinaryNode<Key,Value> *x = BinaryTree<Key,Value>::root;
+            unsigned int key1 = cs202_hash::primary_hash_map(key);
             while(x != NULL){
-                if(key == x->key){
+                if(key1 == x->compressed_key){
                     if(x->left != NULL){
                         x = x->left;
                         while(x->right != NULL){
@@ -277,7 +288,7 @@ namespace cs202{
                     }
                     return y->key_value;
                 }
-                else if(key < x->key){
+                else if(key1 < x->compressed_key){
                     x = x->left;
                 }
                 else{
