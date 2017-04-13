@@ -263,7 +263,7 @@ namespace cs202{
             typename std::vector<Key>::iterator it;
             it = find(value_of_key.begin(), value_of_key.end(),key);
             int dis = std::distance(value_of_key.begin(),it);
-            if(dis == 0 || dis == value_of_key.size() - 1){
+            if(dis == value_of_key.size() - 1){
                 throw -2;
             }
             else if(dis == value_of_key.size()){
@@ -281,7 +281,7 @@ namespace cs202{
             typename std::vector<Key>::iterator it;
             it = find(value_of_key.begin(), value_of_key.end(),key);
             int dis = std::distance(value_of_key.begin(),it);
-            if(dis == 0 || dis == value_of_key.size() - 1){
+            if(dis == 0){
                 throw -2;
             }
             else if(dis == value_of_key.size()){
