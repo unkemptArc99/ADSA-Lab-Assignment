@@ -1,7 +1,7 @@
 /******************************************************************************
 Author : Abhishek
 Roll No. : B15103
-CS202 - ADSA - Assignment05 - Binary Tree driver file
+CS202 - ADSA - Assignment05 - Binary Search Tree driver file
 ******************************************************************************/
 
 #include <iostream>
