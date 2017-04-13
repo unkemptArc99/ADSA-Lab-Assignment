@@ -197,7 +197,8 @@ namespace cs202{
         void remove(const Key& key){
             BinaryNode<Key,Value> *x = BinaryTree<Key,Value>::root;
             unsigned int key1 = cs202_hash::primary_hash_map(key);
-            while(x != NULL){
+            bool flag = true;
+            while(x != NULL && flag){
                 if(key1 == x->compressed_key){
                     BinaryNode<Key,Value> *y;
                     if(x->left == NULL){                                        //having no child or only left child
@@ -221,6 +222,7 @@ namespace cs202{
                         y->left = x->left;
                         y->left->parent = y;
                     }
+                    flag = false;
                 }
                 else if(key1 < x->compressed_key){
                     x = x->left;
@@ -229,7 +231,9 @@ namespace cs202{
                     x = x->right;
                 }
             }
-            throw -1;
+            if(x == NULL){
+                throw -1;
+            }
         }
 
         /*
@@ -253,6 +257,9 @@ namespace cs202{
                         x = y;
                         y = y->parent;
                     }
+                    if(y == NULL){
+                        throw -2;
+                    }
                     return y->key_value;
                 }
                 else if(key1 < x->compressed_key){
@@ -262,7 +269,9 @@ namespace cs202{
                     x = x->right;
                 }
             }
-            throw -1;
+            if(x == NULL){
+                throw -1;
+            }
         }
 
         /*
@@ -286,6 +295,9 @@ namespace cs202{
                         x = y;
                         y = y->parent;
                     }
+                    if(y == NULL){
+                        throw -2;
+                    }
                     return y->key_value;
                 }
                 else if(key1 < x->compressed_key){
@@ -294,6 +306,9 @@ namespace cs202{
                 else{
                     x = x->right;
                 }
+            }
+            if(x == NULL){
+                throw -1;
             }
         }
     };
