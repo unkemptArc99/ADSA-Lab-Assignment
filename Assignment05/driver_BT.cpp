@@ -59,7 +59,39 @@ int main(int argc, char *argv[]){
                 std::cout<<"Element deleted"<<std::endl;
                 break;
             case 3:
-                
+                std::cout<<"Enter the key for which you want to access the value : ";
+                std::cin>>key;
+                key_intval = cs202_hash::primary_hash_map(key);
+                try{
+                    value = A.get(key_intval);
+                }
+                catch(int error){
+                    if(error == -1){
+                        std::cout<<"The provided key has no corresponding value stored."<<std::endl;
+                        break;
+                    }
+                }
+                std::cout<<"Key : "<<key<<" Value : "<<value<<std::endl;
+                break;
+            case 4:
+                std::cout<<"Enter the key : ";
+                std::cin>>key;
+                key_intval = cs202_hash::primary_hash_map(key);
+                if(A.has(key_intval))
+                    std::cout<<"Yes! The key exists!"<<std::endl;
+                else
+                    std::cout<<"No! The key does not exists!"<<std::endl;
+                break;
+            case 5:
+                A.print_in_order();
+                break;
+            case 6:
+                A.print_pre_order();
+                break;
+            case 7:
+                A.print_post_order();
+                break;
+            case 8:
         }
     }
     return 0;
