@@ -39,20 +39,27 @@ int main(int argc, char *argv[]){
                 std::cout<<"Enter the value you want to store with the above associated key : ";
                 std::cin>>value;
                 A.put(key,value);
+                length++;
                 break;
             case 2:
                 std::cout<<"Enter the key you want to remove : ";
                 std::cin>>key;
-                try{
-                    A.remove(key);
-                }
-                catch(int error){
-                    if(error == -1){
-                        std::cout<<"The inputted key is not stored in the tree"<<std::endl;
-                        break;
+                if(length > 0){
+                    try{
+                        A.remove(key);
                     }
+                    catch(int error){
+                        if(error == -1){
+                            std::cout<<"The inputted key is not stored in the tree"<<std::endl;
+                            break;
+                        }
+                    }
+                    std::cout<<"Element deleted"<<std::endl;
+                    length--;
                 }
-                std::cout<<"Element deleted"<<std::endl;
+                else{
+                    std::cout<<"Not enough elements to remove"<<std::endl;
+                }
                 break;
             case 3:
                 std::cout<<"Enter the key for which you want to access the value : ";
