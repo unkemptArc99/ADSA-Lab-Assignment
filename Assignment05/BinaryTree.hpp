@@ -192,14 +192,14 @@ namespace cs202{
         *observed in an in order traversal.
         */
         virtual void print_in_order(){
-            std::cout<<"Key_value\tValue"<<std::endl;
+            std::cout<<"Key_value\tValue\tCompressed_Key"<<std::endl;
             inorder(root);
         }
 
         virtual void inorder(BinaryNode<Key,Value>* node){
             if(node != NULL){
                 inorder(node->left);
-                std::cout<<node->key_value<<"\t"<<node->val_value<<std::endl;
+                std::cout<<node->key_value<<"\t"<<node->val_value<<"\t"<<node->compressed_key<<std::endl;
                 inorder(node->right);
             }
         }
@@ -209,13 +209,13 @@ namespace cs202{
         *observed in an pre order traversal.
         */
         virtual void print_pre_order(){
-            std::cout<<"Key_value\tValue"<<std::endl;
+            std::cout<<"Key_value\tValue\tCompressed_Key"<<std::endl;
             preorder(root);
         }
 
         virtual void preorder(BinaryNode<Key,Value>* node){
             if(node != NULL){
-                std::cout<<node->key_value<<"\t"<<node->val_value<<std::endl;
+                std::cout<<node->key_value<<"\t"<<node->val_value<<"\t"<<node->compressed_key<<std::endl;
                 preorder(node->left);
                 preorder(node->right);
             }
@@ -226,7 +226,7 @@ namespace cs202{
         *observed in a post order traversal.
         */
         virtual void print_post_order(){
-            std::cout<<"Key_value\tValue"<<std::endl;
+            std::cout<<"Key_value\tValue\tCompressed_Key"<<std::endl;
             postorder(root);
         }
 
@@ -234,7 +234,7 @@ namespace cs202{
             if(node != NULL){
                 postorder(node->left);
                 postorder(node->right);
-                std::cout<<node->key_value<<"\t"<<node->val_value<<std::endl;
+                std::cout<<node->key_value<<"\t"<<node->val_value<<"\t"<<node->compressed_key<<std::endl;
             }
         }
 
