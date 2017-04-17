@@ -458,6 +458,45 @@ namespace cs202{
                 throw -1;
             }
         }
+
+		/* Implement has function which will return true if the given key is present in binary tree 
+        * otherwise return false.  
+        */
+		bool has(const Key& key){
+			RBTNode<Key, Value> *x = root;
+			unsigned int key1 = cs202_hash::primary_hash_map(key);
+			while(x != nil){
+				if(key1 == x->compressed_key){
+					return true;
+				}
+				else if(key1 < x->compressed_key){
+					x = x->left;
+				}
+				else{
+					x =x->right;
+				}
+			}
+			return false;
+		}
+
+		/* Implement get function to retrieve the value corresponding to given key in binary tree.
+        */
+		Value get(const Key& key){
+			RBTNode<Key, Value> *x = root;
+			unsigned int key1 = cs202_hash::primary_hash_map(key);
+			while(x != nil){
+				if(key1 == x->compressed_key){
+					return x->val_value;
+				}
+				else if(key1 < x->compressed_key){
+					x = x->left;
+				}
+				else{
+					x = x->right;
+				}
+			}
+			throw -1;
+		}
 	};
 }
 #endif /* ifndef RBTree_HPP_ */	
