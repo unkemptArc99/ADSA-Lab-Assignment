@@ -281,6 +281,143 @@ namespace cs202{
                 throw -1;
             }
         }
+
+        /* Implement has function which will return true if the given key is present in binary tree 
+        * otherwise return false.  
+        */
+        bool has(const Key& key){
+            AVLNode<Key,Value> *x = root;
+            unsigned int key1 = cs202_hash::primary_hash_map(key);
+            while(x != NULL){
+                if(key1 == x->compressed_key){
+                    return true;
+                }
+                else if(key1 < x->compressed_key){
+                    x = x->left;
+                }
+                else{
+                    x = x->right;
+                }
+            }
+            return false;
+        }
+
+        /* Implement get function to retrieve the value corresponding to given key in binary tree.
+        */
+        Value get(const Key& key){
+            AVLNode<Key,Value> *x = root;
+            unsigned int key1 = cs202_hash::primary_hash_map(key);
+            while(x != NULL){
+                if(key1 == x->compressed_key){
+                    return x->val_value;
+                }
+                else if(key1 < x->compressed_key){
+                    x = x->left;
+                }
+                else{
+                    x = x->right;
+                }
+            }
+            throw -1;
+        }
+
+        /*
+        *This method returns the minimum element in the binary tree.
+        */
+        Key minimum(void){
+            AVLNode<Key,Value> *x = root;
+            while(x->left != NULL){
+                x = x->left;
+            }
+            return x->key_value;
+        }
+
+        /*
+        * This method returns the maximum element in the binary tree.
+        */
+        Key maximum(void){
+            AVLNode<Key,Value> *x = root;
+            while(x->right != NULL){
+                x = x->right;
+            }
+            return x->key_value;
+        }
+
+        /*
+        *This method returns the successor, i.e, the next larget element in the
+        *binary tree, after Key.
+        */
+        Key successor(const Key& key){
+            AVLNode<Key,Value> *x = root;
+            unsigned int key1 = cs202_hash::primary_hash_map(key);
+            while(x != NULL){
+                if(key1 == x->compressed_key){
+                    if(x->right != NULL){
+                        x = x->right;
+                        while(x->left != NULL){
+                            x = x->left;
+                        }
+                        return x->key_value;
+                    }
+                    AVLNode<Key,Value> *y = x->parent;
+                    while(y != NULL && x == y->right){
+                        x = y;
+                        y = y->parent;
+                    }
+                    if(y == NULL){
+                        throw -2;
+                    }
+                    return y->key_value;
+                }
+                else if(key1 < x->compressed_key){
+                    x = x->left;
+                }
+                else{
+                    x = x->right;
+                }
+            }
+            if(x == NULL){
+                throw -1;
+            }
+        }
+
+        /*
+        * This method returns the predessor, ie, the next smallest element in the
+        * binary tree, after Key.
+        */
+        Key predecessor(const Key& key){
+            AVLNode<Key,Value> *x = root;
+            unsigned int key1 = cs202_hash::primary_hash_map(key);
+            while(x != NULL){
+                if(key1 == x->compressed_key){
+                    if(x->left != NULL){
+                        x = x->left;
+                        while(x->right != NULL){
+                            x = x->right;
+                        }
+                        return x->key_value;
+                    }
+                    AVLNode<Key,Value> *y = x->parent;
+                    while(y != NULL && x == y->left){
+                        x = y;
+                        y = y->parent;
+                    }
+                    if(y == NULL){
+                        throw -2;
+                    }
+                    return y->key_value;
+                }
+                else if(key1 < x->compressed_key){
+                    x = x->left;
+                }
+                else{
+                    x = x->right;
+                }
+            }
+            if(x == NULL){
+                throw -1;
+            }
+        }
     };
 }
 
