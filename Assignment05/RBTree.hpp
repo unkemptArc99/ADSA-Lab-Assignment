@@ -391,7 +391,7 @@ namespace cs202{
 			RBTNode<Key, Value> *x = root;
 			unsigned int key1 = cs202_hash::primary_hash_map(key);
 			while(x != nil){
-				if(kwy1 == x->compressed_key){
+				if(key1 == x->compressed_key){
 					if(x->right != nil){
 						x = x->right;
 						while(x->left != nil){
