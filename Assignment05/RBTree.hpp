@@ -35,6 +35,7 @@ namespace cs202{
         	BinaryNode<Key,Value>::left = NULL;
         	BinaryNode<Key,Value>::right = NULL;
         	BinaryNode<Key,Value>::parent = NULL;
+			BinaryNode<Key, Value>::compressed_key = cs202_hash::primary_hash_map(BinaryNode<Key, Value>::key_value);
         };
         /*This contructor should assign the key and val from the passed parameters
         */
@@ -44,7 +45,8 @@ namespace cs202{
         	nodeColor = RED;
         	BinaryNode<Key,Value>::left = NULL;
         	BinaryNode<Key,Value>::right = NULL;
-        	BinaryNode<Key,Value>::parent = NULL;		
+        	BinaryNode<Key,Value>::parent = NULL;
+			BinaryNode<Key, Value>::compressed_key = cs202_hash::primary_hash_map(BinaryNode<Key, Value>::key_value);
         };
 	};
 
@@ -61,6 +63,9 @@ namespace cs202{
  	*/
 
 	public:
+		RBTree(){
+			root = nil;
+		}
 		/* Implement put function such that newly inserted node keep the tree balanced. 
         */
         void put(const Key& key, const Value& value){
@@ -69,7 +74,7 @@ namespace cs202{
         	BinaryNode<Key,Value> *x = root;
         	while(x != nil){
         		y = x;
-        		if(z->key_value < x->key_value){
+        		if(z->compressed_key < x->compressed_key){
         			x = x->left;
         		}
         		else{
@@ -80,7 +85,7 @@ namespace cs202{
         	if(y == nil){
         		root = z;
         	}
-        	else if(z->key_value < y->key_value){
+        	else if(z->compressed_key < y->compressed_key){
         		y->left = z;
         	}
         	else{
@@ -204,7 +209,8 @@ namespace cs202{
         */
         void remove(const Key& key){
             BinaryNode<Key,Value> *z = BinaryTree<Key,Value>::root;
-            while(z != nil){
+			bool flag = true;
+            while(z != nil && flag){
                 if(key == z->key){
                     BinaryNode<Key,Value> *y = z;
                     BinaryNode<Key,Value> *x;
@@ -241,6 +247,7 @@ namespace cs202{
                     if(y_original == BLACK){
                     	deleteRBFixup(x);
                     }
+					flag = false;
                 }
                 else if(key < z->key){
                     z = z->left;
@@ -249,7 +256,8 @@ namespace cs202{
                     z = z->right;
                 }
             }
-            throw -1;
+			if(z == nil)
+            	throw -1;
         }
 
 		/* Function deleteRBFixup
@@ -339,6 +347,117 @@ namespace cs202{
 	 	* Apart from these functions, also provide functions for rotations in the tree.
 	 	* The signature of the rotation functions is omitted to provide you flexibility in how you implement the internals of your node.
 	 	*/
+
+		 /*
+        *This method returns the minimum element in the binary tree.
+        */
+        Key minimum(void){
+            RBTNode<Key,Value> *x = root;
+            while(x->left != nil){
+                x = x->left;
+            }
+            return x->key_value;
+        }
+
+        /*
+        * This method returns the maximum element in the binary tree.
+        */
+        Key maximum(void){
+            RBTNode<Key,Value> *x = root;
+            while(x->right != nil){
+                x = x->right;
+            }
+            return x->key_value;
+        }
+
+		void print(){
+			std::cout<<"KeyValue\tValue\tCompressed_Key"<<std::endl;
+			print_in(root);
+		}
+
+		void print_in(RBTNode<Key,Value> *node){
+			if(node != nil){
+				print_in(node->left);
+				std::cout<<node->key_value<<"\t"<<node->val_value<<"\t"<<node->compressed_key<<std::endl;
+				print_in(node->right);
+			}
+		}
+
+		/*
+        *This method returns the successor, i.e, the next larget element in the
+        *binary tree, after Key.
+        */
+		Key RBTsuccessor(const Key& key){
+			RBTNode<Key, Value> *x = root;
+			unsigned int key1 = cs202_hash::primary_hash_map(key);
+			while(x != nil){
+				if(kwy1 == x->compressed_key){
+					if(x->right != nil){
+						x = x->right;
+						while(x->left != nil){
+							x = x->left;
+						}
+						return x->key_value;
+					}
+					RBTNode<Key, Value> *y = x->parent;
+					while(y != nil && x == y->right){
+						x = y;
+						y = y->parent;
+					}
+					if(y == nil){
+						throw -2;
+					}
+					return y->key_value;
+				}
+				else if(key1 < x->compressed_key){
+					x = x->left;
+				}
+				else{
+					x = x->right;
+				}
+			}
+			if(x == nil){
+				throw -1;
+			}
+		}
+
+		/*
+        * This method returns the predessor, ie, the next smallest element in the
+        * binary tree, after Key.
+        */
+		Key RBTpredecessor(const Key& key){
+            RBTNode<Key,Value> *x = root;
+            unsigned int key1 = cs202_hash::primary_hash_map(key);
+            while(x != nil){
+                if(key1 == x->compressed_key){
+                    if(x->left != nil){
+                        x = x->left;
+                        while(x->right != nil){
+                            x = x->right;
+                        }
+                        return x->key_value;
+                    }
+                    BinaryNode<Key,Value> *y = x->parent;
+                    while(y != nil && x == y->left){
+                        x = y;
+                        y = y->parent;
+                    }
+                    if(y == nil){
+                        throw -2;
+                    }
+                    return y->key_value;
+                }
+                else if(key1 < x->compressed_key){
+                    x = x->left;
+                }
+                else{
+                    x = x->right;
+                }
+            }
+            if(x == nil){
+                throw -1;
+            }
+        }
 	};
 }
 #endif /* ifndef RBTree_HPP_ */	
