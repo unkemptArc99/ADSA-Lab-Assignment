@@ -215,6 +215,72 @@ namespace cs202{
         	x->parent = y;
             computeBF(y);
         }
+
+        void transplant(AVLNode<Key,Value>* u,AVLNode<Key,Value>* v){
+            if(u->parent == NULL)
+                root = v;
+            else if(u == u->parent->left)
+                u->parent->left = v;
+            else
+                u->parent->right = v;
+            if(v != NULL){
+                v->parent = u->parent;
+            }
+            if(v != NULL)
+                computeBF(v);
+        }
+
+        /* Implement remove function that can delete a node in binary tree with given key. 
+        */
+        void remove(const Key& key){
+            AVLNode<Key,Value> *x = root;
+            unsigned int key1 = cs202_hash::primary_hash_map(key);
+            bool flag = true;
+            while(x != NULL && flag){
+                if(key1 == x->compressed_key){
+                    AVLNode<Key,Value> *y;
+                    AVLNode<Key, Value> *p;
+                    if(x->left == NULL){                                        //having no child or only left child
+                        p = x->parent;
+                        transplant(x,x->right);
+                        insertBalance(p);
+                    }
+                    else if(x->right == NULL){                                  //having only right child
+                        p = x->parent;
+                        transplant(x,x->left);
+                        insertBalance(p);
+                    }
+                    else{                                                       //having both children
+                        AVLNode<Key,Value> *z = x->right;
+                        while(z->left != NULL){                                 //seeking out the successor of x
+                            z = z->left;
+                        }
+                        y = z;              
+                        if(y->parent != x){                                     //stabilising at the previous y node and
+                            transplant(y,y->right);                             //taking care of its right child
+                            y->right = x->right;
+                            y->right->parent = y;
+                        }
+                        p = y->parent;
+                        transplant(x,y);                                        //swapping x and its successor
+                        y->left = x->left;
+                        y->left->parent = y;
+                        insertBalance(p);
+                    }
+                    delete(x);
+                    flag = false;
+                }
+                else if(key1 < x->compressed_key){
+                    x = x->left;
+                }
+                else{
+                    x = x->right;
+                }
+            }
+            if(x == NULL){
+                throw -1;
+            }
+        }
     };
 }
 
