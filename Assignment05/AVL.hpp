@@ -381,6 +381,20 @@ namespace cs202{
             }
         }
 
+        void print(){
+            std::cout<<"Key_Value\tValue\tCompressed_key"<<std::endl;
+            AVLNode<Key, Value> *z = root;
+            print_in(z);
+        }
+
+        void print_in(AVLNode<Key,Value> *z){
+            if(z != NULL){
+                print_in(z->left);
+                std::cout<<z->key_value<<"\t"<<z->val_value<<"\t"<<z->compressed_key<<std::endl;
+                print_in(z->right);
+            }
+        }
+
         /*
         * This method returns the predessor, ie, the next smallest element in the
         * binary tree, after Key.
