@@ -15,8 +15,6 @@ CS202 - ADSA - Assignment05 - Binary Search Tree header file
 
 #include "BinaryTree.hpp"
 
-using namespace cs202;
-
 namespace cs202{
     template <typename Key, typename Value>
     class BSTree : public BinaryTree<Key, Value> {

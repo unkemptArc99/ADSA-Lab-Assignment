@@ -17,7 +17,16 @@ CS202 - ADSA - Assignment05 - Binary Tree header file
 #include <iterator>
 #include <exception>
 
-#include "hash_main.hpp"
+namespace cs202_hash{
+    unsigned int primary_hash_map(const std::string& key){
+        unsigned int returning_number = 0;
+        for (int i = key.size() - 1; i >= 0; i--)
+        {
+            returning_number += (returning_number * 33) + (unsigned int)key[i];
+        }
+        return returning_number;
+    }
+}
 
 namespace cs202{
     std::string convbinary(int n){

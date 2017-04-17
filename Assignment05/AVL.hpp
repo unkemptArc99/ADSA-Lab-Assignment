@@ -18,28 +18,34 @@ namespace cs202{
     template <typename Key, typename Value>
     class AVLNode : public BinaryNode<Key,Value>{
     public:
+        Key key_value;
+        Value val_value;
+        AVLNode *left,*right,*parent;
+        unsigned int compressed_key;
         int AVLheight;
         int AVL_BF;
 
         /*Default constructor. Should assign the default value to key and value
         */
         AVLNode(){
-            BinaryNode<Key,Value>::key_value = std::numeric_limits<Key>::min();
-            BinaryNode<Key,Value>::val_value = std::numeric_limits<Value>::min();
-            BinaryNode<Key,Value>::left = NULL;
-            BinaryNode<Key,Value>::right = NULL;
-            BinaryNode<Key,Value>::parent = NULL;
+            key_value = std::numeric_limits<Key>::min();
+            val_value = std::numeric_limits<Value>::min();
+            left = NULL;
+            right = NULL;
+            parent = NULL;
+            compressed_key = cs202_hash::primary_hash_map(key_value);
             AVLheight = 0;
             AVL_BF = 0;
         };
         /*This contructor should assign the key and val from the passed parameters
         */
         AVLNode(Key key, Value value){
-            BinaryNode<Key,Value>::key_value = key;
-            BinaryNode<Key,Value>::val_value = value;
-            BinaryNode<Key,Value>::left = NULL;
-            BinaryNode<Key,Value>::right = NULL;
-            BinaryNode<Key,Value>::parent = NULL;
+            key_value = key;
+            val_value = value;
+            left = NULL;
+            right = NULL;
+            parent = NULL;
+            compressed_key = cs202_hash::primary_hash_map(key_value);
             AVLheight = 0;
             AVL_BF = 0;
         };
@@ -65,15 +71,13 @@ namespace cs202{
     */
     protected:
         AVLNode<Key,Value> *root;
-        AVLNode<Key,Value> *nil;
     public:
         /* Implement put function such that newly inserted node keep the tree balanced. 
         */
         void put(const Key& key, const Value& value){
-            BinaryNode<Key,Value> *y = nil;
-            BinaryNode<Key,Value> *x = BinaryTree<Key,Value>::root;
-            while(x != nil){
-                x->
+            AVLNode<Key,Value> *y = NULL;
+            AVLNode<Key,Value> *x = root;
+            while(x != NULL){
                 y = x;
                 if(key < x->key_value){
                     x = x->left;   
@@ -82,14 +86,14 @@ namespace cs202{
                     x = x->right;
                 }
             }
-            BinaryNode<Key,Value> *z = new BinaryNode<Key,Value>(key,value);
+            AVLNode<Key,Value> *z = new AVLNode<Key,Value>(key,value);
             z->parent = y;
-            z->left = nil;
-            z->right = nil;
+            z->left = NULL;
+            z->right = NULL;
             if(y == NULL){
-                BinaryTree<Key,Value>::root = z;
+                root = z;
             }
-            else if(key < y->key){
+            else if(key < y->key_value){
                 y->left = z;
             }
             else{
@@ -101,68 +105,78 @@ namespace cs202{
         /* Function : computeBF
         * computes the Balance Factor at the specified node
         */
-        void computeBF(BinaryNode<Key, Value> *z){
-            if(z->left == nil && z->right == nil){
-                z->AVLheight = 0;
-                z->AVL_BF = 0;
-            }
-            else{
-                if(z->left == nil){
-                    z->AVLheight = z->right->AVLheight + 1;
-                    z->AVL_BF = (-1) - z->right->AVLheight;
-                }
-                else if(z->right == nil){
-                    z->AVLheight = z->left->AVLheight + 1;
-                    z->AVL_BF = z->left->AVLheight + 1;
+        void computeBF(AVLNode<Key, Value> *z){
+            while(z->parent != NULL){
+                if(z->left == NULL && z->right == NULL){
+                    z->AVLheight = 0;
+                    z->AVL_BF = 0;
                 }
                 else{
-                    z->AVLheight = max(z->left->AVLheight,z->right->AVLheight) + 1;
-                    z->AVL_BF = z->left->AVLheight - z->right->AVLheight;
+                    if(z->left == NULL){
+                        z->AVLheight = z->right->AVLheight + 1;
+                        z->AVL_BF = (-1) - z->right->AVLheight;
+                    }
+                    else if(z->right == NULL){
+                        z->AVLheight = z->left->AVLheight + 1;
+                        z->AVL_BF = z->left->AVLheight + 1;
+                    }
+                    else{
+                        z->AVLheight = z->left->AVLheight,z->right->AVLheight + 1;
+                        z->AVL_BF = z->left->AVLheight - z->right->AVLheight;
+                    }
                 }
+                z = z->parent;
             }
         }
         
         /* Function : insertBalance
         Balances the tree after insertion of new node;
         */
-        void insertBalance(BinaryNode<Key,Value> *z){
-            //Balancing the node
-            computeBF(z);
-            //Balancing the node ends
-            //Checking if there is an imbalance in the Balance factor
-            //case 1
-            if(z->AVL_BF == 2 && z->left->AVL_BF == 1){
-                rightRotation(z);
-            }
-            //case 2
-            else if(z->AVL_BF == -2 && z->right->AVL_BF == -1){
-                leftRotation(z);
-            }
-            //case 3
-            else if(z->AVL_BF == 2 && z->left->AVL_BF == -1){
-                leftRotation(z->left);
-                rightRotation(z);
-            }
-            //case 4
-            else if(z->AVL_BF == -2 && z->right->AVL_BF == 1){
-                rightRotation(z->right);
-                leftRotation(z);
+        void insertBalance(AVLNode<Key,Value> *z){
+           bool flag = false;
+           //Balancing the node
+           computeBF(z);
+           //Balancing the node ends
+           while(!flag && z != NULL){
+                //Checking if there is an imbalance in the Balance factor
+                //case 1
+                if(z->AVL_BF == 2 && z->left->AVL_BF == 1){
+                    rightRotation(z);
+                    flag = true;
+                }
+                //case 2
+                else if(z->AVL_BF == -2 && z->right->AVL_BF == -1){
+                    leftRotation(z);
+                    flag = true;
+                }
+                //case 3
+                else if(z->AVL_BF == 2 && z->left->AVL_BF == -1){
+                    leftRotation(z->left);
+                    rightRotation(z);
+                    flag = true;
+                }
+                //case 4
+                else if(z->AVL_BF == -2 && z->right->AVL_BF == 1){
+                    rightRotation(z->right);
+                    leftRotation(z);
+                    flag = true;
+                }
+                z = z->parent;
             }
         }
-
          /* Function leftRotation
         *
         * Used for: left rotation around a node
         */
-		void leftRotation(BinaryNode<Key,Value>* node){
-        	BinaryNode<Key,Value> *y = node->right;
-        	BinaryNode<Key,Value> *x = node;
+		void leftRotation(AVLNode<Key,Value>* node){
+        	AVLNode<Key,Value> *y = node->right;
+        	AVLNode<Key,Value> *x = node;
             y->parent = x->parent;
         	x->right = y->left;
-        	if(y->left != nil){
+        	if(y->left != NULL){
         		y->left->parent = x;
         	}
-        	if(x->parent == nil){
+        	if(x->parent == NULL){
         		root = y;
         	}
         	else if(x == x->parent->left){
@@ -173,24 +187,22 @@ namespace cs202{
         	}
         	y->left = x;
         	x->parent = y;
-            computeBF(x);
             computeBF(y);
-            computeBF(y->parent);
         }
 
         /* Function rightRotation
         *
         * Used for: right rotation around a node
         */
-		void rightRotation(BinaryNode<Key,Value>* node){
-        	BinaryNode<Key,Value> *y = node->left;
-        	BinaryNode<Key,Value> *x = node;
+		void rightRotation(AVLNode<Key,Value>* node){
+        	AVLNode<Key,Value> *y = node->left;
+        	AVLNode<Key,Value> *x = node;
         	x->left = y->right;
-        	if(y->right != nil){
+        	if(y->right != NULL){
         		y->right->parent = x;
         	}
         	y->parent = x->parent;
-        	if(x->parent == nil){
+        	if(x->parent == NULL){
         		root = y;
         	}
         	else if(x == x->parent->right){
@@ -201,9 +213,7 @@ namespace cs202{
         	}
         	y->right = x;
         	x->parent = y;
-            computeBF(x);
             computeBF(y);
-            computeBF(y->parent);
         }
     };
 }

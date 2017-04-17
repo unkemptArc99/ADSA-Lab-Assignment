@@ -25,28 +25,32 @@ namespace cs202{
 	template<typename Key, typename Value>
 	class RBTNode : public BinaryNode<Key,Value> {
 	public:
+		Key key_value;
+        Value val_value;
+        RBTNode<Key,Value> * left,* right,* parent;
 		Color nodeColor;
+		unsigned int compressed_key;
 		/*Default constructor. Should assign the default value to key and value
         */
         RBTNode(){
-        	BinaryNode<Key,Value>::key_value = std::numeric_limits<Key>::min();
-        	BinaryNode<Key,Value>::val_value = std::numeric_limits<Value>::min();
+        	key_value = std::numeric_limits<Key>::min();
+        	val_value = std::numeric_limits<Value>::min();
         	nodeColor = RED;
-        	BinaryNode<Key,Value>::left = NULL;
-        	BinaryNode<Key,Value>::right = NULL;
-        	BinaryNode<Key,Value>::parent = NULL;
-			BinaryNode<Key, Value>::compressed_key = cs202_hash::primary_hash_map(BinaryNode<Key, Value>::key_value);
+        	left = NULL;
+        	right = NULL;
+        	parent = NULL;
+			compressed_key = cs202_hash::primary_hash_map(key_value);
         };
         /*This contructor should assign the key and val from the passed parameters
         */
         RBTNode(Key key, Value value){
-        	BinaryNode<Key,Value>::key_value = key;
-        	BinaryNode<Key,Value>::val_value = value;
+        	key_value = key;
+        	val_value = value;
         	nodeColor = RED;
-        	BinaryNode<Key,Value>::left = NULL;
-        	BinaryNode<Key,Value>::right = NULL;
-        	BinaryNode<Key,Value>::parent = NULL;
-			BinaryNode<Key, Value>::compressed_key = cs202_hash::primary_hash_map(BinaryNode<Key, Value>::key_value);
+        	left = NULL;
+        	right = NULL;
+        	parent = NULL;
+			compressed_key = cs202_hash::primary_hash_map(key_value);
         };
 	};
 
@@ -69,9 +73,9 @@ namespace cs202{
 		/* Implement put function such that newly inserted node keep the tree balanced. 
         */
         void put(const Key& key, const Value& value){
-        	BinaryNode<Key,Value> *z = new BinaryNode<Key,Value>(key,value);
-        	BinaryNode<Key,Value> *y = nil;
-        	BinaryNode<Key,Value> *x = root;
+        	RBTNode<Key,Value> *z = new RBTNode<Key,Value>(key,value);
+        	RBTNode<Key,Value> *y = nil;
+        	RBTNode<Key,Value> *x = root;
         	while(x != nil){
         		y = x;
         		if(z->compressed_key < x->compressed_key){
@@ -93,7 +97,7 @@ namespace cs202{
         	}
         	z->left = nil;
         	z->right = nil;
-        	z->color = RED;
+        	z->nodeColor = RED;
         	insertRBFixup(z);
         }
 
@@ -101,9 +105,9 @@ namespace cs202{
         *
         * Used for: left rotation around a node
         */
-		void leftRotation(BinaryNode<Key,Value>* node){
-        	BinaryNode<Key,Value> *y = node->right;
-        	BinaryNode<Key,Value> *x = node;
+		void leftRotation(RBTNode<Key,Value>* node){
+        	RBTNode<Key,Value> *y = node->right;
+        	RBTNode<Key,Value> *x = node;
         	x->right = y->left;
         	if(y->left != nil){
         		y->left->parent = x;
@@ -126,9 +130,9 @@ namespace cs202{
         *
         * Used for: right rotation around a node
         */
-		void rightRotation(BinaryNode<Key,Value>* node){
-        	BinaryNode<Key,Value> *y = node->left;
-        	BinaryNode<Key,Value> *x = node;
+		void rightRotation(RBTNode<Key,Value>* node){
+        	RBTNode<Key,Value> *y = node->left;
+        	RBTNode<Key,Value> *x = node;
         	x->left = y->right;
         	if(y->right != nil){
         		y->right->parent = x;
@@ -153,14 +157,14 @@ namespace cs202{
 	 	* It applies fixing mechanisms to make sure that the tree remains a valid red black tree after an insertion.
 	 	*/
 		void insertRBFixup(RBTNode<Key,Value>* node){
-			BinaryNode<Key,Value> *z = node;
-			while(z->parent->color == RED){
+			RBTNode<Key,Value> *z = node;
+			while(z->parent->nodeColor == RED){
 				if(z->parent == z->parent->parent->left){								
-					BinaryNode<Key,Value> y = z->parent->parent->right;					//case 1
-					if(y->color == RED){												//case 1
-						z->parent->color = BLACK;										//case 1
-						y->color = BLACK;												//case 1
-						z->parent->parent->color = RED;									//case 1
+					RBTNode<Key,Value> *y = z->parent->parent->right;					//case 1
+					if(y->nodeColor == RED){												//case 1
+						z->parent->nodeColor = BLACK;										//case 1
+						y->nodeColor = BLACK;												//case 1
+						z->parent->parent->nodeColor = RED;									//case 1
 						z = z->parent->parent;											//case 1
 					}																	//case 1
 					else{
@@ -168,17 +172,17 @@ namespace cs202{
 							z = z->parent;												//case 2
 							leftRotation(z);											//case 2
 						}
-						z->parent->color = BLACK;										//case 3
-						z->parent->parent->color = RED;									//case 3
+						z->parent->nodeColor = BLACK;										//case 3
+						z->parent->parent->nodeColor = RED;									//case 3
 						rightRotation(z->parent->parent);								//case 3
 					}
 				}																		
 				else{																	
-					BinaryNode<Key,Value> y = z->parent->parent->left;					//case 4
-					if(y->color == RED){												//case 4
-						z->parent->color = BLACK;										//case 4
-						y->color = BLACK;												//case 4
-						z->parent->parent->color = RED;									//case 4
+					RBTNode<Key,Value> *y = z->parent->parent->left;					//case 4
+					if(y->nodeColor == RED){												//case 4
+						z->parent->nodeColor = BLACK;										//case 4
+						y->nodeColor = BLACK;												//case 4
+						z->parent->parent->nodeColor = RED;									//case 4
 						z = z->parent->parent;											//case 4
 					}																	//case 4
 					else{
@@ -186,35 +190,35 @@ namespace cs202{
 							z = z->parent;												//case 5
 							rightRotation(z);											//case 5
 						}
-						z->parent->color = BLACK;										//case 6
-						z->parent->parent->color = RED;									//case 6
+						z->parent->nodeColor = BLACK;										//case 6
+						z->parent->parent->nodeColor = RED;									//case 6
 						leftRotation(z->parent->parent);								//case 6
 					}
 				}
 			}
-			root->color = BLACK;
+			root->nodeColor = BLACK;
 		}
 
-		void transplant(BinaryNode<Key,Value>* u,BinaryNode<Key,Value>* v){
-            if(u->parent == nil)
-                BinaryTree<Key,Value>::root = v;
-            else if(u == u->parent->left)
-                u->parent->left = v;
-            else
-                u->parent->right = v;
-            v->parent = u->parent;
+		void transplant(RBTNode<Key,Value>* u,RBTNode<Key,Value>* v){
+				if(u->parent == nil)
+                	root = v;
+            	else if(u == u->parent->left)
+                	u->parent->left = v;
+            	else
+                	u->parent->right = v;
+            	v->parent = u->parent;
         }
 
         /* Implement remove function that can delete a node in binary tree with given key. 
         */
         void remove(const Key& key){
-            BinaryNode<Key,Value> *z = BinaryTree<Key,Value>::root;
+            RBTNode<Key,Value> *z = root;
 			bool flag = true;
             while(z != nil && flag){
-                if(key == z->key){
-                    BinaryNode<Key,Value> *y = z;
-                    BinaryNode<Key,Value> *x;
-                    Color y_original = y->color;
+                if(key == z->key_value){
+                    RBTNode<Key,Value> *y = z;
+                    RBTNode<Key,Value> *x;
+                    Color y_original = y->nodeColor;
                     if(z->left == nil){	                                        //having no child or only left child
                     	x = z->right;
                         transplant(z,z->right);
@@ -224,12 +228,12 @@ namespace cs202{
                         transplant(z,z->left);
                     }
                     else{                                                       //having both children
-                        BinaryNode<Key,Value> *w = z->right;
+                        RBTNode<Key,Value> *w = z->right;
                         while(w->left != NULL){                                 //seeking out the successor of x
                             w = w->left;
                         }
                         y = w;
-                        y_original = y->color;
+                        y_original = y->nodeColor;
                         x = y->right;              
                         if(y->parent == z){                                     //stabilising at the previous y node and
                             x->parent = y;
@@ -242,14 +246,14 @@ namespace cs202{
                         transplant(z,y);
                         y->left = z->left;
                         y->left->parent = y;
-                        y->color = z->color;
+                        y->nodeColor = z->nodeColor;
                     }
-                    if(y_original == BLACK){
+                    if(y_original == BLACK && x != root){
                     	deleteRBFixup(x);
                     }
 					flag = false;
                 }
-                else if(key < z->key){
+                else if(key < z->key_value){
                     z = z->left;
                 }
                 else{
@@ -266,32 +270,32 @@ namespace cs202{
 	 	* It applies fixing mechanisms to make sure that the tree remains a valid red black tree after a deletion.
 	 	*/
 		void deleteRBFixup(RBTNode<Key,Value>* x){
-			BinaryNode<Key,Value> *w;
-			while(x != root && x->color == BLACK){
+			RBTNode<Key,Value> *w;
+			while(x != root && x->nodeColor == BLACK){
 				if(x == x->parent->left){
 					w = x->parent->right;
-					if(w->color == RED){
-						w->color = BLACK;													//case 1
-						x->parent->color = RED;												//case 1
+					if(w->nodeColor == RED){
+						w->nodeColor = BLACK;													//case 1
+						x->parent->nodeColor = RED;												//case 1
 						leftRotation(x->parent);											//case 1
 						w = x->parent->right;												//case 1
 					}
-					if((w->left->color == BLACK || w->left == nil) && (w->right->color == BLACK || w->right == nil)){
-						w->color = RED;														//case 3
+					if((w->left->nodeColor == BLACK || w->left == nil) && (w->right->nodeColor == BLACK || w->right == nil)){
+						w->nodeColor = RED;														//case 3
 						x = x->parent;														//case 3
 					}
 					else{
-						if(w->left->color == BLACK || w->left ==nil){
+						if(w->left->nodeColor == BLACK || w->left ==nil){
 							if(w->left != nil)												//case 5
-								w->left->color = BLACK;										//case 5
-							w->color = RED;													//case 5
+								w->left->nodeColor = BLACK;										//case 5
+							w->nodeColor = RED;													//case 5
 							rightRotation(w);												//case 5
 							w = x->parent->right;											//case 5
 						}
-						w->color = x->parent->color;										//case 6
-						x->parent->color = BLACK;											//case 6
+						w->nodeColor = x->parent->nodeColor;										//case 6
+						x->parent->nodeColor = BLACK;											//case 6
 						if(w->right != nil){												//case 6
-							w->right->color = BLACK;										//case 6
+							w->right->nodeColor = BLACK;										//case 6
 						}																	//case 6
 						leftRotation(x->parent);											//case 6
 						x = root;
@@ -299,28 +303,28 @@ namespace cs202{
 				}
 				else{
 					w = x->parent->left;
-					if(w->color == RED){
-						w->color = BLACK;													//case 2
-						x->parent->color = RED;												//case 2
+					if(w->nodeColor == RED){
+						w->nodeColor = BLACK;													//case 2
+						x->parent->nodeColor = RED;												//case 2
 						rightRotation(x->parent);											//case 2
 						w = x->parent->left;												//case 2
 					}
-					if((w->right->color == BLACK || w->right == nil) && (w->left->color == BLACK || w->left == nil)){
-						w->color = RED;														//case 4
+					if((w->right->nodeColor == BLACK || w->right == nil) && (w->left->nodeColor == BLACK || w->left == nil)){
+						w->nodeColor = RED;														//case 4
 						x = x->parent;														//case 4
 					}
 					else{
-						if(w->right->color == BLACK || w->right ==nil){
+						if(w->right->nodeColor == BLACK || w->right ==nil){
 							if(w->right != nil)												//case 7
-								w->right->color = BLACK;									//case 7
-							w->color = RED;													//case 7
+								w->right->nodeColor = BLACK;									//case 7
+							w->nodeColor = RED;													//case 7
 							leftRotation(w);												//case 7
 							w = x->parent->left;											//case 7
 						}
-						w->color = x->parent->color;										//case 8
-						x->parent->color = BLACK;											//case 8
+						w->nodeColor = x->parent->nodeColor;										//case 8
+						x->parent->nodeColor = BLACK;											//case 8
 						if(w->left != nil){													//case 8
-							w->left->color = BLACK;											//case 8
+							w->left->nodeColor = BLACK;											//case 8
 						}																	//case 8
 						rightRotation(x->parent);											//case 8
 						x = root;
@@ -336,7 +340,7 @@ namespace cs202{
 		int blackHeight(RBTNode<Key,Value>* r){
 			int result = 0;
 			while(r != nil){
-				if(r->color == BLACK){
+				if(r->nodeColor == BLACK){
 					result++;
 				}
 				r = r->left;
@@ -437,7 +441,7 @@ namespace cs202{
                         }
                         return x->key_value;
                     }
-                    BinaryNode<Key,Value> *y = x->parent;
+                    RBTNode<Key,Value> *y = x->parent;
                     while(y != nil && x == y->left){
                         x = y;
                         y = y->parent;
