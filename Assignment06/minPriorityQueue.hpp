@@ -1,7 +1,7 @@
 /****************************************************
 Author : Abhishek
 Roll No. : B15103
-ADSA Assignment06 - Minimum Priority Queue Header File
+ADSA Assignment06 - Heap Header File
 ****************************************************/
 
 #ifndef MIN_PRIORITY_QUEUE
