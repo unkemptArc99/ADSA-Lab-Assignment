@@ -69,8 +69,7 @@ namespace cs202{
 
  	public:
  		// default constructor
- 		MinPriorityQueue(){
-			 heap(101);
+ 		MinPriorityQueue() : heap(101) {
              heap_size = 0;
              heap.push_back(std::numeric_limits<T>::max());
          }
@@ -145,7 +144,7 @@ namespace cs202{
 
  		// heap_decrease_key function
  		void heap_decrease_key(const size_t& pos){
-			for(int i = pos; i >= 1 && heap[parent(i)] > heap[i]; i = parent(i)){
+			for(int i = pos; i >= 1 && heap[parent(i)] > heap[i] && parent(i) >= 1; i = parent(i)){
 				heap.swapper(i, parent(i));
 			}
 		}
