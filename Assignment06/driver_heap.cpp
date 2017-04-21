@@ -16,7 +16,7 @@ int main(){
     std::cout<<"Welcome to the Heap driver file!!"<<std::endl;
     std::cout<<"---------------------------------"<<std::endl;
     
-    MinPriorityQueue<int> heap_structure;
+    cs202::MinPriorityQueue<int> heap_structure;
     bool flag = true;
 
     while(flag){
@@ -29,12 +29,12 @@ int main(){
         std::cout<<"------------------------------------"<<std::endl;
         std::cout<<"Enter your choice : ";
         int ch;
-        cin>>ch;
+        std::cin>>ch;
         int priority;
         switch(ch){
             case 1:
                 std::cout<<"Enter the priority value you want to insert";
-                cin>>priority;
+                std::cin>>priority;
                 heap_structure.insert(priority);
                 std::cout<<"Insertion successfull!"<<std::endl;
                 break;
