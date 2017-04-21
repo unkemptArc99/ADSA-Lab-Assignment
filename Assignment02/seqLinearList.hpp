@@ -231,5 +231,4 @@ namespace cs202 {
 
 }
 
-#endif  /* _SEQ_LINEAR_LIST */
-
+#endif /* _SEQ_LINEAR_LIST */
