@@ -142,9 +142,6 @@ namespace cs202 {
 				buffer_[size_] = item;
 				size_++;
 			}
-			else{
-				throw -1;
-			}
 		}
 		else{
 			buffer_[size_]=item;
