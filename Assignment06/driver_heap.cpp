@@ -66,13 +66,13 @@ int main(){
                     std::cout<<"The heap is EMPTY!!"<<std::endl;
                 }
                 else{
-                    std::cout<<"The heap is NOT EMPTY!!"<<Std::endl;
+                    std::cout<<"The heap is NOT EMPTY!!"<<std::endl;
                 }
                 break;
             case 6:
                 exit(0);
             default:
-                std::cout<<"Wrong input!!"<<Std::endl;
+                std::cout<<"Wrong input!!"<<std::endl;
         }
         std::cout<<"------------------------------------------------------------"<<std::endl;
     }
