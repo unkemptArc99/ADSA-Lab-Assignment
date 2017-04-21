@@ -94,30 +94,25 @@ namespace cs202{
 
  		// get the minimum element from the heap
  		inline T minimum(){
-		    int minPriority = std::numeric_limits<T>::max();
-			for(int i = 0; i < heap_size; i++){
-                if(minPriority > heap[i]){
-                    minPriority = heap[i];
-                }
-			}
-            return minPriority;
+			if(heap_size > 0)
+		    	return heap[1];
+			else
+				throw -1;
 		}
 
  		// return the minimum element from the heap and remove it
  		// as well
  		T extract_min(){
-            int minPriority = std::numeric_limits<T>::max();
-            int index = 0;
-			for(int i = 0; i < heap_size; i++){
-                if(minPriority > heap[i]){
-                    minPriority = heap[i];
-                    index = i;
-                }
+            if(heap_size > 0){
+				T minPriority = heap[1];
+				heap.swapper(1,heap_size);
+				heap_size--;
+				heapify(1);
+				return minPriority;
 			}
-            heap.erase_pos(index);
-            heap.push_back(minPriority);
-            heap_size--;
-            return minPriority;
+			else{
+				throw -1;
+			}
         }
 
  		// return the heap size

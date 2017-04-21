@@ -227,9 +227,6 @@ namespace cs202 {
 				buffer_[k] = item;
 				size_++;
 			}
-			else{
-				throw -1;
-			}
 		}
 		else if(size_ == 0){
 			size_++;
@@ -240,9 +237,6 @@ namespace cs202 {
 				if(some_ptr != NULL){
 					buffer_ = some_ptr;
 					buffer_[k] = item;
-				}
-				else{
-					throw -1;
 				}
 			}
 		}
@@ -262,9 +256,6 @@ namespace cs202 {
 						buffer_[i]=buffer_[i-1];
 					}
 					buffer_[k] = item;
-				}
-				else{
-					throw -1;
 				}
 			}
 		}
