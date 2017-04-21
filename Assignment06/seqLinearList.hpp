@@ -75,6 +75,14 @@ namespace cs202 {
         // Insert item at position k
         	void insert(const T& item, const int& k);
 
+			void swapper(const int& pos1, const int& pos2){
+				if (pos1 < size_ && pos2 < size_){
+					T temp = buffer_[pos1];
+					buffer_[pos1] = buffer_[pos2];
+					buffer_[pos2] = temp;
+				}
+			}
+
         // Iterator class for LinearList
         // This should be used to traverse the LinearList
         // See std::vector<T>::iterator for more understanding
@@ -133,8 +141,7 @@ namespace cs202 {
 	}
 
 	template<class T>
-	void LinearList<T>::push_back(const T& item)
-	{
+	void LinearList<T>::push_back(const T& item){
 		if(size_>=capacity_){
 			T* some_ptr = (T*) realloc(buffer_, (capacity_+1)*sizeof(T));
 			if(some_ptr != NULL){
