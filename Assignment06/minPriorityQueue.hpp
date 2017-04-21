@@ -82,7 +82,7 @@ namespace cs202{
 			for(int i = 1; i < v.capacity() + 1; i++){
 				heap.push_back(v[i - 1]);
 			}
-            heap_size = 0;
+            heap_size = v.size();
 		}
 
  		// insert a value to the heap
@@ -122,11 +122,26 @@ namespace cs202{
 
 	    // build a heap from elements of a LinearList container 
  		void build_heap(const LinearList<T>& v){
-             
-         }
+			heap.resize(v.capacity() + 1);
+            heap.push_back(std::numeric_limits<T>::max());
+			for(int i = 1; i <= v.size(); i++){
+				heap.push_back(v[i - 1]);
+			}
+            heap_size = v.size();
+			for(int i = (heap_size/2); i >= 1; i--){
+				heapify(i);
+			}
+        }
 
  		// check if MinPriorityQueue is empty
- 		inline bool empty();
+ 		inline bool empty(){
+			 if(heap_size == 0){
+				 return true;
+			 }
+			 else{
+				 return false;
+			 }
+		 }
 
  		// heap_decrease_key function
  		void heap_decrease_key(const size_t& pos){
