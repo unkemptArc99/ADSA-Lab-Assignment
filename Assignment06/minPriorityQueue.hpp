@@ -85,7 +85,7 @@ namespace cs202{
 		}
 
  		// insert a value to the heap
- 		void insert(const T& a){
+ 		void insert(const T a){
 			heap_size++;
 			heap.insert(a,heap_size);
 			heap_decrease_key(heap_size);
@@ -105,6 +105,7 @@ namespace cs202{
             if(heap_size > 0){
 				T minPriority = heap[1];
 				heap.swapper(1,heap_size);
+				heap.erase_pos(heap_size);
 				heap_size--;
 				heapify(1);
 				return minPriority;
