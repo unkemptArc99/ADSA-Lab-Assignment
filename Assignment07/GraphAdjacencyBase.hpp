@@ -9,6 +9,7 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <limits>
 
 namespace cs202{
 		class GraphAdjacencyBase {
