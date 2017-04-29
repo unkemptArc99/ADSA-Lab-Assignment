@@ -30,7 +30,7 @@ namespace cs202{
 		* Returns true if an edge exists between vertices i and j, false otherwise.
 		*/
 	    bool edgeExits(int i, int j){
-            if(i < graph.capacity() && j < graph.capacity()){
+            if(i < graph.size() && j < graph.size()){
                 //creating temporary variables for traversal of list
                 list<int> x = graph[i];
                 node<int> *temp = x.head;
@@ -59,13 +59,40 @@ namespace cs202{
 		*/
         int edges(){
             int total = 0;
+            //calculating the edges
             for(int i = 0; i < graph.size(); ++i){
                 total += graph[i].length();
             }
             return total;
         }
 
+        /*
+	    * Function add:
+		* Adds an edge between vertices i and j
+		*/
+        void add(int i, int j){
+            if(i < graph.size() && j < graph.size()){
+                graph[i].append(j);
+            }
+            else{
+                throw -1;
+            }
+        }
 
+        /*
+		* Function: remove
+		* Deleted the edge between vertices i and j
+		*/
+		void remove(int i, int j){
+            if(i < graph.size() && j < graph.size()){
+                graph[i].remove(j);
+            }
+            else{
+                throw -1;
+            }
+        }
+
+        
     };
 }
 #endif /* ifndef ADJACENCY_LIST */
