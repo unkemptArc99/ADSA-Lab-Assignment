@@ -15,10 +15,11 @@ namespace cs202{
     class AdjacencyMatrix : public GraphAdjacencyBase {
     public:
         //main container of the Adjacent Matrix
-        LinearList<LinearList<bool> > graph;
+        LinearList<bool> graph;
+        int vert;
 
         //Constructor for the Matrix class
-        AdjacencyMatrix(int v) : graph(v,LinearList<bool> (v,false)) {}
+        AdjacencyMatrix(int v) : graph(v*v,false) {vert = v;}
 
         //destructor for the Matrix class
         ~AdjacencyMatrix() {}
@@ -28,13 +29,8 @@ namespace cs202{
 		* Returns true if an edge exists between vertices i and j, false otherwise.
 		*/
 	    bool edgeExists(int i, int j){
-            if(i < graph.size()  && j < graph.size()){
-                if(graph[i][j]){
-                    return true;
-                }
-                else{
-                    return false;
-                }
+            if(i < vert  && j < vert){
+                return graph.at(i*vert + j);
             }
             throw -1;
         }
@@ -54,9 +50,9 @@ namespace cs202{
         int edges(){
             int total = 0;
             //calculating the edges
-            for(int i = 0; i < graph.size(); ++i){
-                for(int j = 0; j < graph[i].size(); ++j){
-                    if(graph[i][j])
+            for(int i = 0; i < vert; ++i){
+                for(int j = 0; j < vert; ++j){
+                    if(graph[i*vert + j])
                         total++;
                 }
             }
@@ -69,7 +65,7 @@ namespace cs202{
 		*/
         void add(int i, int j){
             if(i < graph.size() && j < graph.size()){
-                graph[i].modify(true,j);
+                graph.modify(true,i*vert + j);
             }
             else{
                 throw -1;
@@ -82,7 +78,7 @@ namespace cs202{
 		*/
 		void remove(int i, int j){
             if(i < graph.size() && j < graph.size()){
-                graph[i].modify(false,j);
+                graph.modify(false,i*vert + j);
             }
             else{
                 throw -1;
@@ -96,8 +92,8 @@ namespace cs202{
 		int degree(int i){
             int total = 0;
             if(i < graph.size()){
-                for(int j = 0; j < graph[i].size(); ++j){
-                    if(graph[i][j])
+                for(int j = 0; j < vert; ++j){
+                    if(graph[i*vert + j])
                         total++;
                 }
                 return total;
