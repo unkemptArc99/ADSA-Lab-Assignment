@@ -6,6 +6,8 @@ ADSA Assignment 07 - Adjacency List header file
 #ifndef ADJACENCY_LIST
 #define ADJACENCY_LIST 1
 
+#include <exception>
+
 #include "GraphAdjacencyBase.hpp"
 #include "list.hpp"
 
@@ -14,6 +16,7 @@ namespace cs202{
     class ListNode{
     public:
         list<int> connections;
+        ListNode(){};
     };
 
     //Main class for Adjacency List
@@ -29,10 +32,6 @@ namespace cs202{
             //creating space for the vertices
             graph = new ListNode[vertices];
             totalNodes = vertices;
-            //initialising the vertices
-            for(int i = 0; i < totalNodes; ++i){
-                graph[i]->value = std::numeric_limits::min();               
-            }
         }
 
         //Destructor for the List class   
@@ -44,30 +43,27 @@ namespace cs202{
 		* Function: edgeExists
 		* Returns true if an edge exists between vertices i and j, false otherwise.
 		*/
-	    bool edgeExits(T i, T j){
+	    bool edgeExits(int i, int j){
             //temp pointer for traversal of list
-            node<T> *temp;
-            int p;
-            for(p = 0; p < totalNodes; ++p){
-                //searching for value i
-                if(graph[p]->value == i){
-                    temp = graph[p]->connections->head;
-                    while(temp != NULL){
-                        if(temp->node_val == j){
-                            return true;
-                        }
-                        else{
-                            temp = temp->next;
-                        }
+            node<int> *temp;
+            if(i < totalNodes && j < totalNodes){
+                temp = graph[i].connections.head;
+                while(temp != NULL){
+                    //searching for j
+                    if(temp->node_val == j){
+                        return true;
                     }
-                    if(temp == NULL){
-                        return false;
+                    else{
+                        temp = temp->next;
                     }
                 }
+                if(temp == NULL){
+                    return false;
+                }
             }
-            if(p == totalNodes){
-                throw -1;
-            }
+            //throwing exceptions if the nodes are out of range
+            throw -1;
+            return false;
         }
     };
 }
