@@ -92,7 +92,18 @@ namespace cs202{
             }
         }
 
-        
+        /*
+		* Function: degree
+		* Returns the degree of the vertex i
+		*/
+		int degree(int i){
+            if(i < graph.size()){
+                return graph[i].length();
+            }
+            else{
+                throw -1;
+            }
+        }
     };
 }
 #endif /* ifndef ADJACENCY_LIST */
