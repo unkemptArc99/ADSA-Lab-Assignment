@@ -157,7 +157,6 @@ namespace cs202
         if(temp!=NULL){
             while(temp!=NULL){
                 if(temp->node_val == x){
-                    std::cout<<temp->node_val<<std::endl;
                     if(temp!=head){
                         temp1 = head;
                         while(temp1->next != temp){

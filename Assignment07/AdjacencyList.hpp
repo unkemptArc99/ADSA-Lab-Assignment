@@ -29,7 +29,7 @@ namespace cs202{
 		* Function: edgeExists
 		* Returns true if an edge exists between vertices i and j, false otherwise.
 		*/
-	    bool edgeExits(int i, int j){
+	    bool edgeExists(int i, int j){
             if(i < graph.size() && j < graph.size()){
                 //creating temporary variables for traversal of list
                 list<int> x = graph[i];
