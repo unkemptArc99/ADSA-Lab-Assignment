@@ -10,61 +10,46 @@ ADSA Assignment 07 - Adjacency List header file
 
 #include "GraphAdjacencyBase.hpp"
 #include "list.hpp"
+#include "seqLinearList.hpp"
 
 namespace cs202{
-    //Class for individual vertex node.
-    class ListNode{
-    public:
-        list<int> connections;
-        ListNode(){};
-    };
-
     //Main class for Adjacency List
     class AdjacencyList : public GraphAdjacencyBase {
     public:
         //Main container for the List
-        ListNode *graph;
-        //Variable to store the total number of nodes
-        int totalNodes;
+        LinearList<list<int> > graph;
 
         //Constructor for Adjacency List class
-        AdjacencyList(int vertices){
-            //creating space for the vertices
-            graph = new ListNode[vertices];
-            totalNodes = vertices;
-        }
+        AdjacencyList(int v) : graph(v, list<int>()) {}
 
         //Destructor for the List class   
-        ~AdjacencyList(){
-            delete graph;
-        }
+        ~AdjacencyList(){}
 
         /*
 		* Function: edgeExists
 		* Returns true if an edge exists between vertices i and j, false otherwise.
 		*/
 	    bool edgeExits(int i, int j){
-            //temp pointer for traversal of list
-            node<int> *temp;
-            if(i < totalNodes && j < totalNodes){
-                temp = graph[i].connections.head;
-                while(temp != NULL){
-                    //searching for j
-                    if(temp->node_val == j){
-                        return true;
-                    }
-                    else{
-                        temp = temp->next;
-                    }
-                }
-                if(temp == NULL){
-                    return false;
-                }
-            }
-            //throwing exceptions if the nodes are out of range
-            throw -1;
-            return false;
+            
         }
+
+        /*
+		* Function: vertices
+		* Returns the number of vertices in the adjacency structure.
+		*/
+        inline int vertices(){
+            return totalNodes;
+        }
+
+        /*
+		* Function: edges
+		* Returns the number of edges in the adjacency structure.
+		*/
+        inline int edges(){
+            return totalEdges;
+        }
+
+
     };
 }
 #endif /* ifndef ADJACENCY_LIST */
