@@ -23,7 +23,7 @@ namespace cs202{
         AdjacencyList(int v) : graph(v, list<int>()) {}
 
         //Destructor for the List class   
-        ~AdjacencyList(){}
+        ~AdjacencyList() {}
 
         /*
 		* Function: edgeExists
