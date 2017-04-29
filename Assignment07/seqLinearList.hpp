@@ -1,3 +1,8 @@
+/******************************************************************
+Author : Abhishek
+Roll No : B15103
+ADSA Assignment 07 - Sequential Linear List header file
+******************************************************************/
 #ifndef _SEQ_LINEAR_LIST
 #define _SEQ_LINEAR_LIST 1
 

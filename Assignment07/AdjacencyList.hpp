@@ -30,7 +30,19 @@ namespace cs202{
 		* Returns true if an edge exists between vertices i and j, false otherwise.
 		*/
 	    bool edgeExits(int i, int j){
-            
+            if(i < graph.capacity() && j < graph.capacity()){
+                //creating temporary variables for traversal of list
+                list<int> x = graph[i];
+                node<int> *temp = x.head;
+                while(temp != NULL){
+                    if(temp->node_val == j){
+                        return true;
+                    }
+                    temp = temp->next;
+                }
+                return false;
+            }
+            throw -1;
         }
 
         /*
@@ -38,15 +50,19 @@ namespace cs202{
 		* Returns the number of vertices in the adjacency structure.
 		*/
         inline int vertices(){
-            return totalNodes;
+            return graph.size();
         }
 
         /*
 		* Function: edges
 		* Returns the number of edges in the adjacency structure.
 		*/
-        inline int edges(){
-            return totalEdges;
+        int edges(){
+            int total = 0;
+            for(int i = 0; i < graph.size(); ++i){
+                total += graph[i].length();
+            }
+            return total;
         }
 
 
