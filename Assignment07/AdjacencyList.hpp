@@ -11,30 +11,27 @@ ADSA Assignment 07 - Adjacency List header file
 
 namespace cs202{
     //Class for individual vertex node.
-    template<class T>
     class ListNode{
     public:
-        T value;
-        list<T> connections;
+        list<int> connections;
     };
 
     //Main class for Adjacency List
-    template<typename T>
     class AdjacencyList : public GraphAdjacencyBase {
     public:
         //Main container for the List
-        ListNode<T> *graph;
+        ListNode *graph;
         //Variable to store the total number of nodes
         int totalNodes;
 
         //Constructor for Adjacency List class
         AdjacencyList(int vertices){
             //creating space for the vertices
-            graph = new ListNode<T>[vertices];
+            graph = new ListNode[vertices];
             totalNodes = vertices;
             //initialising the vertices
             for(int i = 0; i < totalNodes; ++i){
-                graph[i]->value = std::numeric_limits<T>::min();               
+                graph[i]->value = std::numeric_limits::min();               
             }
         }
 
@@ -52,6 +49,7 @@ namespace cs202{
             node<T> *temp;
             int p;
             for(p = 0; p < totalNodes; ++p){
+                //searching for value i
                 if(graph[p]->value == i){
                     temp = graph[p]->connections->head;
                     while(temp != NULL){

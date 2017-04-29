@@ -12,7 +12,6 @@
 #include <limits>
 
 namespace cs202{
-		template<class T>
 		class GraphAdjacencyBase {
 		public:
 			/* Destructor:
@@ -23,7 +22,7 @@ namespace cs202{
 			* Function: edgeExists
 			* Returns true if an edge exists between vertices i and j, false otherwise.
 			*/
-			virtual bool edgeExits(T i, T j) = 0;
+			virtual bool edgeExits(int i, int j) = 0;
 			/*
 			* Function: vertices
 			* Returns the number of vertices in the adjacency structure.
