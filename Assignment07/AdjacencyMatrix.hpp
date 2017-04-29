@@ -69,7 +69,7 @@ namespace cs202{
 		*/
         void add(int i, int j){
             if(i < graph.size() && j < graph.size()){
-                graph[i].insert(true,j);
+                graph[i].modify(true,j);
             }
             else{
                 throw -1;
@@ -82,7 +82,7 @@ namespace cs202{
 		*/
 		void remove(int i, int j){
             if(i < graph.size() && j < graph.size()){
-                graph[i].insert(false,j);
+                graph[i].modify(false,j);
             }
             else{
                 throw -1;

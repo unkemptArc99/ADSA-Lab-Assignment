@@ -79,12 +79,20 @@ namespace cs202 {
 
         // Insert item at position k
         	void insert(const T item, const int& k);
-
+		
+		//Swap pos1 and pos2
 			void swapper(const int& pos1, const int& pos2){
 				if (pos1 < size_ && pos2 < size_){
 					T temp = buffer_[pos1];
 					buffer_[pos1] = buffer_[pos2];
 					buffer_[pos2] = temp;
+				}
+			}
+		
+		//Modify position
+			void modify(const T item,const int& pos){
+				if(pos < size_){
+					buffer_[pos] = item;
 				}
 			}
   	};
