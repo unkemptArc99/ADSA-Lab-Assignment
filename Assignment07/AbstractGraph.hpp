@@ -25,17 +25,17 @@ namespace cs202{
     * Function: edgeExists
     * Returns true if an edge exists between vertices i and j, false otherwise.
     */
-        virtual bool edgeExits(int i, int j) = 0;
+        virtual bool edgeExists(int i, int j) = 0;
     /*  
     * Function: edges
     * Returns the number of edges in the adjacency structure.
     */
-        virtual void edges() = 0;
+        virtual int edges() = 0;
     /*
     * Function: vertices
     * Returns the number of vertices in the adjacency structure.
     */
-        virtual void vertices() = 0;
+        virtual int vertices() = 0;
     /*
     * Function add:
     * Adds an edge between vertices i and j

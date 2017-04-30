@@ -60,31 +60,41 @@ namespace cs202{
         * Function: edgeExists
         * Returns true if an edge exists between vertices i and j, false otherwise.
         */
-        bool edgeExits(int i, int j) {}
+        bool edgeExists(int i, int j) {
+            return main_graph->edgeExists(i,j);
+        }
 
         /*  
         * Function: edges
         * Returns the number of edges in the adjacency structure.
         */
-        virtual void edges() = 0;
+        int edges(){
+            return main_graph->edges();
+        }
 
         /*
         * Function: vertices
         * Returns the number of vertices in the adjacency structure.
         */
-        virtual void vertices() = 0;
+        int vertices(){
+            return main_graph->vertices();
+        }
 
         /*
         * Function add:
         * Adds an edge between vertices i and j
         */
-        virtual void add(int i, int j) = 0;
+        void add(int i, int j){
+            main_graph->add(i,j);
+        }
 
         /*
         * Function: remove
         * Deleted the edge between vertices i and j
         */
-        virtual void remove(int i, int j) = 0;
+        void remove(int i, int j){
+            main_graph->remove(i,j);
+        }
 
         /*
         * Function dfs:
