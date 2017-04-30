@@ -20,7 +20,7 @@ namespace cs202{
     /* Destructor:
     * releases all resources acquired by the class
     */
-        virtual ~AbstractGraph();
+        virtual ~AbstractGraph() {}
     /*
     * Function: edgeExists
     * Returns true if an edge exists between vertices i and j, false otherwise.

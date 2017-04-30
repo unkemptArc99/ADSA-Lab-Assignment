@@ -10,11 +10,11 @@
 */
 
 namespace cs202{
-    class DirectedGraph : AbstractGraph {
+    class DirectedGraph : public AbstractGraph {
     public:
         //main container for the graph
         GraphAdjacencyBase *main_graph;
-        
+
         /*
         * Constructor: DirectedGraph
         *
@@ -103,14 +103,14 @@ namespace cs202{
         * Does a depth first traversal of the entire graph.
         * Runs the given function work, with the value of each vertex.
         */
-        virtual void dfs(void (*work)(int&)) = 0;
+        void dfs(void (*work)(int&)) {}
 
         /*
         * Function bfs:
         * Does a breadth first traversal of the entire graph.
         * Runs the given function work, with the value of each vertex.
         */
-        virtual void bfs(void (*work)(int&)) = 0;
+        void bfs(void (*work)(int&)) {}
     };
 }
 #endif /* ifndef DIRECTED_GRAPH */
