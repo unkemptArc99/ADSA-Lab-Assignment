@@ -104,6 +104,31 @@ namespace cs202{
                 throw -1;
             }
         }
+
+        /*
+		* Function: incomingEdges
+		* Returns the number of edges to the the node
+		*/
+		int incomingEdges(int i){
+            if(i < graph.size()){
+                int total = 0;
+                for(int j = 0; j < graph.size(); ++j){
+                    if(j != i){
+                        node<int> *temp = graph[i].head;
+                        while(temp != NULL){
+                            if(temp->node_val == i){
+                                total++;
+                            }
+                            temp = temp->next;
+                        }
+                    }
+                }
+                return total;
+            }
+            else{
+                throw -1;
+            }
+        }
     };
 }
 #endif /* ifndef ADJACENCY_LIST */

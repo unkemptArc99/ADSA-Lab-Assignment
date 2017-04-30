@@ -102,6 +102,27 @@ namespace cs202{
                 throw -1;
             }
         }
+
+        /*
+		* Function: incomingEdges
+		* Returns the number of edges to the the node
+		*/
+		int incomingEdges(int i){
+            if(i < graph.size()){
+                int total = 0;
+                for(int j = 0; j < vert; ++j){
+                    if(j != i){
+                        if(graph[j*vert + i]){
+                            total++;
+                        }
+                    }
+                }
+                return total;
+            }
+            else{
+                throw -1;
+            }
+        }
     };
 }
 #endif /* ifndef ADJACENCY_MATRIX */

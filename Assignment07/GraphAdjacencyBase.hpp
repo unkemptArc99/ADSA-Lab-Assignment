@@ -49,6 +49,11 @@ namespace cs202{
 			* Returns the degree of the vertex i
 			*/
 			virtual int degree(int i) = 0;
+			/*
+			* Function: incomingEdges
+			* Returns the number of edges to the the node
+			*/
+			virtual int incomingEdges(int i) = 0;
 		};
 }
 #endif /* ifndef GRAPH_ADJACENCY_BAG */
