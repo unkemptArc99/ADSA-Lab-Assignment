@@ -12,7 +12,9 @@
 namespace cs202{
     class DirectedGraph : AbstractGraph {
     public:
+        //main container for the graph
         GraphAdjacencyBase *main_graph;
+        
         /*
         * Constructor: DirectedGraph
         *

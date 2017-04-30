@@ -5,10 +5,16 @@
 * Subclasses AbstractGraph
 */
 #include "AbstractGraph.hpp"
+#include "GraphAdjacencyBase.hpp"
+#include "AdjacencyList.hpp"
+#include "AdjacencyMatrix.hpp"
 
 namespace cs202{
     class UndirectedGraph : AbstractGraph {
     public:
+        //main container for the graph
+        GraphAdjacencyBase *main_graph;
+        
         /*
         * Constructor: UndirectedGraph
         *
@@ -17,7 +23,19 @@ namespace cs202{
         * 'm' for AdjacencyMatrix
         * 'l' for AdjacencyList
         */
-        UndirectedGraph(int vertices, char mode);
+        UndirectedGraph(int vertices, char mode){
+            if(rep == 'm'){
+                AdjacencyMatrix *c1 = new AdjacencyMatrix(numVertices);
+                main_graph = c1;
+            }
+            else if(rep == 'l'){
+                AdjacencyList *c2 = new AdjacencyList(numVertices);
+                main_graph = c2;
+            }
+            else{
+                throw -1;
+            }
+        }
         /*
         * Returns the degree of the vertex.
         */
