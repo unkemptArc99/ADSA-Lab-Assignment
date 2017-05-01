@@ -8,12 +8,14 @@
 #include "GraphAdjacencyBase.hpp"
 #include "AdjacencyList.hpp"
 #include "AdjacencyMatrix.hpp"
+#include "queue.hpp"
 
 namespace cs202{
     class UndirectedGraph : public AbstractGraph {
     public:
         //main container for the graph
         GraphAdjacencyBase *main_graph;
+        char representation;
 
         /*
         * Constructor: UndirectedGraph
@@ -27,10 +29,12 @@ namespace cs202{
             if(mode == 'm'){
                 AdjacencyMatrix *c1 = new AdjacencyMatrix(vertices);
                 main_graph = c1;
+                representation = mode;
             }
             else if(mode == 'l'){
                 AdjacencyList *c2 = new AdjacencyList(vertices);
                 main_graph = c2;
+                representation = mode;
             }
             else{
                 throw -1;
@@ -111,7 +115,30 @@ namespace cs202{
         * Does a breadth first traversal of the entire graph.
         * Runs the given function work, with the value of each vertex.
         */
-        void bfs(void (*work)(int&)) {}
+        void bfs(void (*work)(int&)) {
+            LinearList<int> colorOfNodes(main_graph->vertices(),0);         //0 FOR white, 1 for gray, 2 for black
+            LinearList<int> predecessor(main_graph->vertices(),-1);
+            LinearList<int> distance(main_graph->vertices(),std::numeric_limits<int>::max());
+            colorOfNodes.modify(1,0);
+            distance.modify(0,0);
+            queue<int> main_queue;
+            main_queue.push(0);
+            while(!main_queue.empty()){
+                int u = main_queue.pop();
+                colorOfNodes.modify(2,u);
+                work(u);
+                for(int i = 0; i < main_graph->vertices(); ++i){
+                    if(main_graph->edgeExists(u,i)){
+                        if(colorOfNodes.at(i) == 0){
+                            colorOfNodes.modify(1,i);
+                            distance.modify(distance[u] + 1,i);
+                            predecessor.modify(u,i);
+                            main_queue.push(i);
+                        }
+                    }
+                }
+            }
+        }
     };
 }
 #endif /* ifndef UNDIRECTED_GRAPH */
