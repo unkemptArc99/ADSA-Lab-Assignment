@@ -98,18 +98,10 @@ namespace cs202
 
     template<class T>
     list<T>::list(const list<T>& x){
-        node<T> *temp;
-        temp = x.head;
-        head = temp;
-        head->next = (node<T> *)NULL;
-        temp = temp->next;
-        node<T> *temp1 = head;
-        node<T> *temp2;
-        temp2 = new node<T>;
-        while(temp!=NULL){
-            temp2->node_val = temp->node_val;
-            temp2->next = (node<T> *)NULL;
-            temp1->next = temp2;
+        head = NULL;
+        node<T> *temp = x.head;
+        while(temp != NULL){
+            append(temp->node_val);
             temp = temp->next;
         }
     }
@@ -119,7 +111,6 @@ namespace cs202
         while(head!=NULL){
             node<T> *temp1 = head;
             head = temp1->next;
-            free(temp1);
         }
     }
 
@@ -182,11 +173,10 @@ namespace cs202
 
     template<class T>
     void list<T>::append(list<T>& x){
-        node<T> *temp = head;
-        while(temp->next!=NULL){
-            temp=temp->next;
+        node<T> *temp1 = x.head;
+        while(temp1 != NULL){
+            append(temp1->node_val);
         }
-        temp->next = x.head;
     }
 
     template<class T>

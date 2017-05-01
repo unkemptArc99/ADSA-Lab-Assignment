@@ -40,7 +40,7 @@ namespace cs202{
 		* Returns the number of vertices in the adjacency structure.
 		*/
         inline int vertices(){
-            return graph.size();
+            return graph.size() / vert;
         }
 
         /*

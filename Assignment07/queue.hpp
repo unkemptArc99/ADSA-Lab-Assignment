@@ -82,7 +82,6 @@ namespace cs202
         T x = (qu.head)->node_val;
         node<T> *temp = qu.head;
         qu.head = (qu.head)->next;
-        free(temp);
         return x;
     }
 
