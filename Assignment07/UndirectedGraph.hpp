@@ -189,6 +189,7 @@ namespace cs202{
                     }
                 }
                 else{
+                    std::cout<<"The path is ";
                     while(u != source){
                         std::cout<<"("<<u%n<<","<<u/n<<")<-";
                         u = predecessor.at(u);
