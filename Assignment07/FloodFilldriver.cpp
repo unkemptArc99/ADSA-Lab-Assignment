@@ -199,7 +199,7 @@ int main(){
         }
         else if(i % n == n - 1){
             A->remove(i, i - 1);
-            A->remove(i, i + n);
+            A->remove(i, i + n);//putting the node's adjacent nodes in the stack
             A->remove(i, i - n);
             A->remove(i, i + n - 1);
             A->remove(i, i - n - 1); 
