@@ -37,5 +37,70 @@ int main(){
         A = new cs202::UndirectedGraph (n*m,'l');
     }
 
+    //making a standard matrix with many cases
+    for(int i = 0; i < n*m; ++i){
+        if(i == 0){
+            A->add(i, i + 1);
+            A->add(i, i + n);
+            A->add(i, i + n + 1);
+        }
+        else if(i == n - 1){
+            A->add(i, i - 1);
+            A->add(i, i + n);
+            A->add(i, i + n - 1);
+        }
+        else if(i == n * (m - 1)){
+            A->add(i, i + 1);
+            A->add(i, i - n);
+            A->add(i, i - n + 1);
+        }
+        else if(i == n * m - 1){
+            A->add(i, i - 1);
+            A->add(i, i - n);
+            A->add(i, i - n - 1);
+        }
+        else if(i % n == 0){
+            A->add(i, i + 1);
+            A->add(i, i + n);
+            A->add(i, i - n);
+            A->add(i, i + n + 1);
+            A->add(i, i - n + 1);
+        }
+        else if(i % n == n - 1){
+            A->add(i, i - 1);
+            A->add(i, i + n);
+            A->add(i, i - n);
+            A->add(i, i + n - 1);
+            A->add(i, i - n - 1); 
+        }
+        else if(i / n == 0){
+            A->add(i, i + 1);
+            A->add(i, i - 1);
+            A->add(i, i + n);
+            A->add(i, i + n + 1);
+            A->add(i, i + n - 1);
+        }
+        else if(i / n == m - 1){
+            A->add(i, i + 1);
+            A->add(i, i - 1);
+            A->add(i, i - n);
+            A->add(i, i - n + 1);
+            A->add(i, i - n - 1);
+        }
+        else{
+            //lateral
+            A->add(i, i + 1);
+            A->add(i, i - 1);
+            A->add(i, i + n);
+            A->add(i, i - n);
+            //diagonals
+            A->add(i, i + n + 1);
+            A->add(i, i + n - 1);
+            A->add(i, i - n + 1);
+            A->add(i, i - n - 1);
+        }
+    }
+
+    
     return 0;
 }
