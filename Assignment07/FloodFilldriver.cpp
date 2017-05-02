@@ -11,10 +11,18 @@ ADSA Assignment 07 - Flood Fill driver file
 using namespace std;
 
 void printer(char matrix[],int x,int y){
+    cout<<endl;
     int counter = 0;
+    cout<<"  ";
+    for(int i = 0; i < x; ++i){
+        cout<<i<<" ";
+    }
+    cout<<endl;
     for(int i = 0; i < y; ++i){
+        cout<<i<<" ";
         for(int j = 0; j < x; ++j){
-            cout<<matrix[counter]<<" "<<endl;
+            
+            cout<<matrix[counter]<<" ";
             counter++;
         }
         cout<<endl;
