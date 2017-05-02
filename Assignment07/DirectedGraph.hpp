@@ -146,6 +146,57 @@ namespace cs202{
         }
 
         /*
+        * Funtion flood_fill_path:
+        * Determines the flood fill path
+        */
+        void flood_fill_path(int source,int n,bool (*work)(int&)) {
+            //Initially marking all vertex as not visited
+            LinearList<int> colorOfNodes(main_graph->vertices(),0);         //0 FOR white, 1 for black
+            //Initially marking predecessor's null
+            LinearList<int> predecessor(main_graph->vertices(),-1);
+
+            //main stack for dfs
+            stack<int> main_stack;
+
+            //pushing the source node
+            main_stack.push(source);
+
+            while(!main_stack.empty()){
+                //popping the topmost vertex and working on it
+                int u = main_stack.top();
+                main_stack.pop();
+
+                bool temporary;
+                //There might be already visited nodes in the stack
+                if(colorOfNodes.at(u) == 0){
+                    colorOfNodes.modify(1,u);
+                    temporary = work(u);
+                }
+
+                if(temporary){
+                    //putting the node's adjacent nodes in the stack
+                    for(int i = 0; i < main_graph->vertices(); ++i){
+                        if(main_graph->edgeExists(u,i)){
+                            if(colorOfNodes.at(i) == 0){
+                                predecessor.modify(u,i);
+                                main_stack.push(i);
+                            }
+                        }
+                    }
+                }
+                else{
+                    std::cout<<"The path is ";
+                    while(u != source){
+                        std::cout<<"("<<u%n<<","<<u/n<<")<-";
+                        u = predecessor.at(u);
+                    }
+                    std::cout<<"("<<source%n<<","<<source/n<<")";
+                    return;
+                }
+            }
+        }
+
+        /*
         * Function bfs:
         * Does a breadth first traversal of the entire graph.
         * Runs the given function work, with the value of each vertex.
