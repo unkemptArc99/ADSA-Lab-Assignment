@@ -237,7 +237,7 @@ int main(){
     
     printer(n,m);
 
-    A->dfs_source(source,worker);
+    A->flood_fill_path(source,n,worker);
 
     cout<<endl;
     printer(n,m);

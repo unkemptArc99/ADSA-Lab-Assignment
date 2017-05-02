@@ -150,10 +150,10 @@ namespace cs202{
         }
 
         /*
-        * Funtion dfs_source:
-        * DFS from a specific source node which works on the based of the output given by the work function
+        * Funtion flood_fill_path:
+        * Determines the flood fill path
         */
-        void dfs_source(int source,bool (*work)(int&)) {
+        void flood_fill_path(int source,int n,bool (*work)(int&)) {
             //Initially marking all vertex as not visited
             LinearList<int> colorOfNodes(main_graph->vertices(),0);         //0 FOR white, 1 for black
             //Initially marking predecessor's null
@@ -189,6 +189,11 @@ namespace cs202{
                     }
                 }
                 else{
+                    while(u != source){
+                        std::cout<<"("<<u%n<<","<<u/n<<")<-";
+                        u = predecessor.at(u);
+                    }
+                    std::cout<<"("<<source%n<<","<<source/n<<")";
                     return;
                 }
             }
