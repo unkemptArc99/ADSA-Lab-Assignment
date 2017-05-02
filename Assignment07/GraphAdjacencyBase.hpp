@@ -1,3 +1,8 @@
+/******************************************************************
+Author : Abhishek
+Roll No : B15103
+ADSA Assignment 07 - Graph Adjacency Base header file
+******************************************************************/
 #ifndef GRAPH_ADJACENCY_BAG
 #define GRAPH_ADJACENCY_BAG 1
 

@@ -1,3 +1,8 @@
+/******************************************************************
+Author : Abhishek
+Roll No : B15103
+ADSA Assignment 07 - Abstract Graph header file
+******************************************************************/
 #ifndef ABSTRACT_GRAPH
 #define ABSTRACT_GRAPH 1
 
@@ -9,10 +14,6 @@
 #include <cstdlib>
 #include <iostream>
 #include <limits>
-#include <vector>
-#include <queue>
-#include <stack>
-#include <algorithm>
 
 namespace cs202{
     class AbstractGraph {
