@@ -10,6 +10,17 @@ ADSA Assignment 07 - Flood Fill driver file
 
 using namespace std;
 
+void printer(char matrix[],int x,int y){
+    int counter = 0;
+    for(int i = 0; i < y; ++i){
+        for(int j = 0; j < x; ++j){
+            cout<<matrix[counter]<<" "<<endl;
+            counter++;
+        }
+        cout<<endl;
+    }
+}
+
 int main(){
     system("clear");
     cout<<"WELCOME TO THE FLOOD-FILL SIMULATOR"<<endl;
@@ -99,6 +110,29 @@ int main(){
         }
     }
 
+    //enquiring for source and destination node
+    int x,y;
+    cout<<endl<<"Enter the source node's coordinate (x y) : ";
+    cin>>x>>y;
+    source = x*n + y;
+    cout<<endl<<"Enter the destination node's coordinate (x y) : ";
+    cin>>x>>y;
+    dest = x*n + y;
+
+    //initial matrix initialisation
+    char matrix[n*m];
+    for(int i = 0; i < n*m; ++i){
+        if(i == source){
+            matrix[i] = 'S';
+        }
+        else if(i == dest){
+            matrix[i] = 'D';
+        }
+        else{
+            matrix[i] = 'U';
+        }
+    }
+
     //taking the blocked cells
     cout<<endl<<"Enter the number of blocked cells : ";
     int num;
@@ -174,16 +208,10 @@ int main(){
             A->remove(i, i - n + 1);
             A->remove(i, i - n - 1);
         }
+        matrix[i] = 'B';
         i = temp;
     }
-
-    int x,y;
-    cout<<endl<<"Enter the source node's coordinate (x y) : ";
-    cin>>x>>y;
-    source = x*n + y;
-    cout<<endl<<"Enter the destination node's coordinate (x y) : ";
-    cin>>x>>y;
-    dest = x*n + y;
-
+    
+    printer(matrix,n,m);
     return 0;
 }
