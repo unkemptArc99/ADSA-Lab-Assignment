@@ -150,6 +150,45 @@ namespace cs202{
         }
 
         /*
+        * Funtion dfs_source:
+        * DFS from a specific source node
+        */
+        void dfs_source(int source,void (*work)(int&)) {
+            //Initially marking all vertex as not visited
+            LinearList<int> colorOfNodes(main_graph->vertices(),0);         //0 FOR white, 1 for black
+            //Initially marking predecessor's null
+            LinearList<int> predecessor(main_graph->vertices(),-1);
+
+            //main stack for dfs
+            stack<int> main_stack;
+
+            //pushing the source node
+            main_stack.push(source);
+
+            while(!main_stack.empty()){
+                //popping the topmost vertex and working on it
+                int u = main_stack.top();
+                main_stack.pop();
+
+                //There might be already visited nodes in the stack
+                if(colorOfNodes.at(u) == 0){
+                    colorOfNodes.modify(1,u);
+                    work(u);
+                }
+
+                //putting the node's adjacent nodes in the stack
+                for(int i = 0; i < main_graph->vertices(); ++i){
+                    if(main_graph->edgeExists(u,i) && main_graph->edgeExists(i,u)){
+                        if(colorOfNodes.at(i) == 0){
+                            predecessor.modify(u,i);
+                            main_stack.push(i);
+                        }
+                    }
+                }
+            }
+        }
+
+        /*
         * Function bfs:
         * Does a breadth first traversal of the entire graph.
         * Runs the given function work, with the value of each vertex.

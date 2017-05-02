@@ -91,7 +91,7 @@ int main(){
             A->add(i, i - 1);
             A->add(i, i + n);
             A->add(i, i - n);
-            //diagonals
+            //diagonalsadd
             A->add(i, i + n + 1);
             A->add(i, i + n - 1);
             A->add(i, i - n + 1);
@@ -176,6 +176,14 @@ int main(){
         }
         i = temp;
     }
+
+    int x,y;
+    cout<<endl<<"Enter the source node's coordinate (x y) : ";
+    cin>>x>>y;
+    source = x*n + y;
+    cout<<endl<<"Enter the destination node's coordinate (x y) : ";
+    cin>>x>>y;
+    dest = x*n + y;
 
     return 0;
 }
