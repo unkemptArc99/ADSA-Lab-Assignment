@@ -23,7 +23,7 @@ bool worker(int& i){
             matrix[i] = 'T';
             return true;
         }
-        return false;
+        return true;
     }
 }
 
@@ -54,9 +54,9 @@ int main(){
     //Variable to store the representation of the graph
     char rep; 
 
-    cout<<endl<<"Enter the value of n (number of columns of matrix OR the maximum X-axis value of the matrix) : ";
+    cout<<endl<<"Enter the value of n (number of columns of matrix OR the maximum+1 X-axis value of the matrix) : ";
     cin>>n;
-    cout<<endl<<"Enter the value of m (number of rows of matrix OR the maximum Y-axis value of the matrix) : ";
+    cout<<endl<<"Enter the value of m (number of rows of matrix OR the maximum+1 Y-axis value of the matrix) : ";
     cin>>m;
     cout<<endl<<"Enter the representation of the graph : ";
     cin>>rep;
@@ -72,64 +72,64 @@ int main(){
     //making a standard matrix with many cases
     for(int i = 0; i < n*m; ++i){
         if(i == 0){
-            A->add(i, i + 1);
-            A->add(i, i + n);
-            A->add(i, i + n + 1);
+            A->main_graph->add(i, i + 1);
+            A->main_graph->add(i, i + n);
+            A->main_graph->add(i, i + n + 1);
         }
         else if(i == n - 1){
-            A->add(i, i - 1);
-            A->add(i, i + n);
-            A->add(i, i + n - 1);
+            A->main_graph->add(i, i - 1);
+            A->main_graph->add(i, i + n);
+            A->main_graph->add(i, i + n - 1);
         }
         else if(i == n * (m - 1)){
-            A->add(i, i + 1);
-            A->add(i, i - n);
-            A->add(i, i - n + 1);
+            A->main_graph->add(i, i + 1);
+            A->main_graph->add(i, i - n);
+            A->main_graph->add(i, i - n + 1);
         }
         else if(i == n * m - 1){
-            A->add(i, i - 1);
-            A->add(i, i - n);
-            A->add(i, i - n - 1);
+            A->main_graph->add(i, i - 1);
+            A->main_graph->add(i, i - n);
+            A->main_graph->add(i, i - n - 1);
         }
         else if(i % n == 0){
-            A->add(i, i + 1);
-            A->add(i, i + n);
-            A->add(i, i - n);
-            A->add(i, i + n + 1);
-            A->add(i, i - n + 1);
+            A->main_graph->add(i, i + 1);
+            A->main_graph->add(i, i + n);
+            A->main_graph->add(i, i - n);
+            A->main_graph->add(i, i + n + 1);
+            A->main_graph->add(i, i - n + 1);
         }
         else if(i % n == n - 1){
-            A->add(i, i - 1);
-            A->add(i, i + n);
-            A->add(i, i - n);
-            A->add(i, i + n - 1);
-            A->add(i, i - n - 1); 
+            A->main_graph->add(i, i - 1);
+            A->main_graph->add(i, i + n);
+            A->main_graph->add(i, i - n);
+            A->main_graph->add(i, i + n - 1);
+            A->main_graph->add(i, i - n - 1); 
         }
         else if(i / n == 0){
-            A->add(i, i + 1);
-            A->add(i, i - 1);
-            A->add(i, i + n);
-            A->add(i, i + n + 1);
-            A->add(i, i + n - 1);
+            A->main_graph->add(i, i + 1);
+            A->main_graph->add(i, i - 1);
+            A->main_graph->add(i, i + n);
+            A->main_graph->add(i, i + n + 1);
+            A->main_graph->add(i, i + n - 1);
         }
         else if(i / n == m - 1){
-            A->add(i, i + 1);
-            A->add(i, i - 1);
-            A->add(i, i - n);
-            A->add(i, i - n + 1);
-            A->add(i, i - n - 1);
+            A->main_graph->add(i, i + 1);
+            A->main_graph->add(i, i - 1);
+            A->main_graph->add(i, i - n);
+            A->main_graph->add(i, i - n + 1);
+            A->main_graph->add(i, i - n - 1);
         }
         else{
             //lateral
-            A->add(i, i + 1);
-            A->add(i, i - 1);
-            A->add(i, i + n);
-            A->add(i, i - n);
+            A->main_graph->add(i, i + 1);
+            A->main_graph->add(i, i - 1);
+            A->main_graph->add(i, i + n);
+            A->main_graph->add(i, i - n);
             //diagonalsadd
-            A->add(i, i + n + 1);
-            A->add(i, i + n - 1);
-            A->add(i, i - n + 1);
-            A->add(i, i - n - 1);
+            A->main_graph->add(i, i + n + 1);
+            A->main_graph->add(i, i + n - 1);
+            A->main_graph->add(i, i - n + 1);
+            A->main_graph->add(i, i - n - 1);
         }
     }
 
@@ -137,10 +137,10 @@ int main(){
     int x,y;
     cout<<endl<<"Enter the source node's coordinate (x y) : ";
     cin>>x>>y;
-    source = x*n + y;
+    source = y*n + x;
     cout<<endl<<"Enter the destination node's coordinate (x y) : ";
     cin>>x>>y;
-    dest = x*n + y;
+    dest = y*n + x;
 
     //initial matrix initialisation
     matrix = new char[n*m];
@@ -168,68 +168,68 @@ int main(){
         cin>>x;
         cout<<"Enter y-coordinate (0-based) : ";
         cin>>y;
-        int cell = x*n + y;
+        int cell = y*n + x;
         int temp = i;
         i = cell;
         if(i == 0){
-            A->remove(i, i + 1);
-            A->remove(i, i + n);
-            A->remove(i, i + n + 1);
+            A->main_graph->remove(i, i + 1);
+            A->main_graph->remove(i, i + n);
+            A->main_graph->remove(i, i + n + 1);
         }
         else if(i == n - 1){
-            A->remove(i, i - 1);
-            A->remove(i, i + n);
-            A->remove(i, i + n - 1);
+            A->main_graph->remove(i, i - 1);
+            A->main_graph->remove(i, i + n);
+            A->main_graph->remove(i, i + n - 1);
         }
         else if(i == n * (m - 1)){
-            A->remove(i, i + 1);
-            A->remove(i, i - n);
-            A->remove(i, i - n + 1);
+            A->main_graph->remove(i, i + 1);
+            A->main_graph->remove(i, i - n);
+            A->main_graph->remove(i, i - n + 1);
         }
         else if(i == n * m - 1){
-            A->remove(i, i - 1);
-            A->remove(i, i - n);
-            A->remove(i, i - n - 1);
+            A->main_graph->remove(i, i - 1);
+            A->main_graph->remove(i, i - n);
+            A->main_graph->remove(i, i - n - 1);
         }
         else if(i % n == 0){
-            A->remove(i, i + 1);
-            A->remove(i, i + n);
-            A->remove(i, i - n);
-            A->remove(i, i + n + 1);
-            A->remove(i, i - n + 1);
+            A->main_graph->remove(i, i + 1);
+            A->main_graph->remove(i, i + n);
+            A->main_graph->remove(i, i - n);
+            A->main_graph->remove(i, i + n + 1);
+            A->main_graph->remove(i, i - n + 1);
         }
         else if(i % n == n - 1){
-            A->remove(i, i - 1);
-            A->remove(i, i + n);
-            A->remove(i, i - n);
-            A->remove(i, i + n - 1);
-            A->remove(i, i - n - 1); 
+            A->main_graph->remove(i, i - 1);
+            A->main_graph->remove(i, i + n);
+            A->main_graph->remove(i, i - n);
+            A->main_graph->remove(i, i + n - 1);
+            A->main_graph->remove(i, i - n - 1); 
         }
         else if(i / n == 0){
-            A->remove(i, i + 1);
-            A->remove(i, i - 1);
-            A->remove(i, i + n);
-            A->remove(i, i + n + 1);
-            A->remove(i, i + n - 1);
+            A->main_graph->remove(i, i + 1);
+            A->main_graph->remove(i, i - 1);
+            A->main_graph->remove(i, i + n);
+            A->main_graph->remove(i, i + n + 1);
+            A->main_graph->remove(i, i + n - 1);
         }
         else if(i / n == m - 1){
-            A->remove(i, i + 1);
-            A->remove(i, i - 1);
-            A->remove(i, i - n);
-            A->remove(i, i - n + 1);
-            A->remove(i, i - n - 1);
+            A->main_graph->remove(i, i + 1);
+            A->main_graph->remove(i, i - 1);
+            A->main_graph->remove(i, i - n);
+            A->main_graph->remove(i, i - n + 1);
+            A->main_graph->remove(i, i - n - 1);
         }
         else{
             //lateral
-            A->remove(i, i + 1);
-            A->remove(i, i - 1);
-            A->remove(i, i + n);
-            A->remove(i, i - n);
+            A->main_graph->remove(i, i + 1);
+            A->main_graph->remove(i, i - 1);
+            A->main_graph->remove(i, i + n);
+            A->main_graph->remove(i, i - n);
             //diagonals
-            A->remove(i, i + n + 1);
-            A->remove(i, i + n - 1);
-            A->remove(i, i - n + 1);
-            A->remove(i, i - n - 1);
+            A->main_graph->remove(i, i + n + 1);
+            A->main_graph->remove(i, i + n - 1);
+            A->main_graph->remove(i, i - n + 1);
+            A->main_graph->remove(i, i - n - 1);
         }
         matrix[i] = 'B';
         i = temp;
@@ -241,5 +241,7 @@ int main(){
 
     cout<<endl;
     printer(n,m);
+
+    bool path = false;
     return 0;
 }

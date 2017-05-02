@@ -188,6 +188,9 @@ namespace cs202{
                         }
                     }
                 }
+                else{
+                    return;
+                }
             }
         }
 
