@@ -20,6 +20,7 @@ bool worker(int& i){
     }
     else{
         if(i != source){
+            matrix[i] = 'T';
             return true;
         }
         return false;
@@ -199,7 +200,7 @@ int main(){
         }
         else if(i % n == n - 1){
             A->remove(i, i - 1);
-            A->remove(i, i + n);//putting the node's adjacent nodes in the stack
+            A->remove(i, i + n);
             A->remove(i, i - n);
             A->remove(i, i + n - 1);
             A->remove(i, i - n - 1); 
@@ -236,5 +237,9 @@ int main(){
     
     printer(n,m);
 
+    A->dfs_source(source,worker);
+
+    cout<<endl;
+    printer(n,m);
     return 0;
 }
