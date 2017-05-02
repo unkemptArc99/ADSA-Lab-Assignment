@@ -151,9 +151,9 @@ namespace cs202{
 
         /*
         * Funtion dfs_source:
-        * DFS from a specific source node
+        * DFS from a specific source node which works on the based of the output given by the work function
         */
-        void dfs_source(int source,void (*work)(int&)) {
+        void dfs_source(int source,bool (*work)(int&)) {
             //Initially marking all vertex as not visited
             LinearList<int> colorOfNodes(main_graph->vertices(),0);         //0 FOR white, 1 for black
             //Initially marking predecessor's null
@@ -170,18 +170,21 @@ namespace cs202{
                 int u = main_stack.top();
                 main_stack.pop();
 
+                bool temporary;
                 //There might be already visited nodes in the stack
                 if(colorOfNodes.at(u) == 0){
                     colorOfNodes.modify(1,u);
-                    work(u);
+                    temporary = work(u);
                 }
 
-                //putting the node's adjacent nodes in the stack
-                for(int i = 0; i < main_graph->vertices(); ++i){
-                    if(main_graph->edgeExists(u,i) && main_graph->edgeExists(i,u)){
-                        if(colorOfNodes.at(i) == 0){
-                            predecessor.modify(u,i);
-                            main_stack.push(i);
+                if(temporary){
+                    //putting the node's adjacent nodes in the stack
+                    for(int i = 0; i < main_graph->vertices(); ++i){
+                        if(main_graph->edgeExists(u,i) && main_graph->edgeExists(i,u)){
+                            if(colorOfNodes.at(i) == 0){
+                                predecessor.modify(u,i);
+                                main_stack.push(i);
+                            }
                         }
                     }
                 }

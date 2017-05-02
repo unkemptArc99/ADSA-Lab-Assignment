@@ -10,7 +10,23 @@ ADSA Assignment 07 - Flood Fill driver file
 
 using namespace std;
 
-void printer(char matrix[],int x,int y){
+char *matrix;
+//Variable to store the size of matrix,source and destination cell
+int n,m,source,dest;
+
+bool worker(int& i){
+    if(i == dest){
+        return false;
+    }
+    else{
+        if(i != source){
+            return true;
+        }
+        return false;
+    }
+}
+
+void printer(int x,int y){
     cout<<endl;
     int counter = 0;
     cout<<"  ";
@@ -35,9 +51,7 @@ int main(){
     cout<<"-----------------------------------"<<endl;
 
     //Variable to store the representation of the graph
-    char rep;
-    //Variable to store the size of matrix,source and destination cell
-    int n,m,source,dest;
+    char rep; 
 
     cout<<endl<<"Enter the value of n (number of columns of matrix OR the maximum X-axis value of the matrix) : ";
     cin>>n;
@@ -128,7 +142,7 @@ int main(){
     dest = x*n + y;
 
     //initial matrix initialisation
-    char matrix[n*m];
+    matrix = new char[n*m];
     for(int i = 0; i < n*m; ++i){
         if(i == source){
             matrix[i] = 'S';
@@ -220,6 +234,7 @@ int main(){
         i = temp;
     }
     
-    printer(matrix,n,m);
+    printer(n,m);
+
     return 0;
 }
