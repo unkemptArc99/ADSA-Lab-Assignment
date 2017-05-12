@@ -50,7 +50,20 @@ public:
     }
     
     // Unite sets containing objects x and y.
-    void union_set (const unsigned int& x, const unsigned int& y);
+    void union_set (const unsigned int& x, const unsigned int& y) {
+        int root_x = find_set(x);
+        int root_y = find_set(y);
+
+        if(vertex[root_x].rank > vertex[root_y].rank){
+            vertex[root_y].parent = root_x;
+        }
+        else{
+            vertex[root_x].parent = root_y;
+            if(vertex[root_x].rank == vertex[root_y].rank){
+                vertex[root_y].rank++;
+            }
+        }
+    }
     
     // Are objects x and y in the same set?
     bool is_same_set (const unsigned int& x, const unsigned int& y);
