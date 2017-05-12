@@ -20,22 +20,34 @@ class UFDS {
     public:
         int parent;
         int rank;
+
+        node() {}
     };
 
     LinearList<node> vertex;
 
 public:
     // Create an empty union find data structure with N isolated sets.
-    UFDS(const unsigned int& N);
+    UFDS(const unsigned int& N) : vertex(N) {}
 
     // Default constructor
     ~UFDS();
 
     // Make a new set with N vertices with all sets being disjoint
-    void make_set (const unsigned int& N);
+    void make_set (const unsigned int& N) {
+        for(int i = 0; i < vertex.capacity(); ++i){
+            vertex[i].parent = i;
+            vertex[i].rank = 0;
+        }
+    }
 
     // Return the representative / parent of set consisting of object x.
-    int find_set (const unsigned int& x);
+    int find_set (const unsigned int& x) {
+        if(x != vertex[x].parent){
+            vertex[x].parent = find_set(vertex[x].parent);
+        }
+        return vertex[x].parent;
+    }
     
     // Unite sets containing objects x and y.
     void union_set (const unsigned int& x, const unsigned int& y);
