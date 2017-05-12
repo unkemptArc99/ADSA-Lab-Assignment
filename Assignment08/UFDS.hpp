@@ -35,9 +35,11 @@ public:
 
     // Make a new set with N vertices with all sets being disjoint
     void make_set (const unsigned int& N) {
-        for(int i = 0; i < vertex.capacity(); ++i){
-            vertex[i].parent = i;
-            vertex[i].rank = 0;
+        for(int i = 0; i < N; ++i){
+            node temp;
+            temp.parent = i;
+            temp.rank = 0;
+            vertex.push_back(temp);
         }
     }
 
@@ -66,10 +68,28 @@ public:
     }
     
     // Are objects x and y in the same set?
-    bool is_same_set (const unsigned int& x, const unsigned int& y);
+    bool is_same_set (const unsigned int& x, const unsigned int& y) {
+        int root_x = find_set(x);
+        int root_y = find_set(y);
+
+        if(root_x == root_y){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
     // Return the number of disjoint sets.
-    int num_disjoint_sets();
+    int num_disjoint_sets(){
+        int count = 0;
+        for(int i = 0; i < vertex.size(); ++i){
+            if(vertex[i].parent == i){
+                count++;
+            }
+        }
+        return count;
+    }
     
     // Return the size of the set containing object x.
     int size_set (const unsigned int& x); 
