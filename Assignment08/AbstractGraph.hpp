@@ -59,6 +59,12 @@ namespace cs202{
     * Runs the given function work, with the value of each vertex.
     */
         virtual void bfs(void (*work)(int&)) = 0;
+    
+    /*
+    * Function kruskal:
+    * Gives a minimum spanning tree using the Kruskal algorithm
+    */
+        virtual void kruskal(void (*work)(int&)) = 0;
     };
 }
 #endif /* ifndef ABSTRACT_GRAPH */
