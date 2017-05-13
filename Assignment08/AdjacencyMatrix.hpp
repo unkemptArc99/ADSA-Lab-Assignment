@@ -15,11 +15,11 @@ namespace cs202{
     class AdjacencyMatrix : public GraphAdjacencyBase {
     public:
         //main container of the Adjacent Matrix
-        LinearList<bool> graph;
+        LinearList<int> graph;
         int vert;
 
         //Constructor for the Matrix class
-        AdjacencyMatrix(int v) : graph(v*v,false) {vert = v;}
+        AdjacencyMatrix(int v) : graph(v*v,0) {vert = v;}
 
         //destructor for the Matrix class
         ~AdjacencyMatrix() {}
@@ -30,7 +30,12 @@ namespace cs202{
 		*/
 	    bool edgeExists(int i, int j){
             if(i < vert  && j < vert){
-                return graph.at(i*vert + j);
+                if(graph.at(i*vert + j) != 0){
+                    return true;
+                }
+                else{
+                    return false;
+                }
             }
             throw -1;
         }
@@ -52,7 +57,7 @@ namespace cs202{
             //calculating the edges
             for(int i = 0; i < vert; ++i){
                 for(int j = 0; j < vert; ++j){
-                    if(graph[i*vert + j])
+                    if(graph[i*vert + j] != 0)
                         total++;
                 }
             }
@@ -63,9 +68,9 @@ namespace cs202{
 	    * Function add:
 		* Adds an edge between vertices i and j
 		*/
-        void add(int i, int j){
+        void add(int i, int j, int w){
             if(i < graph.size() && j < graph.size()){
-                graph.modify(true,i*vert + j);
+                graph.modify(w,i*vert + j);
             }
             else{
                 throw -1;
@@ -78,7 +83,7 @@ namespace cs202{
 		*/
 		void remove(int i, int j){
             if(i < graph.size() && j < graph.size()){
-                graph.modify(false,i*vert + j);
+                graph.modify(0,i*vert + j);
             }
             else{
                 throw -1;
@@ -93,7 +98,7 @@ namespace cs202{
             int total = 0;
             if(i < graph.size()){
                 for(int j = 0; j < vert; ++j){
-                    if(graph[i*vert + j])
+                    if(graph[i*vert + j] != 0)
                         total++;
                 }
                 return total;
@@ -112,7 +117,7 @@ namespace cs202{
                 int total = 0;
                 for(int j = 0; j < vert; ++j){
                     if(j != i){
-                        if(graph[j*vert + i]){
+                        if(graph[j*vert + i] != 0){
                             total++;
                         }
                     }
