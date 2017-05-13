@@ -16,11 +16,33 @@ namespace cs202{
     //Main class for Adjacency List
     class AdjacencyList : public GraphAdjacencyBase {
     public:
+        class graph_node {
+            public:
+                int dest;
+                int weight;
+
+                graph_node() {}
+
+                bool operator == (int j) {
+                    if(dest == j){
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
+                }
+
+                void operator = (graph_node& temp) {
+                    dest = temp.dest;
+                    weight = temp.weight;                    
+                }
+        };
+
         //Main container for the List
-        LinearList<list<int> > graph;
+        LinearList<list<graph_node> > graph;
 
         //Constructor for Adjacency List class
-        AdjacencyList(int v) : graph(v, list<int>()) {}
+        AdjacencyList(int v) : graph(v, list<graph_node>()) {}
 
         //Destructor for the List class   
         ~AdjacencyList() {}
@@ -32,8 +54,8 @@ namespace cs202{
 	    bool edgeExists(int i, int j){
             if(i < graph.size() && j < graph.size()){
                 //creating temporary variables for traversal of list
-                list<int> x = graph[i];
-                node<int> *temp = x.head;
+                list<graph_node> x = graph[i];
+                node<graph_node> *temp = x.head;
                 while(temp != NULL){
                     if(temp->node_val == j){
                         return true;
@@ -70,9 +92,12 @@ namespace cs202{
 	    * Function add:
 		* Adds an edge between vertices i and j
 		*/
-        void add(int i, int j){
+        void add(int i, int j, int w){
             if(i < graph.size() && j < graph.size()){
-                graph[i].append(j);
+                graph_node temp;
+                temp.dest = j;
+                temp.weight = w;
+                graph[i].append(temp);
             }
             else{
                 throw -1;
@@ -85,7 +110,9 @@ namespace cs202{
 		*/
 		void remove(int i, int j){
             if(i < graph.size() && j < graph.size()){
-                graph[i].remove(j);
+                graph_node temp;
+                temp.dest = j;
+                graph[i].remove(temp);
             }
             else{
                 throw -1;
@@ -114,7 +141,7 @@ namespace cs202{
                 int total = 0;
                 for(int j = 0; j < graph.size(); ++j){
                     if(j != i){
-                        node<int> *temp = graph[i].head;
+                        node<graph_node> *temp = graph[i].head;
                         while(temp != NULL){
                             if(temp->node_val == i){
                                 total++;
