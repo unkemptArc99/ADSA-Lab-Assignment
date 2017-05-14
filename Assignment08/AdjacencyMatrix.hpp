@@ -28,7 +28,7 @@ namespace cs202{
 		* Function: edgeExists
 		* Returns true if an edge exists between vertices i and j, false otherwise.
 		*/
-	    bool edgeExists(int i, int j){
+	    virtual bool edgeExists(int i, int j){
             if(i < vert  && j < vert){
                 if(graph.at(i*vert + j) != 0){
                     return true;
@@ -44,7 +44,7 @@ namespace cs202{
 		* Function: vertices
 		* Returns the number of vertices in the adjacency structure.
 		*/
-        inline int vertices(){
+        virtual inline int vertices(){
             return graph.size() / vert;
         }
 
@@ -52,7 +52,7 @@ namespace cs202{
 		* Function: edges
 		* Returns the number of edges in the adjacency structure.
 		*/
-        int edges(){
+        virtual int edges(){
             int total = 0;
             //calculating the edges
             for(int i = 0; i < vert; ++i){
@@ -68,7 +68,7 @@ namespace cs202{
 	    * Function add:
 		* Adds an edge between vertices i and j
 		*/
-        void add(int i, int j, int w){
+        virtual void add(int i, int j, int w){
             if(i < graph.size() && j < graph.size()){
                 graph.modify(w,i*vert + j);
             }
@@ -81,7 +81,7 @@ namespace cs202{
 		* Function: remove
 		* Deleted the edge between vertices i and j
 		*/
-		void remove(int i, int j){
+		virtual void remove(int i, int j){
             if(i < graph.size() && j < graph.size()){
                 graph.modify(0,i*vert + j);
             }
@@ -94,7 +94,7 @@ namespace cs202{
 		* Function: degree
 		* Returns the degree of the vertex i
 		*/
-		int degree(int i){
+		virtual int degree(int i){
             int total = 0;
             if(i < graph.size()){
                 for(int j = 0; j < vert; ++j){
@@ -112,7 +112,7 @@ namespace cs202{
 		* Function: incomingEdges
 		* Returns the number of edges to the the node
 		*/
-		int incomingEdges(int i){
+		virtual int incomingEdges(int i){
             if(i < graph.size()){
                 int total = 0;
                 for(int j = 0; j < vert; ++j){
@@ -127,6 +127,17 @@ namespace cs202{
             else{
                 throw -1;
             }
+        }
+
+        /*
+		* Function: getWeight
+		* Returns the weight of edge
+		*/
+        virtual int getWeight(int i,int j){
+            if(i < graph.size() && j < graph.size()){
+                return graph[i*vert + j];
+            }
+            throw -1;
         }
     };
 }

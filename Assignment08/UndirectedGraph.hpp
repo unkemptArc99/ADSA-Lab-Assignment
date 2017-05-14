@@ -15,8 +15,76 @@ ADSA Assignment 07 - Undirected Graph header file
 #include "AdjacencyMatrix.hpp"
 #include "queue.hpp"
 #include "stack.hpp"
+#include "UFDS.hpp"
+#include "sorting.hpp"
 
 namespace cs202{
+    class nodes {
+    public:
+        int source;
+        int dest;
+        int weight;
+
+        nodes() {}
+
+        bool operator == (nodes temp) {
+            if(temp.weight == weight) { 
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        bool operator < (nodes temp) {
+            if(temp.weight < weight) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        bool operator > (nodes temp) {
+            if(temp.weight > weight) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        bool operator <= (nodes temp) {
+            if(temp.weight <= weight) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        bool operator >= (nodes temp) {
+            if(temp.weight >= weight) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        void operator = (nodes& temp) {
+            weight = temp.weight;
+            dest = temp.dest;
+            source = temp.source;
+        }
+
+        void operator = (nodes temp) {
+            weight = temp.weight;
+            dest = temp.dest;
+            source = temp.source;
+        }
+    };
+
     class UndirectedGraph : public AbstractGraph {
     public:
         //main container for the graph
@@ -67,7 +135,7 @@ namespace cs202{
         bool edgeExists(int i, int j) {
             bool r1 = main_graph->edgeExists(i,j);
             bool r2 = main_graph->edgeExists(j,i);
-            if(r1 && r2){
+            if(r1 || r2){
                 return true;
             }
             else{
@@ -95,9 +163,8 @@ namespace cs202{
         * Function add:
         * Adds an edge between vertices i and j
         */
-        void add(int i, int j){
-            main_graph->add(i,j);
-            main_graph->add(j,i);
+        void add(int i, int j, int w){
+            main_graph->add(i,j,w);
         }
 
         /*
@@ -105,10 +172,14 @@ namespace cs202{
         * Deleted the edge between vertices i and j
         */
         void remove(int i, int j){
-            main_graph->remove(i,j);
-            main_graph->remove(j,i);
+            if(main_graph->edgeExists(i,j)){
+                main_graph->remove(i,j);
+            }
+            else if(main_graph->edgeExists(j,i)){
+                main_graph->remove(j,i);
+            }
         }
-
+ 
         /*
         * Function dfs:
         * Does a depth first traversal of the entire graph.
@@ -120,7 +191,7 @@ namespace cs202{
             //Initially marking predecessor's null
             LinearList<int> predecessor(main_graph->vertices(),-1);
 
-            //main stack for dfs
+            //main stacvoid kruskal(void (*work)(int&))k for dfs
             stack<int> main_stack;
 
             //pushing the source node
@@ -139,7 +210,7 @@ namespace cs202{
 
                 //putting the node's adjacent nodes in the stack
                 for(int i = 0; i < main_graph->vertices(); ++i){
-                    if(main_graph->edgeExists(u,i) && main_graph->edgeExists(i,u)){
+                    if(main_graph->edgeExists(u,i) || main_graph->edgeExists(i,u)){
                         if(colorOfNodes.at(i) == 0){
                             predecessor.modify(u,i);
                             main_stack.push(i);
@@ -180,7 +251,7 @@ namespace cs202{
                 if(temporary){
                     //putting the node's adjacent nodes in the stack
                     for(int i = 0; i < main_graph->vertices(); ++i){
-                        if(main_graph->edgeExists(u,i) && main_graph->edgeExists(i,u)){
+                        if(main_graph->edgeExists(u,i) || main_graph->edgeExists(i,u)){
                             if(colorOfNodes.at(i) == 0){
                                 predecessor.modify(u,i);
                                 main_stack.push(i);
@@ -200,7 +271,7 @@ namespace cs202{
             }
         }
 
-        /*
+        /*void kruskal(void (*work)(int&))
         * Function bfs:
         * Does a breadth first traversal of the entire graph.
         * Runs the given function work, with the value of each vertex.
@@ -240,6 +311,61 @@ namespace cs202{
                         }
                     }
                 }
+            }
+        }
+
+        /*
+        * Function kruskal:
+        * Gives a minimum spanning tree using the Kruskal algorithm
+        */
+        void kruskal(void (*work)(int&, int&)) {
+            int vert = main_graph->vertices();
+            bool check[vert][vert];
+
+            LinearList<nodes> edges_list (vert*vert);
+            
+            for(int i = 0; i < vert; ++i){
+                for(int j = 0; j < vert; ++j){
+                    check[i][j] = false;
+                }
+            }
+
+            for(int i = 0; i < vert; ++i){
+                for(int j = 0; j < vert; ++j){
+                    if(!check[i][j]){
+                        nodes temp;
+                        if(main_graph->edgeExists(i,j)) {
+                            temp.source = i;
+                            temp.dest = j;
+                            temp.weight = main_graph->getWeight(i,j);
+                            edges_list.push_back(temp);
+                            check[i][j] = true;
+                            check[j][i] = true;
+                        }
+                    }
+                }
+            }
+
+            Sort<nodes> sort;
+            sort.mergeSort(edges_list,0,vert - 1);
+
+            UFDS sets(vert);
+            sets.make_set(vert);
+            LinearList<int> MSTsource (edges_list.size());
+            LinearList<int> MSTdest (edges_list.size());
+
+            for(int i = 0; i < edges_list.size(); ++i) {
+                nodes temp;
+                temp = edges_list.at(i);
+                if(sets.find_set(temp.source) != sets.find_set(temp.dest)) {
+                    MSTsource.push_back(temp.source);
+                    MSTdest.push_back(temp.dest);
+                    sets.union_set(temp.source,temp.dest);
+                }
+            }
+
+            for(int i = 0; i < MSTsource.size(); ++i) {
+                work(MSTsource.at(i),MSTdest.at(i));
             }
         }
     };

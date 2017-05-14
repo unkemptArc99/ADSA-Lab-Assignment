@@ -41,7 +41,7 @@ namespace cs202{
     * Function add:
     * Adds an edge between vertices i and j
     */
-        virtual void add(int i, int j) = 0;
+        virtual void add(int i, int j, int w) = 0;
     /*
     * Function: remove
     * Deleted the edge between vertices i and j
