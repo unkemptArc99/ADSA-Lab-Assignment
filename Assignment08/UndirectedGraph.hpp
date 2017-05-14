@@ -365,7 +365,7 @@ namespace cs202{
             }
 
             for(int i = 0; i < MSTsource.size(); ++i) {
-                work(MSTsource.at(i),MSTdest.at(i));
+                work(MSTsource[i],MSTdest[i]);
             }
         }
     };

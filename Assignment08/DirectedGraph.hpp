@@ -12,11 +12,79 @@ ADSA Assignment 07 - Directed Graph header file
 #include "AdjacencyMatrix.hpp"
 #include "queue.hpp"
 #include "stack.hpp"
+#include "sorting.hpp"
+#include "UFDS.hpp"
 /*
 * A class to represent a directed graph.
 */
 
 namespace cs202{
+    class nodes {
+    public:
+        int source;
+        int dest;
+        int weight;
+
+        nodes() {}
+
+        bool operator == (nodes temp) {
+            if(temp.weight == weight) { 
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        bool operator < (nodes temp) {
+            if(temp.weight < weight) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        bool operator > (nodes temp) {
+            if(temp.weight > weight) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        bool operator <= (nodes temp) {
+            if(temp.weight <= weight) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        bool operator >= (nodes temp) {
+            if(temp.weight >= weight) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        void operator = (nodes& temp) {
+            weight = temp.weight;
+            dest = temp.dest;
+            source = temp.source;
+        }
+
+        void operator = (nodes temp) {
+            weight = temp.weight;
+            dest = temp.dest;
+            source = temp.source;
+        }
+    };
+
     class DirectedGraph : public AbstractGraph {
     public:
         //main container for the graph
@@ -93,8 +161,8 @@ namespace cs202{
         * Function add:
         * Adds an edge between vertices i and j
         */
-        void add(int i, int j){
-            main_graph->add(i,j);
+        void add(int i, int j, int w){
+            main_graph->add(i,j,w);
         }
 
         /*
@@ -236,6 +304,61 @@ namespace cs202{
                         }
                     }
                 }
+            }
+        }
+
+        /*
+        * Function kruskal:
+        * Gives a minimum spanning tree using the Kruskal algorithm
+        */
+        void kruskal(void (*work)(int&, int&)) {
+            int vert = main_graph->vertices();
+            bool check[vert][vert];
+
+            LinearList<nodes> edges_list (vert*vert);
+            
+            for(int i = 0; i < vert; ++i){
+                for(int j = 0; j < vert; ++j){
+                    check[i][j] = false;
+                }
+            }
+
+            for(int i = 0; i < vert; ++i){
+                for(int j = 0; j < vert; ++j){
+                    if(!check[i][j]){
+                        nodes temp;
+                        if(main_graph->edgeExists(i,j)) {
+                            temp.source = i;
+                            temp.dest = j;
+                            temp.weight = main_graph->getWeight(i,j);
+                            edges_list.push_back(temp);
+                            check[i][j] = true;
+                            check[j][i] = true;
+                        }
+                    }
+                }
+            }
+
+            Sort<nodes> sort;
+            sort.mergeSort(edges_list,0,vert - 1);
+
+            UFDS sets(vert);
+            sets.make_set(vert);
+            LinearList<int> MSTsource (edges_list.size());
+            LinearList<int> MSTdest (edges_list.size());
+
+            for(int i = 0; i < edges_list.size(); ++i) {
+                nodes temp;
+                temp = edges_list.at(i);
+                if(sets.find_set(temp.source) != sets.find_set(temp.dest)) {
+                    MSTsource.push_back(temp.source);
+                    MSTdest.push_back(temp.dest);
+                    sets.union_set(temp.source,temp.dest);
+                }
+            }
+
+            for(int i = 0; i < MSTsource.size(); ++i) {
+                work(MSTsource[i],MSTdest[i]);
             }
         }
     };
