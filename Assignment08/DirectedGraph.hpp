@@ -312,53 +312,48 @@ namespace cs202{
         * Gives a minimum spanning tree using the Kruskal algorithm
         */
         void kruskal(void (*work)(int&, int&)) {
+            //number of vertices in the graph
             int vert = main_graph->vertices();
-            bool check[vert][vert];
 
-            LinearList<nodes> edges_list (vert*vert);
+            //Main container to hold list of edges
+            LinearList<nodes> edges_list (main_graph->edges());
             
+            //adding the edges in the edge list
             for(int i = 0; i < vert; ++i){
                 for(int j = 0; j < vert; ++j){
-                    check[i][j] = false;
-                }
-            }
-
-            for(int i = 0; i < vert; ++i){
-                for(int j = 0; j < vert; ++j){
-                    if(!check[i][j]){
-                        nodes temp;
-                        if(main_graph->edgeExists(i,j)) {
-                            temp.source = i;
-                            temp.dest = j;
-                            temp.weight = main_graph->getWeight(i,j);
-                            edges_list.push_back(temp);
-                            check[i][j] = true;
-                            check[j][i] = true;
-                        }
+                    nodes temp;
+                    if(main_graph->edgeExists(i,j)) {
+                        temp.source = i;
+                        temp.dest = j;
+                        temp.weight = main_graph->getWeight(i,j);
+                        edges_list.push_back(temp);
                     }
                 }
             }
 
+            //sorting the edgeList
             Sort<nodes> sort;
-            sort.mergeSort(edges_list,0,vert - 1);
+            sort.mergeSort(edges_list,0,edges_list.size() - 1);
 
+            //making disjoint sets for each vertex
             UFDS sets(vert);
             sets.make_set(vert);
-            LinearList<int> MSTsource (edges_list.size());
-            LinearList<int> MSTdest (edges_list.size());
 
+            //Main Kruskal algorithm
             for(int i = 0; i < edges_list.size(); ++i) {
                 nodes temp;
                 temp = edges_list.at(i);
                 if(sets.find_set(temp.source) != sets.find_set(temp.dest)) {
-                    MSTsource.push_back(temp.source);
-                    MSTdest.push_back(temp.dest);
                     sets.union_set(temp.source,temp.dest);
                 }
             }
 
-            for(int i = 0; i < MSTsource.size(); ++i) {
-                work(MSTsource[i],MSTdest[i]);
+            //printing the edges included in the MST
+            for(int i = 0; i < vert; ++i) {
+                int par = sets.getParent(i);
+                if(par != i) {
+                    work(par,i);
+                }
             }
         }
     };

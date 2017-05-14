@@ -91,8 +91,14 @@ public:
         return count;
     }
     
+
+    //Returns the parent of set
+    int getParent (int& i){
+        return vertex[i].parent;
+    }
+
     // Return the size of the set containing object x.
-    int size_set (const unsigned int& x); 
+    int size_set (const unsigned int& x) {}
 };    
 
 }
