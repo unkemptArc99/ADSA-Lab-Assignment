@@ -64,7 +64,13 @@ namespace cs202{
     * Function kruskal:
     * Gives a minimum spanning tree using the Kruskal algorithm
     */
-        virtual void kruskal(void (*work)(int&)) = 0;
+        virtual void kruskal(void (*work)(int&,int&)) = 0;
+
+    /*
+    * Function prim:
+    * Gives a minimum spanning tree using the Prim's algorithm
+    */
+        virtual void prim(void (*work)(int&,int&)) = 0;
     };
 }
 #endif /* ifndef ABSTRACT_GRAPH */

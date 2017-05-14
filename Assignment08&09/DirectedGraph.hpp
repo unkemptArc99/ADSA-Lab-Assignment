@@ -14,6 +14,7 @@ ADSA Assignment 07 - Directed Graph header file
 #include "stack.hpp"
 #include "sorting.hpp"
 #include "UFDS.hpp"
+#include "minPriorityQueue.hpp"
 /*
 * A class to represent a directed graph.
 */
@@ -353,6 +354,62 @@ namespace cs202{
                 int par = sets.getParent(i);
                 if(par != i) {
                     work(par,i);
+                }
+            }
+        }
+
+        /*
+        * Function prim:
+        * Gives a minimum spanning tree using the Prim's algorithm
+        */
+        void prim(void (*work)(int&,int&)) {
+            //creating the heap to store the nodes
+            MinPriorityQueue<nodes> q;
+            //list to keep a track on vertices which are in the subset
+            LinearList<bool> s (main_graph->vertices(),false);
+            //list to keep the track of the distance from it's previous nodes
+            LinearList<int> key (main_graph->vertices(),std::numeric_limits<int>::max());
+            //list to keep track of the predecessor
+            LinearList<int> pred (main_graph->vertices(),-1);
+            //modifying the distance of source 0 as 0
+            key.modify(0,0);
+
+            //inserting the node
+            nodes temp;
+            temp.source = 0;
+            temp.dest = 0;
+            temp.weight = key.at(0);
+            q.insert(temp);
+
+            //main prim's algorithm
+            while(!q.empty()) {
+                //extracting the minimum of all the distances from the queue
+                nodes u;
+                u = q.extract_min();
+                //keeping the node in the subset
+                s.modify(true,u.source);
+                
+                //pushing all it's neighbours in the queue
+                for(int i = 0; i < main_graph->vertices(); ++i) {
+                    if(i != u.source && main_graph->edgeExists(u.source,i)) {
+                        if(!s.at(i)) {
+                            if(key.at(i) > main_graph->getWeight(u.source,i)) {
+                                //modifying the distance and predecessor of the vertex
+                                key.modify(main_graph->getWeight(u.source,i),i);
+                                pred.modify(u.source,i);
+                                //pushing the vertex in the queue
+                                temp.source = i;
+                                temp.dest = 0;
+                                temp.weight = key.at(i);
+                                q.insert(temp);
+                            }
+                        }
+                    }
+                }
+
+                //At the end of the algorithm, all the data is stored in the keys and predecessor
+                for(int i = 0; i < main_graph->vertices(); ++i) {
+                    work(i,pred[i]);
                 }
             }
         }
