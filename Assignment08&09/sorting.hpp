@@ -166,8 +166,8 @@ namespace cs202 {
 
     while(1)
     {
-        do ++i;while(A[i]<=(T)pivot&&i<=high);
-        do --j;while(A[j]>(T)pivot);
+        do ++i;while(A[i]>=(T)pivot&&i<=high);
+        do --j;while(A[j]<(T)pivot);
         if(i>=j) break;
         t=(T)A[i];A[i]=(T)A[j];A[j]=(T)t;
     }
