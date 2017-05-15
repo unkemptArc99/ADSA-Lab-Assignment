@@ -85,10 +85,10 @@ namespace cs202{
 		}
 
  		// insert a value to the heap
- 		void insert(const T a){
+ 		void insert(const T a,const T b){
 			heap_size++;
-			heap.insert(a,heap_size);
-			heap_decrease_key(heap_size);
+			heap.insert(b,heap_size);
+			heap_decrease_key(heap_size,a);
         }
 
  		// get the minimum element from the heap
@@ -144,8 +144,9 @@ namespace cs202{
 		 }
 
  		// heap_decrease_key function
- 		void heap_decrease_key(const size_t& pos){
-			for(int i = pos; i >= 1 && heap[parent(i)] > heap[i] && parent(i) >= 1; i = parent(i)){
+ 		void heap_decrease_key(const size_t& pos,const T a){
+			heap.modify(a,pos);
+			for(int i = pos; i >= 1 && heap[parent(i)] < heap[i] && parent(i) >= 1; i = parent(i)){
 				heap.swapper(i, parent(i));
 			}
 		}

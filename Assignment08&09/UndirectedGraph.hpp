@@ -384,11 +384,14 @@ namespace cs202{
             key.modify(0,0);
 
             //inserting the node
-            nodes temp;
+            nodes temp,temp1;
+            temp1.source = 0;
+            temp1.dest = 0;
+            temp1.weight = std::numeric_limits<int>::max();
             temp.source = 0;
             temp.dest = 0;
             temp.weight = key.at(0);
-            q.insert(temp);
+            q.insert(temp,temp1);
 
             //main prim's algorithm
             while(!q.empty()) {
@@ -410,7 +413,7 @@ namespace cs202{
                                 temp.source = i;
                                 temp.dest = 0;
                                 temp.weight = key.at(i);
-                                q.insert(temp);
+                                q.insert(temp,temp1);
                             }
                         }
                     }
