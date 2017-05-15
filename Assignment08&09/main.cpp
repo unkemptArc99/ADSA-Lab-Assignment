@@ -10,8 +10,8 @@ using namespace std;
 //n will store the vertices and m will store the edges
 int n,m;
 
-cs202::LinearList<int> sou(m);
-cs202::LinearList<int> des(m);
+cs202::LinearList<int> sou(1000);
+cs202::LinearList<int> des(1000);
 
 void storing(int& a,int& b) {
     sou.push_back(a);
@@ -28,10 +28,10 @@ void answering(ifstream &in) {
         in >> x >> y;
         bool flag = false;
         for (int j = 0; j < sou.size() && !flag; ++j) {
-            if(x == sou.at(i) && y == des.at(i)) { 
+            if(x == sou.at(j) && y == des.at(j)) { 
                 flag = true;
             }
-            else if(y == sou.at(i) && x == des.at(i)) {
+            else if(y == sou.at(j) && x == des.at(j)) {
                 flag = true;
             }
         }
