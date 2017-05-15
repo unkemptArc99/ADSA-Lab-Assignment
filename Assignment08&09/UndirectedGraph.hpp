@@ -415,11 +415,10 @@ namespace cs202{
                         }
                     }
                 }
-
-                //At the end of the algorithm, all the data is stored in the keys and predecessor
-                for(int i = 0; i < main_graph->vertices(); ++i) {
-                    work(i,pred[i]);
-                }
+            }
+            //At the end of the algorithm, all the data is stored in the keys and predecessor
+            for(int i = 0; i < main_graph->vertices(); ++i) {
+                work(i,pred[i]);
             }
         }
     };
