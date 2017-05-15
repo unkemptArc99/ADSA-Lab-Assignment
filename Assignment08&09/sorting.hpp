@@ -107,23 +107,23 @@ namespace cs202 {
     int i=0,j=0,k=0;
     while(i<l1 && j<r1){
       if(left[i]>=right[i]){
-        A[k]=right[j];
+        A[k]=(T)right[j];
         j++;
         k++;
       }
       else{
-        A[k]=left[i];
+        A[k]=(T)left[i];
         i++;
         k++;
       }
     }
     while(i<l1){
-      A[k]=left[i];
+      A[k]=(T)left[i];
       k++;
       i++;
     }
     while(j<r1){
-      A[k]=right[i];
+      A[k]=(T)right[i];
       k++;
       j++;
     }
@@ -139,9 +139,9 @@ namespace cs202 {
     LinearList<T> left(mid);
     LinearList<T> right(n-mid);
     for(int i=0;i<mid;++i)
-      left[i]=A[i];
+      left[i]=(T)A[i];
     for(int i=mid;i<n;++i)
-      right[i-mid]=A[i];
+      right[i-mid]=(T)A[i];
 
     mergeSort(left,0,mid-1);
     mergeSort(right,mid,n-1);
@@ -161,17 +161,17 @@ namespace cs202 {
   int Sort<T>::partition(LinearList<T>& A,int low, int high){
     int i, j;
     T pivot,t;
-    pivot = A[low];
+    pivot = (T)A[low];
     i = low; j = high+1;
 
     while(1)
     {
-        do ++i;while(A[i]<=pivot&&i<=high);
-        do --j;while(A[j]>pivot);
+        do ++i;while(A[i]<=(T)pivot&&i<=high);
+        do --j;while(A[j]>(T)pivot);
         if(i>=j) break;
-        t=A[i];A[i]=A[j];A[j]=t;
+        t=(T)A[i];A[i]=(T)A[j];A[j]=(T)t;
     }
-    t=A[low];A[low]=A[j];A[j]=t;
+    t=(T)A[low];A[low]=(T)A[j];A[j]=(T)t;
     return j;
   }
 }

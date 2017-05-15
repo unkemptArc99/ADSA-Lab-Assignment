@@ -32,7 +32,39 @@ namespace cs202{
                     }
                 }
 
+                bool operator == (int& j) {
+                    if(dest == j){
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
+                }
+
+                bool operator == (graph_node& temp) {
+                    if(temp.dest == dest){
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+
+                bool operator == (graph_node temp) {
+                    if(temp.dest == dest){
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+
                 void operator = (graph_node& temp) {
+                    dest = temp.dest;
+                    weight = temp.weight;                    
+                }
+
+                void operator = (graph_node temp) {
                     dest = temp.dest;
                     weight = temp.weight;                    
                 }
@@ -57,7 +89,7 @@ namespace cs202{
                 list<graph_node> x = graph[i];
                 node<graph_node> *temp = x.head;
                 while(temp != NULL){
-                    if(temp->node_val == j){
+                    if(temp->node_val == (int)j){
                         return true;
                     }
                     temp = temp->next;
@@ -143,7 +175,7 @@ namespace cs202{
                     if(j != i){
                         node<graph_node> *temp = graph[i].head;
                         while(temp != NULL){
-                            if(temp->node_val == i){
+                            if(temp->node_val == (int)i){
                                 total++;
                             }
                             temp = temp->next;
@@ -167,7 +199,15 @@ namespace cs202{
                 list<graph_node> x = graph[i];
                 node<graph_node> *temp = x.head;
                 while(temp != NULL){
-                    if(temp->node_val == j){
+                    if(temp->node_val == (int)j){
+                        return temp->node_val.weight;
+                    }
+                    temp = temp->next;
+                }
+                x = graph[j];
+                temp = x.head;
+                while(temp != NULL){
+                    if(temp->node_val == (int)j){
                         return temp->node_val.weight;
                     }
                     temp = temp->next;

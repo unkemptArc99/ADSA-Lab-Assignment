@@ -31,7 +31,7 @@ public:
     UFDS(const unsigned int& N) : vertex(N) {}
 
     // Default constructor
-    ~UFDS();
+    ~UFDS() {}
 
     // Make a new set with N vertices with all sets being disjoint
     void make_set (const unsigned int& N) {

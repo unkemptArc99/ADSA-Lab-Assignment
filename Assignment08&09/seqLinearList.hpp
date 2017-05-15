@@ -84,8 +84,8 @@ namespace cs202 {
 			void swapper(const int& pos1, const int& pos2){
 				if (pos1 < size_ && pos2 < size_){
 					T temp = buffer_[pos1];
-					buffer_[pos1] = buffer_[pos2];
-					buffer_[pos2] = temp;
+					buffer_[pos1] = (T)buffer_[pos2];
+					buffer_[pos2] = (T)temp;
 				}
 			}
 		
@@ -159,7 +159,7 @@ namespace cs202 {
 		else
 			mini = size_;
 		for(int i = 0; i < mini; ++i){
-			new_buffer[i] = buffer_[i];
+			new_buffer[i] = (T)buffer_[i];
 		}
 		delete[] buffer_;
 		buffer_ = new_buffer;
@@ -195,7 +195,7 @@ namespace cs202 {
 		}
 		else{
 			for(int i = pos;i < size_-1; ++i){
-				buffer_[i] = buffer_[i+1];
+				buffer_[i] = (T)buffer_[i+1];
 			}
 			size_--;
 		}

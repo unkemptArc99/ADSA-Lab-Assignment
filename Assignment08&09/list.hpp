@@ -147,7 +147,7 @@ namespace cs202
         temp = head;
         if(temp!=NULL){
             while(temp!=NULL){
-                if(temp->node_val == x){
+                if(temp->node_val == (T)x){
                     if(temp!=head){
                         temp1 = head;
                         while(temp1->next != temp){

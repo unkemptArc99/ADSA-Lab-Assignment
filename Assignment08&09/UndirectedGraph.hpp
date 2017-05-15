@@ -63,7 +63,6 @@ namespace cs202{
                 return false;
             }
         }
-
         bool operator >= (nodes temp) {
             if(temp.weight >= weight) {
                 return true;
@@ -136,7 +135,7 @@ namespace cs202{
         bool edgeExists(int i, int j) {
             bool r1 = main_graph->edgeExists(i,j);
             bool r2 = main_graph->edgeExists(j,i);
-            if(r1 || r2){
+            if(r1 && r2){
                 return true;
             }
             else{
@@ -149,7 +148,7 @@ namespace cs202{
         * Returns the number of edges in the adjacency structure.
         */
         int edges(){
-            return main_graph->edges();
+            return main_graph->edges()/2;
         }
 
         /*
@@ -166,6 +165,7 @@ namespace cs202{
         */
         void add(int i, int j, int w){
             main_graph->add(i,j,w);
+            main_graph->add(j,i,w);
         }
 
         /*
@@ -173,12 +173,8 @@ namespace cs202{
         * Deleted the edge between vertices i and j
         */
         void remove(int i, int j){
-            if(main_graph->edgeExists(i,j)){
-                main_graph->remove(i,j);
-            }
-            else if(main_graph->edgeExists(j,i)){
-                main_graph->remove(j,i);
-            }
+            main_graph->remove(i,j);
+            main_graph->remove(j,i);
         }
  
         /*
@@ -211,7 +207,7 @@ namespace cs202{
 
                 //putting the node's adjacent nodes in the stack
                 for(int i = 0; i < main_graph->vertices(); ++i){
-                    if(main_graph->edgeExists(u,i) || main_graph->edgeExists(i,u)){
+                    if(main_graph->edgeExists(u,i) && main_graph->edgeExists(i,u)){
                         if(colorOfNodes.at(i) == 0){
                             predecessor.modify(u,i);
                             main_stack.push(i);
@@ -252,7 +248,7 @@ namespace cs202{
                 if(temporary){
                     //putting the node's adjacent nodes in the stack
                     for(int i = 0; i < main_graph->vertices(); ++i){
-                        if(main_graph->edgeExists(u,i) || main_graph->edgeExists(i,u)){
+                        if(main_graph->edgeExists(u,i) && main_graph->edgeExists(i,u)){
                             if(colorOfNodes.at(i) == 0){
                                 predecessor.modify(u,i);
                                 main_stack.push(i);
@@ -326,10 +322,11 @@ namespace cs202{
             bool check[vert][vert];
 
             //main container for list of edges
-            LinearList<nodes> edges_list (main_graph->edges());
-            
-            for(int i = 0; i < vert; ++i){
-                for(int j = 0; j < vert; ++j){
+            LinearList<nodes> edges_list (main_graph->edges()/2);
+
+            //initialising check matrix to false
+            for(int i = 0; i < vert; ++i) {
+                for(int j = 0; j < vert; ++j) {
                     check[i][j] = false;
                 }
             }
@@ -351,10 +348,10 @@ namespace cs202{
                 }
             }
 
-            //soring the edges
+            //sorting the edges
             Sort<nodes> sort;
-            sort.mergeSort(edges_list,0,edges_list.size() - 1);
-
+            sort.quickSort(edges_list,0,edges_list.size() - 1);
+            
             //making disjoint sets for each vertex
             UFDS sets(vert);
             sets.make_set(vert);
@@ -365,14 +362,7 @@ namespace cs202{
                 temp = edges_list.at(i);
                 if(sets.find_set(temp.source) != sets.find_set(temp.dest)) {
                     sets.union_set(temp.source,temp.dest);
-                }
-            }
-
-            //printing the edges in the MST
-            for(int i = 0; i < vert; ++i) {
-                int par = sets.getParent(i);
-                if(par != i) {
-                    work(par,i);
+                    work(temp.source,temp.dest);
                 }
             }
         }
